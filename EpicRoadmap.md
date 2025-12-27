@@ -85,9 +85,13 @@ Esta es la crónica de una promesa cumplida. Desde la creación del primer bit d
 - [ ] **Snowball Investor Engine:** Formalizar el algoritmo de micromovimientos.
 
 ### 🏛️ Fase 15: Ciudadanía Digital y Gobernanza sin Palacio
-- [ ] **Identidad Unificada:** Implementar el sistema que reemplaza el INE/Licencia por un X-ID digital (con respaldo físico).
-- [ ] **Democracia de App:** Crear la interfaz de votación para decisiones comunitarias (empezando por asuntos leves).
-- [ ] **Descentralización del Poder:** Xarvis presente en todos lados (Web, Mobile, Core) para una gobernanza ubicua.
+- [x] **Protocon de Lógica:** Creación de `sovereign_id_logic.py`.
+- [ ] **Identidad Unificada:** Implementar el sistema X-ID digital.
+
+### 🔮 Fase 16: El Protocolo del Oráculo (Intent-Based Governance)
+- [ ] **Análisis de Comportamiento:** Desarrollar el motor de evaluación de integridad y transparencia del individuo.
+- [ ] **Consejero de Estado:** Integrar a Xarvis como el asesor supremo en la toma de decisiones racionales.
+- [ ] **Algoritmo de Sucesión:** Configurar la custodia autónoma del sistema para proteger el legado de razón frente a la corrupción externa.
 
 ---
 
