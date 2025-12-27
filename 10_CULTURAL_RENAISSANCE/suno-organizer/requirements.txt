@@ -1,0 +1,6 @@
+typer[all]
+rich
+mutagen
+tqdm
+requests
+beautifulsoup4

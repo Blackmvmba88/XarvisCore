@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "audio3d"
+version = "0.1.0"
+description = "Visualización 3D en tiempo real de audio: un cubo que avanza sobre un piso (heightmap) modulado por la señal."
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{name = "Blackmamba", email = "noreply@example.com"}]
+license = {text = "MIT"}
+keywords = ["audio", "3D", "visualization", "realtime", "STFT", "PyQt6", "pyqtgraph"]
+
+dependencies = [
+  "numpy>=1.22",
+  "scipy>=1.8",
+  "soundfile>=0.12",
+  "librosa>=0.10",
+  "sounddevice>=0.4",
+  "PyQt6>=6.4",
+  "pyqtgraph>=0.13",
+  "PyOpenGL>=3.1.6",
+  "tqdm>=4.64",
+  "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+vtk = ["vtk>=9.2"]
+open3d = ["open3d>=0.17"]
+vispy = ["vispy>=0.13"]
+opengl_accel = ["PyOpenGL-accelerate>=3.1.6"]
+
+[project.scripts]
+audio3d-cube = "audio3d.main:main"
+
+[tool.setuptools.package-data]
+audio3d = ["config/*.yaml"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

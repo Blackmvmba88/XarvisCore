@@ -1,0 +1,6 @@
+pypdf
+unstructured
+qdrant-client
+sentence-transformers
+numpy
+rapidfuzz

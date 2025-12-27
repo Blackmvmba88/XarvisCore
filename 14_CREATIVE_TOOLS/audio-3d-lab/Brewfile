@@ -1,0 +1,42 @@
+# Audio / DSP
+brew "ffmpeg"
+brew "sox"
+brew "libsndfile"
+brew "portaudio"
+brew "libsamplerate"
+brew "aubio"
+brew "rubberband"
+brew "chromaprint"
+brew "taglib"
+brew "flac"
+brew "lame"
+brew "opus"
+brew "libogg"
+brew "libvorbis"
+brew "fftw"
+brew "eigen"
+brew "tbb"
+
+# 3D / Gráficos / Visualización
+brew "qt"
+brew "glfw"
+brew "glew"
+brew "glm"
+brew "assimp"
+brew "freeglut"
+brew "vtk"
+brew "pcl"
+brew "opencv"
+brew "openal-soft"
+brew "sdl2"
+
+# Toolchain
+brew "cmake"
+brew "ninja"
+brew "pkg-config"
+brew "python"
+brew "pipx"
+brew "git"
+
+# Utilidades opcionales
+brew "gnuplot"

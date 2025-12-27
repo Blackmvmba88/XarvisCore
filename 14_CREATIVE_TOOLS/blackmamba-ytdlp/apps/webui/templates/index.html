@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="home">
+  <section class="watch-grid" id="watch">
+    <div class="left card" id="home-video">
+      <h2 class="card-title">Inicio</h2>
+      <div class="video-wrap" style="position:relative; aspect-ratio:16/9; background:#0b1422; border-radius:12px; overflow:hidden;">
+        <video id="home-video-mirror" playsinline autoplay muted style="width:100%; height:100%; object-fit:cover; display:none;"></video>
+        <div id="home-video-placeholder" class="label" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center;">No hay video reproduciéndose</div>
+      </div>
+    </div>
+    <aside class="right card" id="watch-actions">
+      <h2 class="card-title">Opciones</h2>
+      <div class="actions" style="display:flex; flex-direction:column; gap:8px;">
+        <button class="btn" id="btn-pip-side">Picture in Picture</button>
+        <button class="btn" id="btn-reveal">Mostrar en Finder</button>
+        <button class="btn" id="btn-open-folder">Abrir carpeta</button>
+        <button class="btn" id="btn-copy-path">Copiar ruta</button>
+        <a class="btn primary" id="btn-download" href="#" download>Descargar</a>
+      </div>
+      <div class="label" id="meta-side" style="margin-top:10px;">Sin metadatos.</div>
+      <script>
+      (function(){
+        const mirror = document.getElementById('home-video-mirror');
+        const ph = document.getElementById('home-video-placeholder');
+        const btnPiP = document.getElementById('btn-pip-side');
+        const btnRe = document.getElementById('btn-reveal');
+        const btnOp = document.getElementById('btn-open-folder');
+        const btnCp = document.getElementById('btn-copy-path');
+        const btnDl = document.getElementById('btn-download');
+        const meta = document.getElementById('meta-side');
+        function showVideo(){ mirror.style.display='block'; ph.style.display='none'; document.body.classList.add('home-mirror'); }
+        function clearVideo(){ try{ mirror.pause(); mirror.removeAttribute('src'); mirror.srcObject=null; mirror.load(); }catch(e){} mirror.style.display='none'; ph.style.display='flex'; document.body.classList.remove('home-mirror'); }
+        async function refreshMeta(){
+          const rel = window.mambaCurrentRel;
+          if (!rel){ meta.textContent = 'Sin metadatos.'; btnDl.removeAttribute('href'); return; }
+          try{
+            const res = await fetch(`/meta_for?rel=${encodeURIComponent(rel)}`);
+            const data = await res.json();
+            if (data.found){
+              const parts = [];
+              if (data.title) parts.push(`Título: ${data.title}`);
+              if (data.created_at) parts.push(`Fecha: ${data.created_at}`);
+              meta.textContent = parts.join(' · ') || 'Reproduciendo…';
+              btnDl.href = `/media/${rel}`;
+            } else { meta.textContent = 'Sin metadatos.'; }
+          } catch(e){ meta.textContent = 'Sin metadatos.'; }
+        }
+        function tryMirror(el, kind){
+          if (kind !== 'video'){ clearVideo(); return; }
+          if (el && typeof el.captureStream === 'function'){
+            try { mirror.srcObject = el.captureStream(); mirror.muted = true; mirror.play().catch(()=>{}); showVideo(); return; } catch(e){}
+          }
+          const src = (el && (el.currentSrc || el.src)) || '';
+          if (src){ mirror.src = src; mirror.muted = true; mirror.play().catch(()=>{}); showVideo(); return; }
+          clearVideo();
+        }
+        if (window.mambaAddMediaListener){ window.mambaAddMediaListener((info)=>{ tryMirror(info.el, info.kind); refreshMeta(); }); }
+        const gv = document.getElementById('global-video');
+        if (gv && !gv.hidden && !gv.paused){ tryMirror(gv, 'video'); refreshMeta(); }
+        btnPiP.addEventListener('click', async ()=>{
+          const gv = document.getElementById('global-video');
+          if (gv && document.pictureInPictureEnabled && !gv.disablePictureInPicture){
+            try{ if (document.pictureInPictureElement) await document.exitPictureInPicture(); else await gv.requestPictureInPicture(); }catch(e){}
+          }
+        });
+        btnRe.addEventListener('click', async ()=>{
+          if (!window.mambaCurrentRel) return; await fetch('/reveal', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:`rel=${encodeURIComponent(window.mambaCurrentRel)}`});
+        });
+        btnOp.addEventListener('click', async ()=>{
+          if (!window.mambaCurrentRel) return; await fetch('/open_folder', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:`rel=${encodeURIComponent(window.mambaCurrentRel)}`});
+        });
+        btnCp.addEventListener('click', async ()=>{
+          if (!window.mambaCurrentRel) return; try { await navigator.clipboard.writeText(window.mambaCurrentRel); } catch(e){}
+        });
+      })();
+      </script>
+    </aside>
+  </section>
+
+  <script>
+  // Autoplay: reproducir último medio al abrir si no hay currentRel
+  (async function(){
+    try{
+      if (!window.mambaCurrentRel){
+        const res = await fetch('/last_media');
+        const data = await res.json();
+        if (data && data.found && data.rel && window.mambaPlay){
+          window.mambaCurrentRel = data.rel; window.mambaCurrentTitle = data.title || data.rel;
+          window.mambaPlay(`/media/${data.rel}`, data.title || data.rel, data.kind || 'video');
+        }
+      }
+    }catch(e){}
+  })();
+  </script>
+
+  <section class="card" id="artist">
+    <h2 class="card-title">Artista</h2>
+    <div id="artist-info" class="artist-info label">Reproduce algo para ver información.</div>
+    <script>
+      (function(){
+        const el = document.getElementById('artist-info');
+        let idx = 0; let facts = [];
+        function render(){ if (!facts.length) return; el.textContent = facts[idx % facts.length]; idx++; }
+        async function load(rel){
+          try{
+            const res = await fetch(`/meta_for?rel=${encodeURIComponent(rel)}`);
+            const data = await res.json();
+            if (!data.found){ el.textContent = 'Sin metadatos.'; return; }
+            facts = [];
+            if (data.title) facts.push(`Título: ${data.title}`);
+            if (data.uploader) facts.push(`Artista: ${data.uploader}`);
+            if (data.created_at) facts.push(`Fecha: ${data.created_at}`);
+            if (data.finished_at) facts.push(`Descargado: ${data.finished_at}`);
+            if (!facts.length) facts = ['Reproduciendo…'];
+            idx = 0; render();
+          }catch(e){ el.textContent = 'No se pudo cargar metadatos.'; }
+        }
+        if (window.mambaAddMediaListener){
+          window.mambaAddMediaListener((info)=>{ if (window.mambaCurrentRel) load(window.mambaCurrentRel); });
+        }
+        setInterval(()=>{ render(); }, 4000);
+      })();
+    </script>
+  </section>
+
+  <section class="card">
+    <h2 class="card-title">Visualizador</h2>
+    <canvas id="home-scope" style="width:100%; height:160px; display:block;"></canvas>
+    <script>
+    (function(){
+      const c = document.getElementById('home-scope');
+      if (!c) return; const ctx = c.getContext('2d');
+      function fit(){ c.width = c.clientWidth; c.height = 160; }
+      window.addEventListener('resize', fit); fit();
+      let t=0;
+      function drawLayer(waveFn, color, width){
+        const w=c.width,h=c.height; ctx.beginPath();
+        for(let x=0;x<w;x++){
+          const y = waveFn(x, w, h);
+          if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+        }
+        ctx.strokeStyle = color; ctx.lineWidth=width; ctx.stroke();
+      }
+      function render(analyser){
+        const w=c.width,h=c.height; ctx.clearRect(0,0,w,h);
+        ctx.globalCompositeOperation='lighter';
+        // Compute audio-driven amplitude
+        let amp = 0.15, speed = 0.06;
+        if (analyser){
+          const data = new Uint8Array(analyser.frequencyBinCount);
+          analyser.getByteFrequencyData(data);
+          let avg=0; for(let i=0;i<data.length;i++) avg+=data[i]; avg/=data.length;
+          const level = avg/255;
+          amp = 0.12 + level*0.25; speed = 0.05 + level*0.10;
+        }
+        const acc1 = getComputedStyle(document.documentElement).getPropertyValue('--accent') || '#7c4dff';
+        const acc2 = getComputedStyle(document.documentElement).getPropertyValue('--accent-2') || '#00e5ff';
+        ctx.shadowColor = acc2.trim() || '#00e5ff'; ctx.shadowBlur = 8;
+        drawLayer((x,w,h)=> h/2 + Math.sin((x/36)+t)*h*amp, acc1.trim() || '#7c4dff', 2.5);
+        drawLayer((x,w,h)=> h/2 + Math.sin((x/24)+t*1.2 + 0.7)*h*(amp*0.8), acc2.trim() || '#00e5ff', 1.8);
+        drawLayer((x,w,h)=> h/2 + Math.sin((x/18)+t*0.9 + 1.4)*h*(amp*0.5), 'rgba(255,255,255,0.35)', 1.2);
+        ctx.shadowBlur = 0; ctx.globalCompositeOperation='source-over';
+        t += speed; requestAnimationFrame(loop);
+      }
+      function loop(){
+        const analyser = window.mambaAnalyser || null; render(analyser);
+      }
+      requestAnimationFrame(loop);
+    })();
+    </script>
+  </section>
+
+  <section class="card" id="search">
+    <h2 class="card-title">Buscar</h2>
+    <input type="text" id="q" name="q" class="input" placeholder="Buscar artista o canción..." hx-get="/search" hx-trigger="keyup changed delay:350ms" hx-target="#search-results">
+    <div id="search-results" style="margin-top: 10px;">
+      <!-- resultados ajax -->
+    </div>
+  </section>
+
+  <section class="card" id="new-download">
+    <h2 class="card-title">Nueva descarga</h2>
+    <form method="post" action="/jobs" class="form">
+      <label for="urls" class="label">URL(s) (una por línea o separadas por espacio):</label>
+      <textarea id="urls" name="urls" rows="5" class="input area" placeholder="https://youtu.be/BaW_jenozKc"></textarea>
+      <div class="row">
+        <span class="label">Modo:</span>
+        <label class="chip"><input type="radio" name="mode" value="video" checked> Video</label>
+        <label class="chip"><input type="radio" name="mode" value="audio"> Audio</label>
+      </div>
+      <div class="actions">
+        <button type="submit" class="btn primary">Descargar</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="card">
+    <h2 class="card-title">Cola</h2>
+<div id="queue" hx-get="/jobs" hx-trigger="load, every 2s" hx-swap="innerHTML">
+      Cargando cola...
+    </div>
+  </section>
+</div>
+{% endblock %}

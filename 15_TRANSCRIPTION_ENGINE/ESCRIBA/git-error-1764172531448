@@ -1,0 +1,3 @@
+> git push -u origin main
+error: src refspec main does not match any
+error: failed to push some refs to 'https://github.com/Blackmvmba88/ESCRIBA.git'

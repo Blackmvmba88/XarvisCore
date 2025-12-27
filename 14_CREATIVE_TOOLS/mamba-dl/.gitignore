@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+# yt-dlp temp/part files
+*.part
+*.ytdl
+*.ytdl.*
+*.temp.*
+*.mp4.part
+*.mkv.part
+*.m4a.part
+# pytest cache
+.pytest_cache/

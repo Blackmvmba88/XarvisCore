@@ -1,0 +1,8 @@
+# 1) Clona/crea carpeta y pega este kit
+cd hermes
+# 2) Bootstrap
+bash scripts/bootstrap_macos.sh
+# 3) Arranca
+bash scripts/run_local.sh
+# 4) Abre WebUI
+open http://*********:8787

@@ -1,0 +1,76 @@
+[
+  {
+    "id": "2243266d269d4aa7ad1f110aa39f9c05",
+    "mode": "video",
+    "urls": [],
+    "status": "completed",
+    "message": "OK",
+    "output_paths": [],
+    "created_at": "2025-09-28T22:24:07.120309Z",
+    "finished_at": "2025-09-28T22:24:07.374296Z"
+  },
+  {
+    "id": "49aad7f14c2242c0a6ad791d23fd4131",
+    "mode": "video",
+    "urls": [
+      "https://youtu.be/CW7gfrTlr0Y?si=WlaCFj2MEOez2YHp"
+    ],
+    "status": "completed",
+    "message": "OK",
+    "output_paths": [
+      "/Users/blackmamba/Projects/blackmamba-ytdlp/downloads/video/Stromae - Santé (Live From The Tonight Show Starring Jimmy Fallon).mp4",
+      "/Users/blackmamba/Projects/blackmamba-ytdlp/downloads/video/Stromae - Santé (Live From The Tonight Show Starring Jimmy Fallon).f401.mp4",
+      "/Users/blackmamba/Projects/blackmamba-ytdlp/downloads/video/Stromae - Santé (Live From The Tonight Show Starring Jimmy Fallon).f251.webm"
+    ],
+    "created_at": "2025-09-28T23:59:14.368457Z",
+    "finished_at": "2025-09-28T23:59:59.326988Z"
+  },
+  {
+    "id": "7da3087cd945447cb40b1d2e019a7ad7",
+    "mode": "video",
+    "urls": [
+      "https://www.youtube.com/watch?v=HrtBpu6fUN8"
+    ],
+    "status": "completed",
+    "message": "OK",
+    "output_paths": [
+      "/Users/blackmamba/Projects/blackmamba-ytdlp/downloads/video/Bubbles (Radio Mix).mp4",
+      "/Users/blackmamba/Projects/blackmamba-ytdlp/downloads/video/Bubbles (Radio Mix).f248.webm",
+      "/Users/blackmamba/Projects/blackmamba-ytdlp/downloads/video/Bubbles (Radio Mix).f251.webm"
+    ],
+    "created_at": "2025-09-29T00:04:10.368509Z",
+    "finished_at": "2025-09-29T00:04:20.303079Z"
+  },
+  {
+    "id": "dda5c07e7afd4d1b9bce5396c82d2eb9",
+    "mode": "video",
+    "urls": [
+      "https://www.youtube.com/watch?v=3CKfQeTCsQE"
+    ],
+    "status": "completed",
+    "message": "OK",
+    "output_paths": [
+      "/Users/blackmamba/Projects/blackmamba-ytdlp/downloads/video/Mpirgkel - Bubbles.mp4",
+      "/Users/blackmamba/Projects/blackmamba-ytdlp/downloads/video/Mpirgkel - Bubbles.f137.mp4",
+      "/Users/blackmamba/Projects/blackmamba-ytdlp/downloads/video/Mpirgkel - Bubbles.f251.webm"
+    ],
+    "created_at": "2025-09-29T00:03:59.290630Z",
+    "finished_at": "2025-09-29T00:04:24.517622Z"
+  },
+  {
+    "id": "7d5a035f4cbc4fa4af5895d28dcaa0ee",
+    "mode": "video",
+    "urls": [
+      "https://www.youtube.com/watch?v=4zt6EMUewEE&t=2778s"
+    ],
+    "status": "completed",
+    "message": "OK",
+    "output_paths": [
+      "/Users/blackmamba/Projects/blackmamba-ytdlp/downloads/video/O M   N A M A H  S H I V A Y A  ॐ - Psytrance Mantra Mix 2023 - 140 -147 bpm.mp4",
+      "/Users/blackmamba/Projects/blackmamba-ytdlp/downloads/video/O M   N A M A H  S H I V A Y A  ॐ - Psytrance Mantra Mix 2023 - 140 -147 bpm.f399.mp4",
+      "/Users/blackmamba/Projects/blackmamba-ytdlp/downloads/video/O M   N A M A H  S H I V A Y A  ॐ - Psytrance Mantra Mix 2023 - 140 -147 bpm.f251.webm"
+    ],
+    "created_at": "2025-09-29T00:10:34.234888Z",
+    "finished_at": "2025-09-29T00:12:11.727573Z"
+  }
+]

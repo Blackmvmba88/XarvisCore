@@ -1,0 +1,24 @@
+source_dir: "/Users/blackmamba/Downloads"
+backend: "pyqtgraph_gl"
+auto_advance: true
+
+sample_rate: 48000
+fps_cap: 60
+
+stft:
+  window_size: 1024
+  hop_size: 256
+
+mesh:
+  freq_bins: 128
+  time_cols: 256
+  amplitude_scale: 1.0
+
+features:
+  log_scale: true
+  smoothing: 0.8
+
+generator:
+  sine_freq: 440.0
+  sine_seconds: 60.0
+  sine_amplitude: 0.5

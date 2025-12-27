@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hermes Dashboard</title>
+  <style>
+    body{font-family:ui-sans-serif,system-ui;background:#0b1020;color:#d8deff;margin:0}
+    header{padding:18px 20px;border-bottom:1px solid #1c2545;background:#0e1530}
+    .logo{font-weight:700;letter-spacing:.4px}
+    main{max-width:980px;margin:0 auto;padding:24px}
+    .card{background:#0f1836;border:1px solid #1e2a55;border-radius:14px;padding:16px;margin:12px 0;box-shadow:0 0 0 1px #0a0f22 inset}
+    input,textarea,button{border-radius:10px;border:1px solid #243166;background:#0c1531;color:#cfe1ff;padding:10px;width:100%}
+    button{cursor:pointer;width:auto}
+    .row{display:flex;gap:10px}
+    .row>*{flex:1}
+    .muted{opacity:.75;font-size:.9em}
+  </style>
+</head>
+<body>
+  <header><div class="logo">Hermes — Gestor local de productividad</div></header>
+  <main>
+    <div class="card">
+      <div class="muted">Chat económico (ahorro, automatización, creación de valor)</div>
+      <div class="row" style="margin-top:10px">
+        <input id="msg" placeholder="Ej: Hazme un plan de ahorro semanal con mis gastos típicos" />
+        <button id="sendBtn" onclick="sendChat()">Enviar</button>
+        <button onclick="sendChatStream()" style="opacity:0.7">Stream</button>
+      </div>
+      <pre id="out" style="white-space:pre-wrap;margin-top:12px"></pre>
+    </div>
+
+    <div class="card">
+      <div class="muted">Ingesta RAG rápida</div>
+      <button onclick="fetch('/ingest', {method:'POST'}) .then(()=>alert('Ingesta iniciada'))">Indexar docs</button>
+    </div>
+  </main>
+<script>
+async function sendChat(){
+  const msg = document.getElementById('msg').value
+  const res = await fetch('/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg})})
+  const j = await res.json()
+  document.getElementById('out').textContent = j.reply || '[sin respuesta]'
+}
+
+function sendChatStream(){
+  const msg = document.getElementById('msg').value
+  const out = document.getElementById('out')
+  out.textContent = ''
+  const url = '/chat/stream?q=' + encodeURIComponent(msg)
+  const es = new EventSource(url)
+  es.onmessage = (e)=>{
+    try { const j = JSON.parse(e.data); out.textContent += (j.token + ' ') }
+    catch { out.textContent += e.data + ' ' }
+  }
+  es.addEventListener('done', ()=>{ es.close() })
+  es.onerror = ()=>{ es.close() }
+}
+</script>
+</body>
+</html>

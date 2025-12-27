@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>MambaFlow</title>
+<link rel="stylesheet" href="/static/styles.css">
+<link rel="stylesheet" href="https://unpkg.com/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<script src="https://unpkg.com/htmx.org@1.9.12"></script>
+<script src="https://unpkg.com/hydra-synth@1.3.29"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body class="theme-neon" hx-boost="true" hx-target=".main" hx-select=".main > *">
+<canvas id="hydra-bg"></canvas>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">MambaFlow</div>
+<nav class="side-nav">
+      <a href="/" class="nav-link"><i class="ti ti-home"></i><span>Inicio</span></a>
+      <a href="/videos" class="nav-link"><i class="ti ti-video"></i><span>Videos</span></a>
+      <a href="/history" class="nav-link"><i class="ti ti-history"></i><span>Historial</span></a>
+    </nav>
+    <div class="side-footer">
+      <small>Local</small>
+    </div>
+  </aside>
+  <div class="content">
+    <header class="topbar">
+      <div class="topbar-title">Blackmamba yt-dlp</div>
+<div class="theme-switcher">
+        <label for="theme-select">Tema:</label>
+        <select id="theme-select" class="select">
+          <option value="neon">Neón</option>
+          <option value="ocean">Océano</option>
+          <option value="candy">Candy</option>
+          <option value="sunset">Atardecer</option>
+          <option value="cyber">Cyber</option>
+          <option value="matrix">Matrix</option>
+          <option value="rainbow">Rainbow</option>
+          <option value="rave">Rave</option>
+        </select>
+      </div>
+    </header>
+    <main class="main">
+      {% block content %}{% endblock %}
+    </main>
+    <div class="player-bar" id="player-bar" hidden>
+      <canvas id="hydra-canvas"></canvas>
+      <div class="player-ui">
+        <div class="player-meta">
+          <div class="player-title" id="player-title">MambaFlow</div>
+        </div>
+        <div class="player-controls">
+          <button class="btn" id="btn-play" title="Play/Pause">▶</button>
+          <input type="range" id="seek" min="0" max="100" value="0" title="Seek">
+          <input type="range" id="vol" min="0" max="1" step="0.01" value="1" title="Volumen">
+          <button class="btn" id="btn-pip" title="Picture in Picture">PiP</button>
+        </div>
+      </div>
+      <audio id="global-audio" crossorigin="anonymous"></audio>
+      <video id="global-video" class="mini" crossorigin="anonymous" hidden playsinline></video>
+    </div>
+    <footer class="footer">
+      <div class="rainbow-text">Hecho con ❤ para Blackmamba</div>
+    </footer>
+  </div>
+</div>
+<script>
+(function(){
+  const KEY = 'mambaflow_theme';
+  const body = document.body;
+  // Tema
+  const saved = localStorage.getItem(KEY) || 'neon';
+  const classes = Array.from(body.classList).filter(c => c.startsWith('theme-'));
+  classes.forEach(c => body.classList.remove(c));
+  body.classList.add(`theme-${saved}`);
+  const sel = document.getElementById('theme-select');
+  if (sel) {
+    sel.value = saved;
+    sel.addEventListener('change', (e) => {
+      const v = e.target.value || 'neon';
+      const rm = Array.from(body.classList).filter(c => c.startsWith('theme-'));
+      rm.forEach(c => body.classList.remove(c));
+      body.classList.add(`theme-${v}`);
+      localStorage.setItem(KEY, v);
+    });
+  }
+})();
+</script>
+<script>
+// Hydra background glow
+(function(){
+  try{
+    const c = document.getElementById('hydra-bg');
+    if (!c) return;
+    c.style.position='fixed'; c.style.inset='0'; c.style.zIndex='-1'; c.style.opacity='0.35'; c.style.pointerEvents='none';
+    const hydra = new Hydra({ canvas: c, makeGlobal: true, detectAudio: false });
+    const lvl = () => (window.mambaHydraLevel || 0);
+      .color(1.2,0.6,1.6)
+      .kaleid(8)
+      .modulate(noise(2,0.15).pixelate(180,140),0.12)
+      .brightness(0.03)
+      .contrast(1.15)
+      .out();
+  }catch(e){}
+})();
+</script>
+<script>
+// Player persistente + visual hydra-like analyzer
+(function(){
+  const bar = document.getElementById('player-bar');
+  if (!bar) return;
+  const titleEl = document.getElementById('player-title');
+  const btnPlay = document.getElementById('btn-play');
+  const btnPip = document.getElementById('btn-pip');
+  const seek = document.getElementById('seek');
+  const vol = document.getElementById('vol');
+  const audio = document.getElementById('global-audio');
+  const video = document.getElementById('global-video');
+  const canvas = document.getElementById('hydra-canvas');
+  const ctx = canvas.getContext('2d');
+  let raf, rafSeek, analyser, audioCtx, srcNode, currentKind = 'audio';
+  let perfEnabled = document.body.classList.contains('perf');
+  const analyserListeners = [];
+  const mediaListeners = [];
+  window.mambaAddAnalyserListener = function(fn){ try { analyserListeners.push(fn); } catch(e){} };
+  window.mambaAddMediaListener = function(fn){ try { mediaListeners.push(fn); } catch(e){} };
+  window.mambaSetPerf = function(on){ perfEnabled = !!on; };
+
+  function fitCanvas(){
+    const rect = bar.getBoundingClientRect();
+    canvas.width = rect.width; canvas.height = 90;
+  }
+
+  function ensureAudioCtx(){
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = perfEnabled ? 512 : 1024;
+      window.mambaAudioCtx = audioCtx; window.mambaAnalyser = analyser;
+    }
+  }
+  function connect(el){
+    ensureAudioCtx();
+    try { if (srcNode) srcNode.disconnect(); } catch(e){}
+    srcNode = audioCtx.createMediaElementSource(el);
+    srcNode.connect(analyser);
+    analyser.connect(audioCtx.destination);
+  }
+  function draw(){
+    if (!analyser) { raf = requestAnimationFrame(draw); return; }
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0,0,w,h);
+    const data = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(data);
+    let avg = 0; for (let i=0;i<data.length;i++) avg += data[i]; avg /= data.length;
+    const t = performance.now()/1000;
+    const hue1 = (t*30 + avg*0.3) % 360;
+    const hue2 = (hue1 + 90) % 360;
+    document.body.style.setProperty('--accent', `hsl(${hue1}, 100%, 55%)`);
+    document.body.style.setProperty('--accent-2', `hsl(${hue2}, 100%, 55%)`);
+    ctx.globalAlpha = 0.9;
+    // Notificar a listeners externos (por ejemplo, osciloscopio en portada)
+    try { for (const f of analyserListeners) { f(analyser, avg, t); } } catch(e){}
+    for (let k=0;k<3;k++){
+      const amp = (avg/255) * (12 + k*5);
+      const y0 = h*(0.3 + 0.2*k);
+      ctx.beginPath();
+      for (let x=0; x<w; x++){
+        const y = y0 + Math.sin((x/40) + t*(1.2+k*0.4)) * amp;
+        if (x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      }
+      ctx.strokeStyle = k===0? `hsl(${hue1},100%,60%)` : (k===1? `hsl(${hue2},100%,60%)` : 'rgba(255,255,255,0.25)');
+      ctx.lineWidth = k===2? 1.2 : 2.0;
+      ctx.stroke();
+    }
+    // Throttle FPS si perf
+    if (perfEnabled){
+      setTimeout(()=>{ raf = requestAnimationFrame(draw); }, 33);
+    } else {
+      raf = requestAnimationFrame(draw);
+    }
+  }
+  function setMedia(url, name, kind){
+    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+    bar.hidden = false; fitCanvas();
+    titleEl.textContent = name || 'Reproduciendo';
+    currentKind = (kind === 'video')? 'video' : 'audio';
+    if (currentKind === 'audio'){
+      video.pause(); video.hidden = true; video.src = '';
+      audio.src = url; audio.hidden = false; audio.play().catch(()=>{});
+      connect(audio); btnPlay.textContent = '⏸';
+    } else {
+      audio.pause(); audio.hidden = true; audio.src = '';
+      video.src = url; video.hidden = false; video.muted = true; video.playsInline = true; video.play().catch(()=>{});
+      connect(video); btnPlay.textContent = '⏸';
+    }
+    cancelAnimationFrame(raf); draw();
+    try { for (const f of mediaListeners) { f({ url, name, kind: currentKind, el: currentKind==='audio'? audio : video }); } } catch(e){}
+  }
+  window.mambaPlay = setMedia;
+
+  btnPlay.addEventListener('click', () => {
+    const el = currentKind==='audio'? audio : video;
+    if (el.paused){ el.play(); btnPlay.textContent='⏸'; }
+    else { el.pause(); btnPlay.textContent='▶'; }
+  });
+  vol.addEventListener('input', () => {
+    (currentKind==='audio'? audio : video).volume = parseFloat(vol.value);
+  });
+  seek.addEventListener('input', () => {
+    const el = currentKind==='audio'? audio : video;
+    if (el.duration){ el.currentTime = (seek.value/100)*el.duration; }
+  });
+  function syncSeek(){
+    const el = currentKind==='audio'? audio : video;
+    if (el.duration){ seek.value = (el.currentTime/el.duration)*100; }
+  }
+  if (perfEnabled){
+    setInterval(syncSeek, 250);
+  } else {
+    (function loopSeek(){ syncSeek(); rafSeek = requestAnimationFrame(loopSeek); })();
+  }
+  btnPip.addEventListener('click', async () => {
+    if (currentKind==='video' && document.pictureInPictureEnabled && !video.disablePictureInPicture){
+      try {
+        if (document.pictureInPictureElement) await document.exitPictureInPicture();
+        else await video.requestPictureInPicture();
+      } catch(e){}
+    }
+  });
+  document.addEventListener('click', (ev) => {
+    const a = ev.target.closest('a[data-rel]');
+    if (!a) return;
+    ev.preventDefault();
+    const rel = a.dataset.rel;
+    const name = a.dataset.title || rel;
+    let kind = a.dataset.kind || 'audio';
+    if (!a.dataset.kind && rel){ const low = rel.toLowerCase(); if (/(\.mp4|\.mkv|\.webm|\.mov)$/.test(low)) kind='video'; }
+    window.mambaCurrentRel = rel; window.mambaCurrentTitle = name;
+    setMedia(`/media/${rel}`, name, kind);
+  });
+  window.addEventListener('resize', fitCanvas);
+  // Si el video global cambia a play, notificar a listeners para refrescar espejos
+  try{
+    const gv = document.getElementById('global-video');
+    if (gv){
+      gv.addEventListener('play', ()=>{ try { for (const f of mediaListeners){ f({ url: gv.currentSrc || gv.src, name: window.mambaCurrentTitle || '', kind:'video', el: gv }); } } catch(e){} });
+    }
+  }catch(e){}
+
+  // Atajos de teclado del reproductor
+  document.addEventListener('keydown', (ev)=>{
+    const tag = (ev.target && ev.target.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || (ev.target && ev.target.isContentEditable)) return;
+    const video = document.getElementById('global-video');
+    const audio = document.getElementById('global-audio');
+    const el = (video && !video.hidden) ? video : audio;
+    if (!el) return;
+    const key = ev.key.toLowerCase();
+    const prevent = ()=>{ try{ ev.preventDefault(); }catch(e){} };
+    if (key === ' ' || key === 'k') { // play/pause
+      prevent(); if (el.paused){ el.play().catch(()=>{}); } else { el.pause(); }
+    } else if (key === 'j') { prevent(); try{ el.currentTime = Math.max(0, (el.currentTime||0) - 10); }catch(e){} }
+    else if (key === 'l') { prevent(); try{ el.currentTime = (el.currentTime||0) + 10; }catch(e){} }
+    else if (key === 'm') { prevent(); try{ el.muted = !el.muted; }catch(e){} }
+    else if (key === 'f') { prevent(); const v = document.getElementById('global-video'); if (v && v.requestFullscreen) { try{ v.requestFullscreen(); }catch(e){} } }
+    else if (ev.key === 'ArrowUp') { prevent(); try{ el.volume = Math.min(1, (el.volume||0)+0.05); }catch(e){} }
+    else if (ev.key === 'ArrowDown') { prevent(); try{ el.volume = Math.max(0, (el.volume||0)-0.05); }catch(e){} }
+  });
+})();
+</script>
+</body>
+</html>
