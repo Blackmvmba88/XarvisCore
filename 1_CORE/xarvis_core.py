@@ -170,10 +170,29 @@ DASHBOARD_PAGE = """
 
         <div class="glass-card">
             <h3>🛡️ SEGURIDAD ULTRA</h3>
-            <p>SSL: <span style="color: var(--primary);">ACTIVO (AES-256)</span></p>
+            <p>SSL: <span style="color: var(--primary);">ACTIVO</span></p>
             <p>Certificados: <code>Validado</code></p>
             <button style="background: #333; color: #fff;">REVISAR LOGS</button>
         </div>
+
+        <div class="glass-card">
+            <h3>🎓 BIBLIOTECA ALEJANDRÍA</h3>
+            <p>Recursos: <span style="color: var(--primary);">Indexando...</span></p>
+            <p>Estado: <code>Soberanía Conocimiento</code></p>
+            <button onclick="alert('Accediendo al conocimiento democratizado...')">VER ARCHIVOS</button>
+        </div>
+
+        <div class="glass-card">
+            <h3>🍎 PROTOCOLO HAMBRE CERO</h3>
+            <p>Distribución: <span style="color: var(--primary);">Mapa Vital Activo</span></p>
+            <p>Alerta: <code style="color: var(--primary);">CERO CARENCIAS</code></p>
+            <button onclick="alert('Calculando rutas de abasto...')">ESTADO SUMINISTROS</button>
+        </div>
+    </div>
+
+    <div class="glass-card" style="margin: 20px; text-align: center;">
+        <h3>🌍 MANIFIESTO GAIA OPERATIVO</h3>
+        <p>"El recurso existe, la inteligencia lo distribuye." - Iyari Cancino Gomez</p>
     </div>
 
     <div style="text-align: center; margin-top: 50px; opacity: 0.5;">
