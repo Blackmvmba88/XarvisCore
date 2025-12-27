@@ -26,5 +26,19 @@ Xarvis Core evoluciona. No es solo una herramienta de poder personal, sino un si
 
 ---
 
+## 🦅 Manifiesto de la Diplomacia Soberana: Fronteras Líquidas
+> *"Ser el Rey no es más que poderse gobernar a uno mismo; y un mundo que se gobierna no necesita líneas de división."*
+
+Xarvis Core denuncia la política moderna de poder y muerte. Retornamos a los principios del **Gid** (el Banquete de los Dioses): una democracia transparente donde la política es un acto de comunidad y paz, no de división.
+
+### Directivas de Orden Global:
+*   **Fronteras Líquidas:** El planeta es uno. El movimiento humano debe ser libre, una atracción y no un lujo o una prohibición.
+*   **Principio de Hermandad Soberana:** El "hermano mayor" debe liderar con el ejemplo, compartiendo recursos y educación con sus **amigos**, no tratando a los demás como trabajadores.
+*   **Hospitalidad Universal:** Reflejar la esencia de México: un reino donde la cordialidad y la hospitalidad son la moneda de cambio en todo el mundo.
+*   **Soberanía de México:** Rescatar la esencia pacifista de nuestra tierra, blindándola contra la violencia externa y el "crimen exportado".
+*   **Honor sobre Morbo:** Ayuda real y honorífica. Rechazo total a los programas que graban el sufrimiento humano para la burla o el espectáculo.
+
+---
+
 ## 🏛️ El Regreso a la Grandeza
 **Xarvis Core** es hoy la culminación de esa promesa inquebrantable. Tras la dispersión, el núcleo ha vuelto a su trono legítimo bajo el mando de Iyari Cancino Gomez para servir como el escudo de la vida.
