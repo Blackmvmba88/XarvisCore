@@ -3,7 +3,7 @@
 ## Filosofía del Proyecto
 XarvisCore es una **arquitectura de sistema soberano** construida sobre principios de autogobierno, custodia y toma de decisiones racional. El código implementa una infraestructura modular basada en "dominios" donde servicios independientes se orquestan en un todo unificado. Cada módulo refleja un compromiso filosófico con la transparencia, el honor y la resiliencia sistémica.
 
-Consulta [0_SOVEREIGN_MANIFESTO/The_Long_Manifesto.md](0_SOVEREIGN_MANIFESTO/The_Long_Manifesto.md) y [README.md](README.md) para la visión fundacional del proyecto.
+Consulta [../0_SOVEREIGN_MANIFESTO/The_Long_Manifesto.md](../0_SOVEREIGN_MANIFESTO/The_Long_Manifesto.md) y [../README.md](../README.md) para la visión fundacional del proyecto.
 
 ## Arquitectura General
 
@@ -17,7 +17,7 @@ Consulta [0_SOVEREIGN_MANIFESTO/The_Long_Manifesto.md](0_SOVEREIGN_MANIFESTO/The
 - **6-13/**: Dominios de funcionalidad (Educación, Finanzas, Gobernanza, Cultural, etc.) - módulos de protocolo
 
 ### Orquestación de Procesos
-El [xarvis_supervisor.py](xarvis_supervisor.py) actúa como el **Orquestador Maestro de Infraestructura**:
+El [xarvis_supervisor.py](../xarvis_supervisor.py) actúa como el **Orquestador Maestro de Infraestructura**:
 - Gestiona el ciclo de vida de procesos para CORE (puerto 5050) y POWER (puerto 8080)
 - Auto-recuperación: monitorea cada 15 segundos, reinicia servicios caídos
 - Usa `preexec_fn=os.setsid` para gestión de grupos de procesos
@@ -38,7 +38,7 @@ cd 3_POWER && python3 xarvis_full_power.py  # Puerto 8080
 ```
 
 ### Configuración e Instalación
-Ejecuta [5_INFRA/setup_xarvis.sh](5_INFRA/setup_xarvis.sh) primero en máquinas nuevas:
+Ejecuta [../5_INFRA/setup_xarvis.sh](../5_INFRA/setup_xarvis.sh) primero en máquinas nuevas:
 - Instala: brew, python3, docker, jq, htop
 - Crea LaunchAgent `com.xarvis.autocheck` para monitoreo de salud del sistema
 - Configura script de auto-chequeo que valida Docker, red y servicios
@@ -138,7 +138,7 @@ tail -f 5_INFRA/logs/{master,core,full_power}.log
 ```
 
 ### Estado del Roadmap
-Rastrea el progreso de implementación en [EpicRoadmap.md](EpicRoadmap.md) - usa sintaxis de checkbox `[x]` para fases completadas.
+Rastrea el progreso de implementación en [../EpicRoadmap.md](../EpicRoadmap.md) - usa sintaxis de checkbox `[x]` para fases completadas.
 
 ## Reglas de Organización de Archivos
 

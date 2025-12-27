@@ -1,13 +1,51 @@
+# Python
 venv/
-*.log
 __pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+
+# Logs
+*.log
+5_INFRA/logs/
+logs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
 .DS_Store
+Thumbs.db
+
+# Secrets
 .env
+*.pem
+*.key
 xarvis_certificados/*.pem
-/logs/
-*.enc
+2_GUARDIANS/xarvis_certificados/
+
+# Cache
+.pytest_cache/
+.mypy_cache/
 .ninja_lock
 build.ninja
-dist/
-build/
-*.egg-info/
+
+# Backup & Encrypted
+*.enc
+*.bak
+*.backup
+
+# Temporary
+tmp/
+temp/
+*.tmp
