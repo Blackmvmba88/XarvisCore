@@ -1,0 +1,13 @@
+{
+  "name": "Blackmamba Secrets",
+  "short_name": "Blackmamba",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0b0b0d",
+  "theme_color": "#0b0b0d",
+  "description": "Tu bóveda personal — gestiona secretos y preguntas al asistente localmente.",
+  "icons": [
+    { "src": "/favicons/favicon-128.png", "sizes": "128x128", "type": "image/png" },
+    { "src": "/favicons/favicon-256.png", "sizes": "256x256", "type": "image/png" }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Map Right Option+N to ñ",
+  "rules": [
+    {
+      "description": "Right Option + n => insert ñ; Right Option + Shift + n => Ñ",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": { "key_code": "n", "modifiers": { "mandatory": ["right_option"], "optional": ["any"] } },
+          "to": [ { "shell_command": "osascript -e 'tell application \"System Events\" to keystroke \"ñ\"'" } ]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "n", "modifiers": { "mandatory": ["right_option","shift"], "optional": ["any"] } },
+          "to": [ { "shell_command": "osascript -e 'tell application \"System Events\" to keystroke \"Ñ\"'" } ]
+        }
+      ]
+    }
+  ]
+}

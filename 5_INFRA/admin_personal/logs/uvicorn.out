@@ -1,0 +1,15 @@
+INFO:     Started server process [69898]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:50720 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52157 - "OPTIONS /secrets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52157 - "GET /secrets HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:52163 - "GET /secrets HTTP/1.1" 403 Forbidden
+INFO:     127.0.0.1:52169 - "OPTIONS /secrets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52169 - "POST /secrets HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:58799 - "GET / HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58799 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49232 - "GET / HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58874 - "GET / HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58874 - "GET /favicon.ico HTTP/1.1" 404 Not Found

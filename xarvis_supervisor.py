@@ -7,6 +7,7 @@ import sys
 from datetime import datetime
 
 # === INFRAESTRUCTURA DE DOMINIOS XARVIS ===
+# Arquitectura Soberana: 19 Dominios Integrados (0-18)
 BASE_DIR = "/Users/blackmamba/Desktop/XarvisCore"
 VENV_PYTHON = os.path.join(BASE_DIR, "venv/bin/python3")
 LOG_DIR = os.path.join(BASE_DIR, "5_INFRA/logs")
@@ -14,17 +15,30 @@ LOG_DIR = os.path.join(BASE_DIR, "5_INFRA/logs")
 if not os.path.exists(LOG_DIR):
     os.makedirs(LOG_DIR)
 
-# Mapa de Procesos por Dominio
+# Mapa de Procesos por Dominio - Núcleo Principal
 PROCESSES = {
     "CORE_SOVEREIGN": {
         "path": os.path.join(BASE_DIR, "1_CORE/xarvis_core.py"),
         "log": os.path.join(LOG_DIR, "core.log"),
-        "proc": None
+        "proc": None,
+        "priority": 1  # Máxima prioridad
     },
     "POWER_EXECUTION": {
         "path": os.path.join(BASE_DIR, "3_POWER/xarvis_full_power.py"),
         "log": os.path.join(LOG_DIR, "full_power.log"),
-        "proc": None
+        "proc": None,
+        "priority": 2
+    }
+}
+
+# Procesos Extendidos - Activación Opcional
+EXTENDED_PROCESSES = {
+    "STATION_COMMAND": {
+        "path": os.path.join(BASE_DIR, "18_BLACKMAMBA_STATION/core/simple_server.py"),
+        "log": os.path.join(LOG_DIR, "station.log"),
+        "proc": None,
+        "priority": 3,
+        "enabled": False  # Activar manualmente cuando sea necesario
     }
 }
 
