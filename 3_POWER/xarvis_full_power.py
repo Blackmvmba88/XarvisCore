@@ -43,6 +43,37 @@ def red():
         "devices": get_network_scan()
     })
 
+@app.route("/ram")
+def ram_status():
+    """Endpoint para monitoreo detallado de RAM"""
+    mem = psutil.virtual_memory()
+    swap = psutil.swap_memory()
+    
+    # Obtener top 10 procesos por memoria
+    processes = []
+    for proc in psutil.process_iter(['pid', 'name', 'memory_percent']):
+        try:
+            info = proc.info
+            if info['memory_percent'] and info['memory_percent'] > 0.5:
+                processes.append({
+                    'name': info['name'],
+                    'memory_percent': round(info['memory_percent'], 2)
+                })
+        except (psutil.NoSuchProcess, psutil.AccessDenied):
+            pass
+    
+    processes.sort(key=lambda x: x['memory_percent'], reverse=True)
+    
+    return jsonify({
+        "total_gb": round(mem.total / (1024**3), 2),
+        "available_gb": round(mem.available / (1024**3), 2),
+        "used_gb": round(mem.used / (1024**3), 2),
+        "percent": mem.percent,
+        "swap_percent": swap.percent,
+        "top_processes": processes[:10],
+        "status": "CRITICAL" if mem.percent > 85 else "WARNING" if mem.percent > 75 else "GOOD"
+    })
+
 @app.route("/sistema")
 def sistema():
     return jsonify({

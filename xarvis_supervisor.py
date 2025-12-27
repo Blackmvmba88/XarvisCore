@@ -28,6 +28,12 @@ PROCESSES = {
         "log": os.path.join(LOG_DIR, "full_power.log"),
         "proc": None,
         "priority": 2
+    },
+    "RAM_GUARDIAN": {
+        "path": os.path.join(BASE_DIR, "3_POWER/ram_guardian.py"),
+        "log": os.path.join(LOG_DIR, "ram_guardian.log"),
+        "proc": None,
+        "priority": 2  # Alta prioridad - protege el sistema
     }
 }
 
