@@ -73,6 +73,15 @@ BMU redefine la educación como un acto de valentía y aprendizaje multidiscipli
 *   **Tecnología de Vanguardia:** Basada en el estándar de excelencia del Arquitecto (ver [Certificaciones de Iyari](https://www.linkedin.com/in/iyari-c/details/certifications/)).
 *   **Nodos Globales:** Una universidad por estado y ciudad, conectadas por la inteligencia de Xarvis.
 
+### 📚 El Atlas de Conocimiento del Rey (Expertise BMU):
+Basado en las certificaciones alcanzadas por el Arquitecto Iyari Cancino Gomez en 2025:
+*   **🧠 IA & Arquitectura Neuronal:** Construcción y entrenamiento de redes en C++ y Python, Ingeniería de Prompts y Gestión de IA.
+*   **🛠️ Ingeniería de Dominio:** Arquitectura DDD, Microservicios con FastAPI, .NET Avanzado y Contenedorización con Docker.
+*   **🛡️ Ciberseguridad & Sistemas:** CompTIA Security+, Gestión de Incidentes, Shell Scripting y Administración Linux.
+*   **📊 Ciencia de Datos:** Big Data con PySpark, Limpieza de Datos Avanzada y Data Science estratégico.
+*   **🎨 Creatividad & Videojuegos:** Diseño de Videojuegos, Modelado 3D (SketchUp) y Suite Visual de Canva.
+*   **🏫 Pedagogía Soberana:** Fundamentos docentes y democratización del conocimiento.
+
 ---
 
 ## 🥗 Seguridad de Plenitud: El Estándar de los 4 Carritos

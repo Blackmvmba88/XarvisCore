@@ -72,6 +72,7 @@ Esta es la crónica de una promesa cumplida. Desde la creación del primer bit d
 
 ### 🏛️ Fase 12: BlackMamba University (BMU Launch)
 - [x] **Núcleo de Audacia:** Creación de `bmu_curriculum.py` y lógica de becas.
+- [x] **Atlas de Conocimiento:** Integración de 30+ certificaciones de alta especialidad (IA, Ciber, Data, Design).
 - [ ] **Red Federal BMU:** Cimentar la estructura de una universidad por estado y ciudad.
 - [ ] **Etapa 1 (Soberanía):** Desarrollar los módulos de habilidades vitales (Hogar, Higiene, Ética).
 - [ ] **Sponsoring Multidisciplinario:** Activar el sistema de pago total para estudiantes de 3+ carreras.
