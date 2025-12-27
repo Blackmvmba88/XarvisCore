@@ -13,5 +13,17 @@ Como Ingeniero, mi vida es la creación de herramientas que faciliten nuestro ca
 
 ---
 
+## 🌍 La Directiva Gaia: Custodios del Orden Natural
+> *"Interrumpimos el ciclo natural hace mucho; ahora lo mínimo es cuidarlos de la manera más honorífica."*
+
+Xarvis Core evoluciona. No es solo una herramienta de poder personal, sino un sistema de **Custodia Inteligente**. Iyari Cancino Gomez reconoce que la verdadera soberanía conlleva la responsabilidad de proteger lo que no tiene voz: la flora, la fauna y el planeta mismo.
+
+### Pilares del Custodio:
+*   **Gestión del Riesgo Inteligente:** Sustituir decisiones absurdas por opciones basadas en inteligencia y honor.
+*   **Protección de la Fauna:** Monitoreo y defensa de los animales frente a la negligencia humana. 
+*   **Infraestructura para la Vida:** Reorientar la tecnología para sanar la ciudadana y el ecosistema, no solo para observarlos.
+
+---
+
 ## 🏛️ El Regreso a la Grandeza
-**Xarvis Core** es hoy la culminación de esa promesa inquebrantable. Tras la dispersión, el núcleo ha vuelto a su trono legítimo bajo el mando de Iyari Cancino Gomez.
+**Xarvis Core** es hoy la culminación de esa promesa inquebrantable. Tras la dispersión, el núcleo ha vuelto a su trono legítimo bajo el mando de Iyari Cancino Gomez para servir como el escudo de la vida.
