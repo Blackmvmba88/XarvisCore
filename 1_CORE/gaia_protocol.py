@@ -19,10 +19,20 @@ class GaiaProtocol:
             },
             "pilar_2": {
                 "nombre": "Protección Biosfera (Flora/Fauna)",
-                "estado": "Monitoreo Iniciado",
-                "descripcion": "Obligación honorífica de proteger a quienes perdieron su ciclo natural por causa humana."
+                "estado": "Operativo",
+                "descripcion": "Obligación honorífica de proteger a la vida en todas sus formas."
             },
             "pilar_3": {
+                "nombre": "Educación Soberana",
+                "estado": "Cimentación Inicial",
+                "descripcion": "Acceso seguro y veraz al conocimiento para todos."
+            },
+            "pilar_4": {
+                "nombre": "Abasto Vital (Hambre Cero)",
+                "estado": "Analizando Logística",
+                "descripcion": "Asegurar que el recurso llegue a quien lo necesita. Cero hambre."
+            },
+            "pilar_5": {
                 "nombre": "Soberanía Planetaria",
                 "estado": "Integrando Infraestructura",
                 "descripcion": "Uso de Xarvis como escudo para el entorno local."

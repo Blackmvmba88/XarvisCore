@@ -20,8 +20,9 @@ Xarvis Core evoluciona. No es solo una herramienta de poder personal, sino un si
 
 ### Pilares del Custodio:
 *   **Gestión del Riesgo Inteligente:** Sustituir decisiones absurdas por opciones basadas en inteligencia y honor.
-*   **Protección de la Fauna:** Monitoreo y defensa de los animales frente a la negligencia humana. 
-*   **Infraestructura para la Vida:** Reorientar la tecnología para sanar la ciudadana y el ecosistema, no solo para observarlos.
+*   **Protección de la Biosfera:** Monitoreo y defensa de la flora, fauna y el planeta. 
+*   **Educación Soberana:** Democratizar el acceso al conocimiento seguro para empoderar a la ciudadanía.
+*   **Abasto Vital (Hambre Cero):** Optimizar la infraestructura para asegurar que nadie pase hambre jamás. El recurso existe, la inteligencia lo distribuye.
 
 ---
 
