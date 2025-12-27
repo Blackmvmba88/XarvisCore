@@ -9,19 +9,33 @@ Consulta [../0_SOVEREIGN_MANIFESTO/The_Long_Manifesto.md](../0_SOVEREIGN_MANIFES
 
 ### Estructura de Dominios (Directorios Numerados)
 - **0_SOVEREIGN_MANIFESTO/**: Fundamento filosófico - define el "por qué" de este sistema
-- **1_CORE/**: Aplicación Flask central (puerto 5050) - autenticación, dashboard, integraciones de protocolos
-- **2_GUARDIANS/**: Certificados de seguridad (SSL/TLS) almacenados en `xarvis_certificados/`
-- **3_POWER/**: API de monitoreo del sistema (puerto 8080) - CPU, RAM, disco, escaneo de red vía Flask
+- **1_CORE/**: Aplicación Flask central (puerto 5050) - autenticación, dashboard, integraciones de protocolos, sistema Hermes (RAG con Ollama)
+- **2_GUARDIANS/**: Certificados de seguridad (SSL/TLS) en `xarvis_certificados/`, Secure SSH Vault (backend/frontend)
+- **3_POWER/**: API de monitoreo del sistema (puerto 8080) - CPU, RAM, disco, escaneo de red vía Flask, RAM Guardian
 - **4_INTERFACE/**: Múltiples implementaciones de UI (dashboards, GUIs) - frecuentemente duplicados para iteración
 - **5_INFRA/**: Scripts de despliegue, logs, instaladores y materiales de activación
-- **6-13/**: Dominios de funcionalidad (Educación, Finanzas, Gobernanza, Cultural, etc.) - módulos de protocolo
+- **6_WORLD_DATA/**: Repositorio de información global
+- **7_EDUCATION_SYSTEM/**: BlackMamba University (BMU), Alexandria Engine, Atlas de 30+ certificaciones
+- **8_RESOURCE_MGMT/**: Protocolo Hambre Cero, gestión de recursos vitales
+- **9_POLITICAL_FOUNDATION/**: Diplomacia soberana, principios de fronteras líquidas
+- **10_CULTURAL_RENAISSANCE/**: Golden Opportunity Music, Suite Suno completa (afinador, organizador), 280+ producciones
+- **11_UNIVERSAL_SECURITY/**: Plenitude Engine, estándar de dignidad (4 carritos)
+- **12_SOVEREIGN_FINANCE/**: Snowball Engine, algoritmo de micromovimientos
+- **13_DIGITAL_GOVERNANCE/**: Identidad soberana (X-ID), ciudadanía digital
+- **14_CREATIVE_TOOLS/**: Arsenal creativo (3milpixeles, BlackMamba YTDLP, Audio 3D Lab, Metacraft, YTDLP-Web)
+- **15_ESCRIBA/** y **15_TRANSCRIPTION_ENGINE/**: Motor de transcripción con SQLite, CI/CD
+- **16_AGRICULTURE/**: Sistema hidropónico de fresas, integración con Gaia
+- **17_AI_EXPERIMENTS/**: Quantum Audio Player, ASCII Skull Visualizer (React+TypeScript, 50+ componentes)
+- **18_BLACKMAMBA_STATION/**: Centro de comando con Hydra Server, auto-optimización, extracción masiva
 
 ### Orquestación de Procesos
 El [xarvis_supervisor.py](../xarvis_supervisor.py) actúa como el **Orquestador Maestro de Infraestructura**:
-- Gestiona el ciclo de vida de procesos para CORE (puerto 5050) y POWER (puerto 8080)
+- Gestiona el ciclo de vida de procesos para CORE (puerto 5050), POWER (puerto 8080) y RAM_GUARDIAN
 - Auto-recuperación: monitorea cada 15 segundos, reinicia servicios caídos
 - Usa `preexec_fn=os.setsid` para gestión de grupos de procesos
-- Registra logs en `5_INFRA/logs/{master,core,full_power}.log`
+- Registra logs en `5_INFRA/logs/{master,core,full_power,ram_guardian}.log`
+- Sistema de prioridades: CORE (1), POWER/RAM (2), STATION (3)
+- Soporte para procesos extendidos opcionales (STATION_COMMAND)
 
 **Crítico**: Siempre ejecuta los módulos desde su directorio padre mediante `cwd=os.path.dirname(config["path"])` para asegurar que las importaciones relativas funcionen.
 
@@ -35,6 +49,11 @@ python3 xarvis_supervisor.py
 # Opción 2: Manual (desarrollo)
 cd 1_CORE && python3 xarvis_core.py  # Puerto 5050
 cd 3_POWER && python3 xarvis_full_power.py  # Puerto 8080
+cd 3_POWER && python3 ram_guardian.py  # Guardián de RAM
+
+# Opción 3: Scripts de infraestructura
+bash 5_INFRA/start_xarvis.sh  # Lanzador completo
+bash 5_INFRA/validate_system.sh  # Validación pre-despliegue
 ```
 
 ### Configuración e Instalación
@@ -111,9 +130,54 @@ Agrega nuevos servicios al supervisor extendiendo el dict `PROCESSES`:
 "NEW_SERVICE": {
     "path": os.path.join(BASE_DIR, "X_DOMAIN/service.py"),
     "log": os.path.join(LOG_DIR, "service.log"),
-    "proc": None
+    "proc": None,
+    "priority": 2  # 1=máxima, 3=baja
 }
 ```
+
+### Sistema RAM Guardian
+El RAM Guardian (`3_POWER/ram_guardian.py`) protege el sistema de sobrecarga de memoria:
+- Monitoreo continuo cada 10 segundos
+- Umbrales: Warning (75%), Critical (85%), Optimal (60%)
+- Procesos protegidos: núcleo Xarvis, kernel, servicios del sistema
+- Cierre inteligente de procesos de baja prioridad (Chrome Helper, Slack, etc.)
+- Logging detallado de intervenciones y memoria liberada
+
+## Dominios Especializados (14-18)
+
+### 14_CREATIVE_TOOLS: Arsenal Creativo
+Suite completa de herramientas para producción multimedia:
+- **3milpixeles**: Redimensionador profesional de imágenes
+- **BlackMamba YTDLP**: Suite de descarga (WebUI, TUI, CLI) con gestión de historial
+- **Audio 3D Lab**: Laboratorio de audio espacial con backends Open3D, PyQtGraph, VTK
+- **Metacraft**: Herramienta de metacreación
+- **YTDLP-Web**: Interfaz web con pitch shifting
+
+### 15_ESCRIBA/TRANSCRIPTION_ENGINE: Motor de Transcripción
+Sistema completo de transcripción con base de datos SQLite:
+- Pipeline de captura → procesamiento → refinamiento → exportación
+- Detección de idioma y clasificación automática
+- Tests completos y CI/CD con GitHub Actions
+- Protocolo: `escriba_protocol.py` con filosofía "Preservar cada palabra con honor"
+
+### 16_AGRICULTURE: Agricultura Inteligente
+Sistema de cultivo hidropónico de fresas con integración Gaia:
+- Motor agrícola para seguimiento de cultivos
+- Plan de expansión con sensores virtuales
+- Conexión directa con el Protocolo Gaia para custodia ambiental
+
+### 17_AI_EXPERIMENTS: Laboratorio de IA
+Experimentos avanzados de IA y visualización:
+- **Quantum Audio Player**: Reproductor con procesamiento cuántico (macOS/Raspberry Pi)
+- **ASCII Skull Visualizer**: 50+ componentes React+TypeScript, detección facial, análisis de audio en tiempo real
+
+### 18_BLACKMAMBA_STATION: Centro de Comando
+Centro de comando operacional con orquestación completa:
+- Hydra Server para gestión distribuida
+- Auto-optimización de recursos
+- Sistema de backups automáticos
+- Integración directa con CORE y POWER
+- Launchers y scripts de automatización masiva
 
 ## Errores Comunes
 
