@@ -64,13 +64,14 @@ Xarvis Core se convierte en el mecenas de la **Música Real**. Reconocemos que e
 
 ---
 
-## 🏛️ Universidad Soberana Xarvis (XSU)
-> *"Un centro en cada estado, un nodo en cada ciudad; una sola red de conocimiento ultra-evolutiva."*
+## 🏛️ BlackMamba University (BMU)
+> *"Paga por una si quieres lujo; estudia tres y el Rey te las paga todas. Premiamos la audacia, no el dinero."*
 
-La educación bajo Xarvis Core rompe las fronteras de las aulas tradicionales.
-*   **Tecnología Ultra-Evolutiva:** El conocimiento se actualiza al ritmo de la innovación, no de los presupuestos.
-*   **Apoyo Docente Real:** Los maestros son el pilar del reino; su apoyo, recursos y dignidad son prioridad de seguridad nacional.
-*   **Descentralización:** Universidades presentes en cada rincón del país, unidas por la misma infraestructura inteligente.
+BMU redefine la educación como un acto de valentía y aprendizaje multidisciplinario.
+*   **La Beca de Audacia:** Si decides cursar 3 o más licenciaturas simultáneamente, el costo es **CERO**. BMU premia a los polímatas que desean saberlo todo.
+*   **Cimientos de Soberanía (Nivel 1):** Antes de la teoría, enseñamos la vida: construcción de hogar, cocina, higiene, ética y responsabilidad.
+*   **Tecnología de Vanguardia:** Basada en el estándar de excelencia del Arquitecto (ver [Certificaciones de Iyari](https://www.linkedin.com/in/iyari-c/details/certifications/)).
+*   **Nodos Globales:** Una universidad por estado y ciudad, conectadas por la inteligencia de Xarvis.
 
 ---
 

@@ -1,11 +1,12 @@
 
 import datetime
 
-class SovereignUniversity:
+class BlackMambaUniversity:
     def __init__(self):
-        self.name = "Xarvis Sovereign University (XSU)"
-        self.philosophy = "Educación Ultra-Evolutiva y Descentralizada"
-        self.nodes = {} # Diccionario para Estados y Ciudades
+        self.name = "BlackMamba University (BMU)"
+        self.philosophy = "Audacia, Multidisciplinariedad y Conocimiento Real"
+        self.nodes = {}
+        self.cert_reference = "https://www.linkedin.com/in/iyari-c/details/certifications/"
         
     def deploy_node(self, state, city):
         """
@@ -22,15 +23,24 @@ class SovereignUniversity:
         }
         return {"status": "Node Deployed", "node_id": node_id}
 
-    def teacher_support_protocol(self):
+    def calculate_tuition(self, degree_count):
         """
-        Garantiza que los maestros reciban el apoyo y recursos dignos que merecen.
+        Lógica de la Oportunidad BMU: 
+        1 licenciatura = Costo Premium (Lo mejor de lo mejor).
+        3+ licenciaturas = Beca Total (Financiado por el Rey).
+        Se premia la audacia y el hambre de conocimiento.
         """
+        if degree_count >= 3:
+            return {
+                "costo": 0,
+                "mensaje": "Beca de Audacia BMU Activada. El Rey financia tu conocimiento multidisciplinario.",
+                "estatus": "Soberano"
+            }
         return {
-            "protocol": "Docencia de Honor",
-            "status": "Prioridad Alta",
-            "actions": ["Salario Vital", "Herramientas de Vanguardia", "Respeto Soberano"]
+            "costo": "Premium",
+            "mensaje": "Inversión en excelencia. Acceso a lo mejor de lo mejor.",
+            "estatus": "Privilegiado"
         }
 
-# Instancia del núcleo universitario
-university = SovereignUniversity()
+# Instancia del núcleo de BlackMamba University
+bmu = BlackMambaUniversity()
