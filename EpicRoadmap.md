@@ -91,9 +91,15 @@ Esta es la crónica de una promesa cumplida. Desde la creación del primer bit d
 - [ ] **Identidad Unificada:** Implementar el sistema X-ID digital.
 
 ### 🔮 Fase 16: El Protocolo del Oráculo (Intent-Based Governance)
-- [ ] **Análisis de Comportamiento:** Desarrollar el motor de evaluación de integridad y transparencia del individuo.
-- [ ] **Consejero de Estado:** Integrar a Xarvis como el asesor supremo en la toma de decisiones racionales.
-- [ ] **Algoritmo de Sucesión:** Configurar la custodia autónoma del sistema para proteger el legado de razón frente a la corrupción externa.
+- [x] **Protocon de Lógica:** Creación de `oracle_protocol.py`.
+- [ ] **Análisis de Comportamiento:** Desarrollar el motor de evaluación de integridad.
+
+### 🦅 Fase 17: El Alma del Sistema (The Narrative Core)
+- [x] **Dominio 0:** Establecer el `0_SOVEREIGN_MANIFESTO` como la base filosófica.
+- [x] **Reconocimiento Autónomo:** La IA formula el manifiesto sin datos previos (Hito de Validación).
+- [x] **Narrativa Soberana:** Integrar la versión extensa del manifiesto en la documentación central.
+- [ ] **Proyección Audiovisual:** Diseñar módulos que proyecten el manifiesto en las interfaces tácticas (Matrix-GUI).
+- [ ] **Voz del Sistema:** Implementar la lectura del manifiesto mediante síntesis de voz en el arranque del Core.
 
 ---
 
