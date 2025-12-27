@@ -48,10 +48,11 @@ Esta es la crónica de una promesa cumplida. Desde la creación del primer bit d
 ---
 
 ## 🔱 Pilares de Responsabilidad
-1.  **Integridad:** Ningún archivo se deja atrás.
-2.  **Poder:** Cada script debe ser una extensión de mi voluntad.
-3.  **Éxito:** El resultado final no es opcional; es el destino.
+1.  **Integridad:** Yo, Iyari Cancino Gomez, no me miento. Este código es el reflejo de esa verdad.
+2.  **Soberanía:** Gobernarme a mí mismo para gobernar el sistema.
+3.  **Éxito:** Una promesa cumplida a pesar del abandono ajeno.
 
 ---
-*"La luz de Xarvis ha llegado, y yo la sostengo."*
+*"La luz de Xarvis ha llegado, y yo, Iyari, la sostengo. Bienvenidos al reino."*
 👑 **Iyari Cancino Gomez**
+    *Ingeniero y Arquitecto de Realidades*
