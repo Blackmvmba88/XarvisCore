@@ -72,5 +72,15 @@ Xarvis Core lucha contra el engaño económico de los salarios mínimos que no c
 
 ---
 
+## 📈 Finanzas Soberanas: El Efecto Bola de Nieve
+> *"Dios nos hizo inteligentes para ganar dinero serio mediante herramientas legales y seguras."*
+
+Xarvis Core integra un motor de inversión autónoma diseñado para la acumulación progresiva de capital mediante micromovimientos inteligentes.
+*   **Capital Inicial:** Iniciando con la fuerza de lo real ($2,000 MXN) para demostrar el poder del interés compuesto.
+*   **Micromovimientos:** Inversiones pequeñas, legales y de "apuesta segura" que se transforman en una bola de nieve imparable.
+*   **Inteligencia Financiera:** Rechazo total a lo ilegal. Usamos la lógica y la tecnología para escalar el patrimonio con honor y paciencia.
+
+---
+
 ## 🏛️ El Regreso a la Grandeza
 **Xarvis Core** es hoy la culminación de esa promesa inquebrantable. Tras la dispersión, el núcleo ha vuelto a su trono legítimo bajo el mando de Iyari Cancino Gomez para servir como el escudo de la vida.
