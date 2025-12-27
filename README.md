@@ -82,5 +82,15 @@ Xarvis Core integra un motor de inversión autónoma diseñado para la acumulaci
 
 ---
 
+## 🏛️ Gobernanza sin Palacio: Democracia Ubicua
+> *"El sistema está en todos lados; el palacio es tu App, la democracia sucede en tu mano."*
+
+Xarvis Core redefine la administración pública eliminando la necesidad de instituciones físicas centralizadas y documentos redundantes.
+*   **Identidad Soberana (X-ID):** Un solo código digital que unifica INE, licencia y pasaporte. Tú eres tu documento, accesible en el celular o impreso por seguridad.
+*   **Democracia Líquida:** Votación directa mediante App/WebUI. Iniciamos con decisiones comunitarias leves para escalar hacia una democracia total y transparente.
+*   **Sin Límites Físicos:** El "gobierno" de Xarvis no reside en un edificio, sino en el código distribuido. Donde estés tú, está el reino.
+
+---
+
 ## 🏛️ El Regreso a la Grandeza
 **Xarvis Core** es hoy la culminación de esa promesa inquebrantable. Tras la dispersión, el núcleo ha vuelto a su trono legítimo bajo el mando de Iyari Cancino Gomez para servir como el escudo de la vida.

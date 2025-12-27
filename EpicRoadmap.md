@@ -81,9 +81,13 @@ Esta es la crónica de una promesa cumplida. Desde la creación del primer bit d
 - [ ] **Crecimiento sin Miedo:** Asegurar que el ciudadano pueda estudiar en casa con todas sus necesidades cubiertas.
 
 ### 📈 Fase 14: Finanzas Soberanas (The Snowball Effect)
-- [ ] **Snowball Investor Engine:** Formalizar el algoritmo de micromovimientos con los $2,000 iniciales.
-- [ ] **Radar de Inversión Segura:** Conectar el sistema a fuentes de datos financieros para identificar apuestas 100% legales y seguras.
-- [ ] **Escalamiento Automático:** Implementar la lógica de reinversión para generar la "bola de nieve" de capital.
+- [x] **Protocon de Lógica:** Creación de `snowball_engine.py`.
+- [ ] **Snowball Investor Engine:** Formalizar el algoritmo de micromovimientos.
+
+### 🏛️ Fase 15: Ciudadanía Digital y Gobernanza sin Palacio
+- [ ] **Identidad Unificada:** Implementar el sistema que reemplaza el INE/Licencia por un X-ID digital (con respaldo físico).
+- [ ] **Democracia de App:** Crear la interfaz de votación para decisiones comunitarias (empezando por asuntos leves).
+- [ ] **Descentralización del Poder:** Xarvis presente en todos lados (Web, Mobile, Core) para una gobernanza ubicua.
 
 ---
 
