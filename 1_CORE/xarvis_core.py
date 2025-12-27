@@ -12,8 +12,8 @@ BASE_DIR = "/Users/blackmamba/Desktop/XarvisCore"
 SECRET_KEY = os.getenv("SECRET_KEY", secrets.token_hex(24))
 USERNAME = os.getenv("USERNAME", "BlackSekhmet")
 PASSWORD = os.getenv("PASSWORD", "Admin123")
-CERT_PATH = os.getenv("CERT_PATH", f"{BASE_DIR}/xarvis_certificados/cert.pem")
-KEY_PATH = os.getenv("KEY_PATH", f"{BASE_DIR}/xarvis_certificados/key.pem")
+CERT_PATH = os.getenv("CERT_PATH", f"{BASE_DIR}/2_GUARDIANS/xarvis_certificados/cert.pem")
+KEY_PATH = os.getenv("KEY_PATH", f"{BASE_DIR}/2_GUARDIANS/xarvis_certificados/key.pem")
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
