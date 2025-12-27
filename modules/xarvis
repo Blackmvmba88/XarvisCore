@@ -1,0 +1,78 @@
+
+#!/data/data/com.termux/files/usr/bin/bash
+
+entrada="${*,,}"
+
+function arcoiris() {
+  echo "$1" | lolcat
+}
+
+function banner() {
+  figlet -f slant "$1" | lolcat
+}
+
+# Ayuda y versión
+if [[ "$1" == "help" || "$1" == "--help" || "$1" == "-h" ]]; then
+  banner "XARVIS"
+  echo -e "\033[1;36mUso:\033[0m"
+  echo "  xarvis "[acción o metacomando]""
+  echo ""
+  echo "  Ejemplos:"
+  echo "    xarvis "modo psicodélico""
+  echo "    xarvis "activar fuego""
+  echo "    xarvis metacomandos"
+  exit 0
+fi
+
+if [[ "$entrada" == "version" ]]; then
+  banner "XARVIS"
+  echo "🧠 Versión 0.3 - Psicodélico + VisualFX"
+  exit 0
+fi
+
+if [[ "$entrada" == "metacomandos" ]]; then
+  banner "META"
+  arcoiris "modo sigilo       → Oculta colores y limpia pantalla"
+  arcoiris "lluvia matrix     → Activa efecto visual tipo Matrix"
+  arcoiris "modo hacker       → Entorno de pentesting"
+  arcoiris "activar fuego     → Animación 🔥 en la terminal"
+  arcoiris "modo psicodélico  → Rave visual completa 🌈"
+  arcoiris "reiniciar shell   → Recarga tu .zshrc con estilo"
+  exit 0
+fi
+
+arcoiris "🧠 Xarvis interpreta: "$entrada"..."
+
+# Inteligencia básica por palabra clave
+if [[ "$entrada" == *"instalar python"* ]]; then
+  arcoiris "📦 Usa: pkg install python"
+elif [[ "$entrada" == *"ver procesos"* ]]; then
+  arcoiris "📋 Usa: ps aux | grep [nombre]"
+elif [[ "$entrada" == *"actualizar paquetes"* ]]; then
+  arcoiris "🔄 Usa: pkg update && pkg upgrade -y"
+elif [[ "$entrada" == *"comprimir archivos"* ]]; then
+  arcoiris "🗜️ Usa: tar -cvf archivo.tar carpeta/"
+# Metacomandos visuales
+elif [[ "$entrada" == "modo sigilo" ]]; then
+  clear
+  echo -e "\033[1;30m🕶️ Modo sigilo activado...\033[0m"
+elif [[ "$entrada" == "lluvia matrix" ]]; then
+  arcoiris "🌧️ Iniciando lluvia Matrix..."
+  pkg install cmatrix -y && cmatrix
+elif [[ "$entrada" == "modo hacker" ]]; then
+  arcoiris "💻 Cargando entorno BlackHat..."
+  echo "pkg install nmap netcat hydra -y" | lolcat
+elif [[ "$entrada" == "reiniciar shell" ]]; then
+  arcoiris "🔁 Reiniciando entorno..."
+  sleep 1 && source ~/.zshrc
+elif [[ "$entrada" == "activar fuego" ]]; then
+  echo "🔥🔥🔥" | lolcat
+  figlet -f slant "FIRE MODE" | lolcat
+elif [[ "$entrada" == "modo psicodélico" ]]; then
+  for word in "BIENVENIDO" "AL" "NÚCLEO" "PSICODÉLICO"; do
+    figlet "$word" | lolcat
+    sleep 0.3
+  done
+else
+  arcoiris "❓ Comando no reconocido. Usa 'xarvis metacomandos' para ver opciones."
+fi

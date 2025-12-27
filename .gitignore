@@ -1,0 +1,13 @@
+venv/
+*.log
+__pycache__/
+.DS_Store
+.env
+xarvis_certificados/*.pem
+/logs/
+*.enc
+.ninja_lock
+build.ninja
+dist/
+build/
+*.egg-info/

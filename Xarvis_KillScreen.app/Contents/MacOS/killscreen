@@ -1,0 +1,2 @@
+#!/bin/bash
+osascript -e 'do shell script "python3 ~/neutraliza_screenspy.py" with administrator privileges'
