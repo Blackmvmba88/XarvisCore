@@ -321,10 +321,17 @@ def dashboard():
         
         body {
             font-family: 'Inter', 'Courier New', monospace;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            background: linear-gradient(135deg, #0a0015 0%, #1a0030 50%, #0d0020 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
             color: var(--primary);
             min-height: 100vh;
             padding: 20px;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
         
         .container {
@@ -336,21 +343,33 @@ def dashboard():
             text-align: center;
             margin-bottom: 40px;
             padding: 30px;
-            background: var(--glass);
-            border: 1px solid var(--border);
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.2), rgba(0, 255, 255, 0.2));
+            border: 2px solid;
+            border-image: linear-gradient(45deg, #00ff41, #00ffff, #ff00ff, #ffff00) 1;
             border-radius: 15px;
             backdrop-filter: blur(10px);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
         }
         
         h1 {
             font-size: 2.5em;
-            text-shadow: 0 0 20px var(--primary);
             margin-bottom: 10px;
+            background: linear-gradient(90deg, #00ff41, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 5px #00ff41); }
+            to { filter: drop-shadow(0 0 20px #00ffff); }
         }
         
         .subtitle {
-            color: rgba(0, 255, 65, 0.7);
+            color: #00ffff;
             font-size: 1.1em;
+            text-shadow: 0 0 10px #00ffff;
         }
         
         .grid {
@@ -361,18 +380,30 @@ def dashboard():
         }
         
         .card {
-            background: var(--glass);
-            border: 1px solid var(--border);
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.15), rgba(0, 255, 255, 0.15));
+            border: 2px solid transparent;
             border-radius: 15px;
             padding: 25px;
             backdrop-filter: blur(10px);
+            position: relative;
             transition: all 0.3s ease;
         }
         
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 15px;
+            padding: 2px;
+            background: linear-gradient(45deg, #00ff41, #00ffff, #ff00ff, #ffff00);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+        
         .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 30px rgba(0, 255, 65, 0.2);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 40px rgba(0, 255, 255, 0.5);
         }
         
         .card h2 {
@@ -381,6 +412,10 @@ def dashboard():
             display: flex;
             align-items: center;
             gap: 10px;
+            background: linear-gradient(90deg, #00ff41, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .status {
@@ -394,6 +429,7 @@ def dashboard():
         .status.active {
             background: var(--primary);
             box-shadow: 0 0 10px var(--primary);
+            animation: pulse 2s ease-in-out infinite;
         }
         
         .status.inactive {
@@ -404,19 +440,36 @@ def dashboard():
             width: 100%;
             padding: 15px;
             margin-top: 15px;
-            background: rgba(0, 255, 65, 0.1);
-            border: 1px solid var(--border);
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #00ff41;
             border-radius: 8px;
-            color: var(--primary);
+            color: #fff;
             font-size: 1em;
             cursor: pointer;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .action-btn:hover::before {
+            left: 100%;
         }
         
         .action-btn:hover {
             background: rgba(0, 255, 65, 0.2);
-            border-color: var(--primary);
-            transform: scale(1.02);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.5);
         }
         
         .action-btn:disabled {
@@ -437,13 +490,18 @@ def dashboard():
         .stat-value {
             font-size: 2em;
             font-weight: bold;
-            text-shadow: 0 0 10px var(--primary);
+            background: linear-gradient(90deg, #fff, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 10px #00ff41;
         }
         
         .stat-label {
             font-size: 0.9em;
-            color: rgba(0, 255, 65, 0.7);
+            color: #00ffff;
             margin-top: 5px;
+            text-shadow: 0 0 5px #00ffff;
         }
         
         .result {
