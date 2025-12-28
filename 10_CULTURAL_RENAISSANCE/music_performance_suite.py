@@ -11,6 +11,10 @@ import os
 from flask import Flask, jsonify, request, render_template_string
 from flask_cors import CORS
 
+# Configurar directorio base
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+os.chdir(SCRIPT_DIR)
+
 # Importar componentes
 try:
     from vpa_with_detector import VPAWithDetector
@@ -31,7 +35,8 @@ app = Flask(__name__)
 CORS(app)
 
 # Configuración
-MUSIC_LIBRARY = "music_library.json"
+MUSIC_LIBRARY = os.path.join(SCRIPT_DIR, "music_library.json")
+FINGERPRINTS_DB = os.path.join(SCRIPT_DIR, "audio_fingerprints.json")
 PORT = 9002
 
 # Estado global
@@ -246,6 +251,16 @@ def status():
     """Estado del sistema"""
     library = load_music_library()
     
+    # Contar fingerprints indexados
+    indexed_count = 0
+    if os.path.exists('audio_fingerprints.json'):
+        try:
+            with open('audio_fingerprints.json', 'r') as f:
+                fingerprints = json.load(f)
+                indexed_count = len(fingerprints)
+        except:
+            indexed_count = 0
+    
     return jsonify({
         "status": "operational",
         "components": {
@@ -262,9 +277,21 @@ def status():
         },
         "library_stats": {
             "total_songs": len(library),
-            "indexed": detector_instance.get_indexed_count() if detector_instance else 0
+            "indexed": indexed_count
         }
     })
+
+@app.route('/music_webui.html')
+def music_webui():
+    """Redirigir a la WebUI de música"""
+    if os.path.exists('music_webui.html'):
+        with open('music_webui.html', 'r') as f:
+            return f.read()
+    else:
+        return jsonify({
+            "error": "WebUI no encontrada",
+            "message": "music_webui.html no existe en este directorio"
+        }), 404
 
 @app.route('/')
 def dashboard():
