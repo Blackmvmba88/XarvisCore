@@ -266,6 +266,16 @@ Centro de comando operacional con orquestación completa:
 - Integración directa con CORE y POWER
 - Launchers y scripts de automatización masiva
 
+### 19_QUANTUM_CORE: El Cerebro del Sistema
+Núcleo neuronal distribuido para procesamiento autónomo:
+- **Q-BRN (Quantum Biological Recursive Node)**: Red neuronal dinámica con circuitos adaptativos, procesamiento distribuido ilimitado
+- **Ultron AutoPilot**: Predicción de escenarios, análisis de tendencias del sistema (CPU/RAM/Disco), generación de escenarios probabilísticos con acciones recomendadas
+- **Neural Network Trainer**: Entrenamiento de IA en vivo con retroalimentación continua, datasets y modelos persistentes
+- **Ollama Integration**: Capacidades RAG y procesamiento de lenguaje natural, detección automática, consultas a modelos locales
+- **Filosofía**: "Pensar antes de actuar. Anticipar antes de reaccionar. Evolucionar siempre."
+- **Funciones clave**: `predict_scenario()`, `train_neural_network()`, `query_ollama()`, `get_system_intelligence_report()`
+- **Singleton global**: `quantum_core` para integración con todos los dominios
+
 ## Errores Comunes
 
 1. **Supuestos de rutas**: El código asume rutas macOS (`/Users/blackmamba/Desktop/XarvisCore`) - ajusta BASE_DIR para portabilidad
