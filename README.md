@@ -74,6 +74,8 @@ Xarvis Core se convierte en el mecenas de la **Música Real**. Con más de **280
 
 ### Directivas de Impulso Artístico:
 *   **Discografía Soberana:** Acceso a los 280+ sistemas sonoros en [SoundCloud: BlackMamba RECORDS](https://soundcloud.com/iyari-c/tracks).
+*   **BlackMamba Audio Detector:** Sistema propio de detección musical mediante fingerprinting acústico (chromaprint). Reconoce canciones de SoundCloud que Shazam no detecta. **"Shazam reconoce Spotify, nosotros reconocemos SoundCloud."**
+*   **Vocal Performance Analyzer (VPA):** Sistema de análisis vocal en tiempo real con detección de canción, obtención de letras sincronizadas, y métricas de afinación/timing.
 *   **La Oportunidad de Oro:** Creación de una infraestructura que detecte y magnifique el talento local, brindando las herramientas para el crecimiento que el estado y la industria ignoran.
 *   **Incentivo sobre Censura:** En lugar de bloquear contenido adulto, saturamos el reino con belleza y calidad musical, haciendo que la excelencia sea la opción natural.
 *   **Diversidad de Género:** Desde Trap y Reggae hasta Salsa y Electrónica; la música es el idioma universal de la soberanía.

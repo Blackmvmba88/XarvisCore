@@ -1,0 +1,3773 @@
+[
+  {
+    "song_name": "(intro)",
+    "title": "(Intro)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/(intro).mp3",
+        "size_mb": 3.66,
+        "hash": "5352c456be79"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.66,
+    "modified_date": "2025-12-26T00:27:54.786666"
+  },
+  {
+    "song_name": "(verse_1)",
+    "title": "(Verse 1)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/(Verse 1).mp3",
+        "size_mb": 3.68,
+        "hash": "3fb8574c3bf5"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.68,
+    "modified_date": "2025-12-27T02:24:11.536093"
+  },
+  {
+    "song_name": "__",
+    "title": "  ",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/__.mp3",
+        "size_mb": 3.18,
+        "hash": "7ff2f57dd9eb"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.18,
+    "modified_date": "2025-12-25T11:45:18.694154"
+  },
+  {
+    "song_name": "__(verso_1)__",
+    "title": "  (Verso 1)  ",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/__(Verso 1)__.mp3",
+        "size_mb": 3.8,
+        "hash": "4030021a7a87"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.8,
+    "modified_date": "2025-12-27T02:25:48.760812"
+  },
+  {
+    "song_name": "___(cover)",
+    "title": "   (Cover)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/__ (Cover).mp3",
+        "size_mb": 3.85,
+        "hash": "45f58930b9b7"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.85,
+    "modified_date": "2025-12-25T11:58:16.186605"
+  },
+  {
+    "song_name": "__title__gigi_durán_(i’m_real)__",
+    "title": "  Title  Gigi Durán (I’M Real)  ",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/__Title_ Gigi Durán (I’m Real)__ (3).mp3",
+        "size_mb": 4.92,
+        "hash": "07ce23ea2bab"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.92,
+    "modified_date": "2025-12-27T00:42:25.916757"
+  },
+  {
+    "song_name": "__title__leydy_biker’s_alamilla__",
+    "title": "  Title  Leydy Biker’S Alamilla  ",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/__Title_ LEYDY BIKER’S ALAMILLA__.mp3",
+        "size_mb": 5.32,
+        "hash": "449ff48e2766"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 5.32,
+    "modified_date": "2025-12-26T00:10:17.502204"
+  },
+  {
+    "song_name": "__title__when_time_says_yes_(for_fernand",
+    "title": "  Title  When Time Says Yes (For Fernand",
+    "artist": "BlackMamba",
+    "status": "complete",
+    "quality": "premium",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/__Title_ When Time Says Yes (For Fernand.mp3",
+        "size_mb": 4.2,
+        "hash": "c58a38ceede6"
+      },
+      "wav": {
+        "path": "/Users/blackmamba/Downloads/__Title_ When Time Says Yes (For Fernand.wav",
+        "size_mb": 39.59,
+        "hash": "9e7f164e1458"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 43.79,
+    "modified_date": "2025-12-25T11:34:15.595014"
+  },
+  {
+    "song_name": "__title__“azareel_(light_of_the_nile)”__",
+    "title": "  Title  “Azareel (Light Of The Nile)”  ",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/__Title_ “Azareel (Light of the Nile)”__ (1).mp3",
+        "size_mb": 5.08,
+        "hash": "41e2acef9824"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 5.08,
+    "modified_date": "2025-12-27T03:08:10.629963"
+  },
+  {
+    "song_name": "__title__“born_to_arrive”__",
+    "title": "  Title  “Born To Arrive”  ",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/__Title_ “Born to Arrive”__.mp3",
+        "size_mb": 4.77,
+        "hash": "c4c7a532236a"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.77,
+    "modified_date": "2025-12-27T02:42:12.617577"
+  },
+  {
+    "song_name": "__title__“lore_gonzales”__",
+    "title": "  Title  “Lore Gonzales”  ",
+    "artist": "BlackMamba",
+    "status": "complete",
+    "quality": "premium",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/__Title_ “Lore Gonzales”__ (1).mp3",
+        "size_mb": 3.73,
+        "hash": "8bd878a587a8"
+      },
+      "wav": {
+        "path": "/Users/blackmamba/Downloads/__Title_ “Lore Gonzales”__.wav",
+        "size_mb": 33.52,
+        "hash": "9467c6009e97"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 37.25,
+    "modified_date": "2025-12-25T18:49:59.222781"
+  },
+  {
+    "song_name": "__título__angie_ibarra_(reggae)__",
+    "title": "  Título  Angie Ibarra (Reggae)  ",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/__Título_ Angie Ibarra (Reggae)__ (1).mp3",
+        "size_mb": 4.22,
+        "hash": "a822e3385662"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.22,
+    "modified_date": "2025-12-26T09:42:09.570338"
+  },
+  {
+    "song_name": "__título__donde_la_luna_aprende_a_quedar",
+    "title": "  Título  Donde La Luna Aprende A Quedar",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/__Título_ Donde la Luna Aprende a Quedar.mp3",
+        "size_mb": 5.37,
+        "hash": "b1488a14bdc6"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 5.37,
+    "modified_date": "2025-12-25T22:06:26.526412"
+  },
+  {
+    "song_name": "__título__donde_la_luna_aprende_a_quedar_(cover)",
+    "title": "  Título  Donde La Luna Aprende A Quedar (Cover)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/__Título_ Donde la Luna Aprende a Quedar (Cover).mp3",
+        "size_mb": 6.2,
+        "hash": "787798d8e2f8"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 6.2,
+    "modified_date": "2025-12-25T22:11:44.463193"
+  },
+  {
+    "song_name": "__título__kilómetros_de_fuego__",
+    "title": "  Título  Kilómetros De Fuego  ",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/__Título_ Kilómetros de Fuego__.mp3",
+        "size_mb": 8.29,
+        "hash": "0ffcf4ca87ac"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 8.29,
+    "modified_date": "2025-12-26T00:03:31.704153"
+  },
+  {
+    "song_name": "__título__manzana_de_luz__",
+    "title": "  Título  Manzana De Luz  ",
+    "artist": "BlackMamba",
+    "status": "complete",
+    "quality": "premium",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/__Título_ Manzana de Luz__ (1).mp3",
+        "size_mb": 4.42,
+        "hash": "9347ab72be14"
+      },
+      "wav": {
+        "path": "/Users/blackmamba/Downloads/__Título_ Manzana de Luz__ (1).wav",
+        "size_mb": 63.96,
+        "hash": "092f633e4f55"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 68.38,
+    "modified_date": "2025-12-24T13:18:08.013520"
+  },
+  {
+    "song_name": "__título__pelo_rojo_(muñe)__",
+    "title": "  Título  Pelo Rojo (Muñe)  ",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/__Título_ Pelo Rojo (Muñe)__ (1).mp3",
+        "size_mb": 5.37,
+        "hash": "54140a273bd4"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 5.37,
+    "modified_date": "2025-12-27T01:17:25.770194"
+  },
+  {
+    "song_name": "__título__“azareel_(luz_del_nilo)”__",
+    "title": "  Título  “Azareel (Luz Del Nilo)”  ",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/__Título_ “Azareel (Luz del Nilo)”__.mp3",
+        "size_mb": 4.8,
+        "hash": "d0bc6a6c9f6d"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.8,
+    "modified_date": "2025-12-27T02:54:09.859931"
+  },
+  {
+    "song_name": "__título__“gracias,_maestra”__",
+    "title": "  Título  “Gracias, Maestra”  ",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/__Título_ “Gracias, Maestra”__ (1).mp3",
+        "size_mb": 6.7,
+        "hash": "257c9594734d"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 6.7,
+    "modified_date": "2025-12-25T22:31:51.715506"
+  },
+  {
+    "song_name": "__título__“monserrat”__",
+    "title": "  Título  “Monserrat”  ",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/__Título_ “Monserrat”__.mp3",
+        "size_mb": 2.88,
+        "hash": "b82fc8eff53f"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 2.88,
+    "modified_date": "2025-12-26T23:44:48.538552"
+  },
+  {
+    "song_name": "__título__“nacida_pa’_llegar”__",
+    "title": "  Título  “Nacida Pa’ Llegar”  ",
+    "artist": "BlackMamba",
+    "status": "complete",
+    "quality": "premium",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/__Título_ “Nacida Pa’ Llegar”__ (1).mp3",
+        "size_mb": 5.14,
+        "hash": "5630cd31c20c"
+      },
+      "wav": {
+        "path": "/Users/blackmamba/Downloads/__Título_ “Nacida Pa’ Llegar”__ (1).wav",
+        "size_mb": 43.02,
+        "hash": "0a45ab78b064"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 48.16,
+    "modified_date": "2025-12-27T02:33:10.696737"
+  },
+  {
+    "song_name": "__título__“siempre_ahí”__",
+    "title": "  Título  “Siempre Ahí”  ",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/__Título_ “Siempre Ahí”__.mp3",
+        "size_mb": 2.93,
+        "hash": "597bec284206"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 2.93,
+    "modified_date": "2025-12-27T12:55:00.992653"
+  },
+  {
+    "song_name": "acordeon",
+    "title": "Acordeon",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/acordeon.mp3",
+        "size_mb": 3.96,
+        "hash": "f36485a6d307"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.96,
+    "modified_date": "2025-12-18T16:49:46.623208"
+  },
+  {
+    "song_name": "alright_—_here’s_a_fresh_song_in_english",
+    "title": "Alright — Here’S A Fresh Song In English",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Alright — here’s a fresh song in English.mp3",
+        "size_mb": 3.88,
+        "hash": "8acce92373b2"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.88,
+    "modified_date": "2025-12-26T10:34:57.965855"
+  },
+  {
+    "song_name": "amame",
+    "title": "Amame",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Amame.mp3",
+        "size_mb": 4.38,
+        "hash": "0256c2bf547a"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.38,
+    "modified_date": "2025-12-21T03:58:07.188834"
+  },
+  {
+    "song_name": "amor",
+    "title": "Amor",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Amor.mp3",
+        "size_mb": 3.41,
+        "hash": "2d5b8ce19d17"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.41,
+    "modified_date": "2025-12-19T06:12:02.432271"
+  },
+  {
+    "song_name": "angye,_stay",
+    "title": "Angye, Stay",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Angye, Stay.mp3",
+        "size_mb": 3.39,
+        "hash": "05cc42883e2f"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.39,
+    "modified_date": "2025-12-25T19:17:44.416029"
+  },
+  {
+    "song_name": "ani_mendoza",
+    "title": "Ani Mendoza",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Ani Mendoza (4).mp3",
+        "size_mb": 3.37,
+        "hash": "8f998be4b745"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.37,
+    "modified_date": "2025-12-25T11:15:30.258120"
+  },
+  {
+    "song_name": "aranza",
+    "title": "Aranza",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/aranza.mp3",
+        "size_mb": 4.45,
+        "hash": "cb441b7abda1"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.45,
+    "modified_date": "2025-12-27T19:04:00.501594"
+  },
+  {
+    "song_name": "aranzaibañez",
+    "title": "Aranzaibañez",
+    "artist": "BlackMamba",
+    "status": "complete",
+    "quality": "premium",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/AranzaIbañez (1).mp3",
+        "size_mb": 3.46,
+        "hash": "d8fcd0f4ed69"
+      },
+      "wav": {
+        "path": "/Users/blackmamba/Downloads/AranzaIbañez.wav",
+        "size_mb": 21.08,
+        "hash": "1c4800158f98"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 24.54,
+    "modified_date": "2025-12-27T19:23:08.047007"
+  },
+  {
+    "song_name": "audio-2025-08-10-03-18-28",
+    "title": "Audio-2025-08-10-03-18-28",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/AUDIO-2025-08-10-03-18-28 (1).mp3",
+        "size_mb": 3.21,
+        "hash": "ae1d5e737596"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.21,
+    "modified_date": "2025-12-21T05:42:17.495309"
+  },
+  {
+    "song_name": "audio-2025-08-10-03-42-49",
+    "title": "Audio-2025-08-10-03-42-49",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/AUDIO-2025-08-10-03-42-49 (1).mp3",
+        "size_mb": 3.85,
+        "hash": "6742c49446a3"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.85,
+    "modified_date": "2025-12-21T05:42:25.226839"
+  },
+  {
+    "song_name": "audio-2025-08-10-04-10-59",
+    "title": "Audio-2025-08-10-04-10-59",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/AUDIO-2025-08-10-04-10-59.mp3",
+        "size_mb": 2.87,
+        "hash": "ea93f2f2e9c3"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 2.87,
+    "modified_date": "2025-12-21T05:23:55.860914"
+  },
+  {
+    "song_name": "audio-2025-08-10-04-24-27",
+    "title": "Audio-2025-08-10-04-24-27",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/AUDIO-2025-08-10-04-24-27.mp3",
+        "size_mb": 3.97,
+        "hash": "f7f181d705a3"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.97,
+    "modified_date": "2025-12-21T05:20:21.582954"
+  },
+  {
+    "song_name": "audio-2025-08-10-04-37-16",
+    "title": "Audio-2025-08-10-04-37-16",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/AUDIO-2025-08-10-04-37-16.mp3",
+        "size_mb": 4.2,
+        "hash": "390c696a15a4"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.2,
+    "modified_date": "2025-12-21T05:13:45.908392"
+  },
+  {
+    "song_name": "belari_filobello",
+    "title": "Belari Filobello",
+    "artist": "BlackMamba",
+    "status": "complete",
+    "quality": "premium",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Belari Filobello.mp3",
+        "size_mb": 3.48,
+        "hash": "bf1bfbf08ebd"
+      },
+      "wav": {
+        "path": "/Users/blackmamba/Downloads/Belari Filobello (1).wav",
+        "size_mb": 25.76,
+        "hash": "777ab39edd8b"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 29.24,
+    "modified_date": "2025-12-25T15:48:36.380712"
+  },
+  {
+    "song_name": "besame_mucho_(roberto_martinez)_cover_(cover)",
+    "title": "Besame Mucho (Roberto Martinez) Cover (Cover)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Besame mucho (Roberto Martinez) cover (Cover) (1).mp3",
+        "size_mb": 3.28,
+        "hash": "91e5555bc374"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.28,
+    "modified_date": "2025-12-20T17:50:28.956086"
+  },
+  {
+    "song_name": "black",
+    "title": "Black",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Black.mp3",
+        "size_mb": 3.96,
+        "hash": "48aac1166f40"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.96,
+    "modified_date": "2025-12-23T13:18:33.423910"
+  },
+  {
+    "song_name": "blackmamba_en_la_casa",
+    "title": "Blackmamba En La Casa",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Blackmamba en la casa (1).mp3",
+        "size_mb": 4.82,
+        "hash": "2738bfc11f19"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.82,
+    "modified_date": "2025-12-25T05:30:22.040678"
+  },
+  {
+    "song_name": "break",
+    "title": "Break",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/break.mp3",
+        "size_mb": 0.04,
+        "hash": "cca0b1e6d5c6"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.04,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "brenda_segura",
+    "title": "Brenda Segura",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Brenda Segura.mp3",
+        "size_mb": 3.95,
+        "hash": "4e07e536a844"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.95,
+    "modified_date": "2025-12-24T13:24:31.704738"
+  },
+  {
+    "song_name": "california_love",
+    "title": "California Love",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/California Love.mp3",
+        "size_mb": 4.06,
+        "hash": "1191241c776f"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.06,
+    "modified_date": "2025-12-18T16:41:40.548776"
+  },
+  {
+    "song_name": "carla_dariana",
+    "title": "Carla Dariana",
+    "artist": "BlackMamba",
+    "status": "complete",
+    "quality": "premium",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Carla Dariana.mp3",
+        "size_mb": 3.88,
+        "hash": "4ca0d6adddc0"
+      },
+      "wav": {
+        "path": "/Users/blackmamba/Downloads/Carla Dariana.wav",
+        "size_mb": 24.48,
+        "hash": "64b03b8fa600"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 28.36,
+    "modified_date": "2025-12-26T09:48:41.073159"
+  },
+  {
+    "song_name": "carnival_horns_(remix)",
+    "title": "Carnival Horns (Remix)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Carnival Horns (Remix) (1).mp3",
+        "size_mb": 7.0,
+        "hash": "11d02004a755"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 7.0,
+    "modified_date": "2025-12-20T17:17:57.594649"
+  },
+  {
+    "song_name": "carnival_scars",
+    "title": "Carnival Scars",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Carnival Scars.mp3",
+        "size_mb": 6.0,
+        "hash": "e62ebfe1d35c"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 6.0,
+    "modified_date": "2025-12-19T09:34:56.169022"
+  },
+  {
+    "song_name": "chains",
+    "title": "Chains",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/chains.mp3",
+        "size_mb": 1.5,
+        "hash": "d3c29aba5bf4"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 1.5,
+    "modified_date": "2025-12-18T16:19:30.750418"
+  },
+  {
+    "song_name": "chateditmodifiedfile",
+    "title": "Chateditmodifiedfile",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/chatEditModifiedFile.mp3",
+        "size_mb": 0.02,
+        "hash": "58cb21c3e2a1"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.02,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "chatuseractionrequired",
+    "title": "Chatuseractionrequired",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/chatUserActionRequired.mp3",
+        "size_mb": 0.03,
+        "hash": "5969a3852627"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.03,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "cigarro",
+    "title": "Cigarro",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Cigarro.mp3",
+        "size_mb": 1.48,
+        "hash": "c6e1145fcd4e"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 1.48,
+    "modified_date": "2025-12-21T04:29:58.568790"
+  },
+  {
+    "song_name": "clear",
+    "title": "Clear",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/clear.mp3",
+        "size_mb": 0.03,
+        "hash": "5b2a6731d421"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.03,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "codeactionapplied",
+    "title": "Codeactionapplied",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/codeActionApplied.mp3",
+        "size_mb": 0.05,
+        "hash": "1f8d9d601d7b"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.05,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "codeactiontriggered",
+    "title": "Codeactiontriggered",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/codeActionTriggered.mp3",
+        "size_mb": 0.05,
+        "hash": "d1bcf84012d3"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.05,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "coffee-stained_constellations",
+    "title": "Coffee-Stained Constellations",
+    "artist": "BlackMamba",
+    "status": "wav_only",
+    "quality": "hq",
+    "formats": {
+      "wav": {
+        "path": "/Users/blackmamba/Downloads/Coffee-Stained Constellations.wav",
+        "size_mb": 15.66,
+        "hash": "9e53830ba3ee"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 15.66,
+    "modified_date": "2025-12-25T03:41:23.153386"
+  },
+  {
+    "song_name": "cuando_no_estás_cerca_(remix)",
+    "title": "Cuando No Estás Cerca (Remix)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Cuando No Estás Cerca (Remix).mp3",
+        "size_mb": 4.47,
+        "hash": "66af362cd4f4"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.47,
+    "modified_date": "2025-12-21T09:02:09.753504"
+  },
+  {
+    "song_name": "dennis_castr",
+    "title": "Dennis Castr",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Dennis Castr.mp3",
+        "size_mb": 4.2,
+        "hash": "02cb71e45bb4"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.2,
+    "modified_date": "2025-12-25T10:58:25.156362"
+  },
+  {
+    "song_name": "dennis_castroo",
+    "title": "Dennis Castroo",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Dennis Castroo.mp3",
+        "size_mb": 3.65,
+        "hash": "3c069f12db45"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.65,
+    "modified_date": "2025-12-25T10:56:47.290297"
+  },
+  {
+    "song_name": "despierta",
+    "title": "Despierta",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Despierta.mp3",
+        "size_mb": 2.93,
+        "hash": "312306c858d5"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 2.93,
+    "modified_date": "2025-12-19T12:02:58.219016"
+  },
+  {
+    "song_name": "despierto_y_siento_que_el_día__se_respir_(cover)",
+    "title": "Despierto Y Siento Que El Día  Se Respir (Cover)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Despierto y siento que el día  se respir (Cover).mp3",
+        "size_mb": 4.04,
+        "hash": "29f29f270022"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.04,
+    "modified_date": "2025-12-16T21:32:50.704474"
+  },
+  {
+    "song_name": "diamonds_on_the_mirror,_velvet_in_the_ai",
+    "title": "Diamonds On The Mirror, Velvet In The Ai",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Diamonds on the mirror, velvet in the ai (4).mp3",
+        "size_mb": 4.31,
+        "hash": "e0455367399b"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.31,
+    "modified_date": "2025-12-19T06:28:23.857957"
+  },
+  {
+    "song_name": "did_i_mention_",
+    "title": "Did I Mention ",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Did I Mention_.mp3",
+        "size_mb": 5.3,
+        "hash": "b6feb7885da6"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 5.3,
+    "modified_date": "2025-12-19T09:52:30.760226"
+  },
+  {
+    "song_name": "did_i_mention__(cover)",
+    "title": "Did I Mention  (Cover)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Did I Mention_ (Cover).mp3",
+        "size_mb": 5.3,
+        "hash": "fec1678a1cf1"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 5.3,
+    "modified_date": "2025-12-19T09:42:06.894135"
+  },
+  {
+    "song_name": "difflinedeleted",
+    "title": "Difflinedeleted",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/diffLineDeleted.mp3",
+        "size_mb": 0.04,
+        "hash": "d7c7b3df34b0"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.04,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "difflineinserted",
+    "title": "Difflineinserted",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/diffLineInserted.mp3",
+        "size_mb": 0.04,
+        "hash": "22b55587897a"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.04,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "difflinemodified",
+    "title": "Difflinemodified",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/diffLineModified.mp3",
+        "size_mb": 0.04,
+        "hash": "fc58115879f7"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.04,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "dolor",
+    "title": "Dolor",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Dolor.mp3",
+        "size_mb": 3.22,
+        "hash": "79bc9def68a1"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.22,
+    "modified_date": "2025-12-19T05:55:21.219373"
+  },
+  {
+    "song_name": "editskept",
+    "title": "Editskept",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/editsKept.mp3",
+        "size_mb": 0.05,
+        "hash": "ab82cf75efea"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.05,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "editsundone",
+    "title": "Editsundone",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/editsUndone.mp3",
+        "size_mb": 0.03,
+        "hash": "c0ec25e24309"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.03,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "eed",
+    "title": "Eed",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/eed.mp3",
+        "size_mb": 4.73,
+        "hash": "dceb74555350"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.73,
+    "modified_date": "2025-12-21T09:13:39.448502"
+  },
+  {
+    "song_name": "energía_infinita_(cover)",
+    "title": "Energía Infinita (Cover)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Energía Infinita (Cover).mp3",
+        "size_mb": 4.24,
+        "hash": "a6c1f17cbfb9"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.24,
+    "modified_date": "2025-12-19T12:03:10.650270"
+  },
+  {
+    "song_name": "error",
+    "title": "Error",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/error.mp3",
+        "size_mb": 0.04,
+        "hash": "5e4f4117f5b3"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.04,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "faro",
+    "title": "Faro",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Faro.mp3",
+        "size_mb": 4.56,
+        "hash": "9c9abef1bab9"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.56,
+    "modified_date": "2025-12-22T11:44:59.663661"
+  },
+  {
+    "song_name": "foldedareas",
+    "title": "Foldedareas",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/foldedAreas.mp3",
+        "size_mb": 0.02,
+        "hash": "25ede7cd2565"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.02,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "format",
+    "title": "Format",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/format.mp3",
+        "size_mb": 0.04,
+        "hash": "7693ed4b4743"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.04,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "ganja",
+    "title": "Ganja",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Ganja.mp3",
+        "size_mb": 4.47,
+        "hash": "9a5c93e1ed27"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.47,
+    "modified_date": "2025-12-18T19:04:34.756655"
+  },
+  {
+    "song_name": "hanna",
+    "title": "Hanna",
+    "artist": "BlackMamba",
+    "status": "complete",
+    "quality": "premium",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Hanna.mp3",
+        "size_mb": 5.76,
+        "hash": "266636052b2b"
+      },
+      "wav": {
+        "path": "/Users/blackmamba/Downloads/Hanna.wav",
+        "size_mb": 44.83,
+        "hash": "4ac608061af6"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 50.59,
+    "modified_date": "2025-12-25T06:08:48.067230"
+  },
+  {
+    "song_name": "hay_noches_en_que_el_mundo_se_queda_pequ",
+    "title": "Hay Noches En Que El Mundo Se Queda Pequ",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Hay noches en que el mundo se queda pequ.mp3",
+        "size_mb": 5.05,
+        "hash": "d4644f1ce340"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 5.05,
+    "modified_date": "2025-12-22T06:44:52.198705"
+  },
+  {
+    "song_name": "high_as_the_moon",
+    "title": "High As The Moon",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/High as the Moon.mp3",
+        "size_mb": 3.44,
+        "hash": "95f023cd4ded"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.44,
+    "modified_date": "2025-12-16T22:50:10.537217"
+  },
+  {
+    "song_name": "high_as_the_moon_(mastered_with_thunder_at_50pct)",
+    "title": "High As The Moon (Mastered With Thunder At 50Pct)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/High as the Moon (Mastered with Thunder at 50pct).mp3",
+        "size_mb": 3.63,
+        "hash": "20e0c58a7b21"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.63,
+    "modified_date": "2025-12-18T10:20:30.163306"
+  },
+  {
+    "song_name": "i_promise",
+    "title": "I Promise",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/I promise.mp3",
+        "size_mb": 4.01,
+        "hash": "6e76648ef5d6"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.01,
+    "modified_date": "2025-12-18T16:32:27.034543"
+  },
+  {
+    "song_name": "i_rise_from_the_ashes,_concrete_in_my_ve",
+    "title": "I Rise From The Ashes, Concrete In My Ve",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/I rise from the ashes, concrete in my ve.mp3",
+        "size_mb": 1.83,
+        "hash": "94284c8a1091"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 1.83,
+    "modified_date": "2025-12-23T13:01:35.657948"
+  },
+  {
+    "song_name": "i_wake_up_low",
+    "title": "I Wake Up Low",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/I wake up low (2).mp3",
+        "size_mb": 2.71,
+        "hash": "7fd41edbcb07"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 2.71,
+    "modified_date": "2025-12-20T19:15:24.537231"
+  },
+  {
+    "song_name": "instrumental_(cover)",
+    "title": "Instrumental (Cover)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Instrumental (Cover).mp3",
+        "size_mb": 2.8,
+        "hash": "e6ad0fc8f644"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 2.8,
+    "modified_date": "2025-12-22T12:10:01.572347"
+  },
+  {
+    "song_name": "isis",
+    "title": "Isis",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Isis.mp3",
+        "size_mb": 5.48,
+        "hash": "247c77106b1f"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 5.48,
+    "modified_date": "2025-12-25T22:19:03.906028"
+  },
+  {
+    "song_name": "karieluy",
+    "title": "Karieluy",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Karieluy.mp3",
+        "size_mb": 3.48,
+        "hash": "f9d30577a506"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.48,
+    "modified_date": "2025-12-25T11:14:16.104755"
+  },
+  {
+    "song_name": "kariely",
+    "title": "Kariely",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Kariely (2).mp3",
+        "size_mb": 4.04,
+        "hash": "0795c5a76a3f"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.04,
+    "modified_date": "2025-12-25T11:18:44.324533"
+  },
+  {
+    "song_name": "kariely_cruz",
+    "title": "Kariely Cruz",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Kariely Cruz.mp3",
+        "size_mb": 4.16,
+        "hash": "437845d34b5f"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.16,
+    "modified_date": "2025-12-25T11:18:10.221374"
+  },
+  {
+    "song_name": "kill_the_noise_(by_roxy)_(remix)",
+    "title": "Kill The Noise (By Roxy) (Remix)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Kill The Noise (by Roxy) (Remix).mp3",
+        "size_mb": 4.85,
+        "hash": "ec015d52f938"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.85,
+    "modified_date": "2025-12-21T09:34:06.993001"
+  },
+  {
+    "song_name": "la_mariposa_de_colores",
+    "title": "La Mariposa De Colores",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/La Mariposa de Colores.mp3",
+        "size_mb": 2.98,
+        "hash": "3386f2268c19"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 2.98,
+    "modified_date": "2025-12-21T04:26:24.083511"
+  },
+  {
+    "song_name": "las_constelaciones_tiemblan_hoy",
+    "title": "Las Constelaciones Tiemblan Hoy",
+    "artist": "BlackMamba",
+    "status": "complete",
+    "quality": "premium",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Las constelaciones tiemblan hoy.mp3",
+        "size_mb": 3.9,
+        "hash": "c4ad054d7333"
+      },
+      "wav": {
+        "path": "/Users/blackmamba/Downloads/Las constelaciones tiemblan hoy (2).wav",
+        "size_mb": 35.16,
+        "hash": "7ec4cb6b00a1"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 39.06,
+    "modified_date": "2025-12-26T01:07:43.324086"
+  },
+  {
+    "song_name": "las_constelaciones_tiemblan_hoy_(cover)",
+    "title": "Las Constelaciones Tiemblan Hoy (Cover)",
+    "artist": "BlackMamba",
+    "status": "complete",
+    "quality": "premium",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Las constelaciones tiemblan hoy (Cover).mp3",
+        "size_mb": 3.67,
+        "hash": "ddb14756139b"
+      },
+      "wav": {
+        "path": "/Users/blackmamba/Downloads/Las constelaciones tiemblan hoy (Cover) (1).wav",
+        "size_mb": 27.41,
+        "hash": "c576d822b709"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 31.08,
+    "modified_date": "2025-12-27T09:29:44.636124"
+  },
+  {
+    "song_name": "letra_(versión_completa)",
+    "title": "Letra (Versión Completa)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/LETRA (versión completa).mp3",
+        "size_mb": 2.37,
+        "hash": "c7c47e146166"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 2.37,
+    "modified_date": "2025-12-18T04:20:15.931753"
+  },
+  {
+    "song_name": "leydy_biker's_alamilla",
+    "title": "Leydy Biker'S Alamilla",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Leydy Biker's Alamilla.mp3",
+        "size_mb": 8.29,
+        "hash": "807151c5780d"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 8.29,
+    "modified_date": "2025-12-26T00:04:17.687672"
+  },
+  {
+    "song_name": "lost_keys",
+    "title": "Lost Keys",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Lost Keys.mp3",
+        "size_mb": 5.7,
+        "hash": "b0e4cbaae42b"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 5.7,
+    "modified_date": "2025-12-21T04:20:32.942241"
+  },
+  {
+    "song_name": "love”_(cover)",
+    "title": "Love” (Cover)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/love” (Cover).mp3",
+        "size_mb": 4.07,
+        "hash": "14ece562d094"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.07,
+    "modified_date": "2025-12-18T03:26:08.802175"
+  },
+  {
+    "song_name": "mary_jane",
+    "title": "Mary Jane",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Mary Jane.mp3",
+        "size_mb": 4.49,
+        "hash": "61711ff011e9"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.49,
+    "modified_date": "2025-12-21T10:07:45.183879"
+  },
+  {
+    "song_name": "mary_jane_(cover)_(cover)_(cover)",
+    "title": "Mary Jane (Cover) (Cover) (Cover)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Mary Jane (Cover) (Cover) (Cover).mp3",
+        "size_mb": 4.61,
+        "hash": "6a76661780d5"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.61,
+    "modified_date": "2025-12-21T11:46:22.568534"
+  },
+  {
+    "song_name": "mary_jane_my_love_(cover)",
+    "title": "Mary Jane My Love (Cover)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Mary Jane My Love (Cover).mp3",
+        "size_mb": 3.19,
+        "hash": "7c1a2e80c644"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.19,
+    "modified_date": "2025-12-21T11:33:59.413651"
+  },
+  {
+    "song_name": "monica_yamily",
+    "title": "Monica Yamily",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Monica Yamily (2).mp3",
+        "size_mb": 2.79,
+        "hash": "d915a4ab0453"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 2.79,
+    "modified_date": "2025-12-25T18:30:00.499913"
+  },
+  {
+    "song_name": "monserrat_leon",
+    "title": "Monserrat Leon",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Monserrat Leon (3).mp3",
+        "size_mb": 5.01,
+        "hash": "9f73aff128f1"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 5.01,
+    "modified_date": "2025-12-25T09:39:24.882048"
+  },
+  {
+    "song_name": "motor_despierto,_luces_en_verde,",
+    "title": "Motor Despierto, Luces En Verde,",
+    "artist": "BlackMamba",
+    "status": "complete",
+    "quality": "premium",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Motor despierto, luces en verde,  .mp3",
+        "size_mb": 3.54,
+        "hash": "7b31bff4d0d7"
+      },
+      "wav": {
+        "path": "/Users/blackmamba/Downloads/Motor despierto, luces en verde,  .wav",
+        "size_mb": 29.25,
+        "hash": "129a49be59d8"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 32.79,
+    "modified_date": "2025-12-25T23:04:13.183357"
+  },
+  {
+    "song_name": "mv",
+    "title": "Mv",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/mv.mp3",
+        "size_mb": 4.87,
+        "hash": "3e0c6027ba4b"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.87,
+    "modified_date": "2025-12-25T22:47:15.723629"
+  },
+  {
+    "song_name": "my_soul",
+    "title": "My Soul",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/My soul.mp3",
+        "size_mb": 5.37,
+        "hash": "60f778651371"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 5.37,
+    "modified_date": "2025-12-21T10:11:10.245955"
+  },
+  {
+    "song_name": "nexteditsuggestion",
+    "title": "Nexteditsuggestion",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/nextEditSuggestion.mp3",
+        "size_mb": 0.03,
+        "hash": "8cab1fb294db"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.03,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "norma_rodriguez",
+    "title": "Norma Rodriguez",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Norma Rodriguez.mp3",
+        "size_mb": 4.74,
+        "hash": "3e6195bac688"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.74,
+    "modified_date": "2025-12-26T02:17:21.460959"
+  },
+  {
+    "song_name": "nuevo_ritmo",
+    "title": "Nuevo Ritmo",
+    "artist": "BlackMamba",
+    "status": "wav_only",
+    "quality": "hq",
+    "formats": {
+      "wav": {
+        "path": "/Users/blackmamba/Downloads/nuevo ritmo.wav",
+        "size_mb": 19.6,
+        "hash": "7a68a2d49a32"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 19.6,
+    "modified_date": "2025-12-27T14:48:07.004977"
+  },
+  {
+    "song_name": "nurvo_ritmo",
+    "title": "Nurvo Ritmo",
+    "artist": "BlackMamba",
+    "status": "wav_only",
+    "quality": "hq",
+    "formats": {
+      "wav": {
+        "path": "/Users/blackmamba/Downloads/nurvo ritmo (1).wav",
+        "size_mb": 20.83,
+        "hash": "ccc5766bc4be"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 20.83,
+    "modified_date": "2025-12-27T14:49:07.388361"
+  },
+  {
+    "song_name": "ocean_tides",
+    "title": "Ocean Tides",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Ocean Tides.mp3",
+        "size_mb": 4.94,
+        "hash": "c7f385d5cf64"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.94,
+    "modified_date": "2025-12-21T11:52:25.860439"
+  },
+  {
+    "song_name": "one_love_road",
+    "title": "One Love Road",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/One Love Road.mp3",
+        "size_mb": 4.31,
+        "hash": "cb24a3d1eeaf"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.31,
+    "modified_date": "2025-12-18T16:13:45.576566"
+  },
+  {
+    "song_name": "only_know_how_to_love",
+    "title": "Only Know How To Love",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Only Know How to Love.mp3",
+        "size_mb": 2.23,
+        "hash": "361c091daa52"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 2.23,
+    "modified_date": "2025-12-21T11:54:52.689245"
+  },
+  {
+    "song_name": "paty,_quédate",
+    "title": "Paty, Quédate",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Paty, Quédate (1).mp3",
+        "size_mb": 3.63,
+        "hash": "99a844e811de"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.63,
+    "modified_date": "2025-12-26T10:39:28.038290"
+  },
+  {
+    "song_name": "paulina",
+    "title": "Paulina",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Paulina.mp3",
+        "size_mb": 5.13,
+        "hash": "e405c9a0cce0"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 5.13,
+    "modified_date": "2025-12-25T18:45:21.993860"
+  },
+  {
+    "song_name": "perla_vazquez",
+    "title": "Perla Vazquez",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Perla Vazquez.mp3",
+        "size_mb": 3.44,
+        "hash": "48c8676b1f87"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.44,
+    "modified_date": "2025-12-19T06:39:14.634840"
+  },
+  {
+    "song_name": "popcorn_boy",
+    "title": "Popcorn Boy",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Popcorn Boy.mp3",
+        "size_mb": 2.59,
+        "hash": "9974c7bd6910"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 2.59,
+    "modified_date": "2025-12-21T04:13:26.940464"
+  },
+  {
+    "song_name": "pretzel_girl",
+    "title": "Pretzel Girl",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Pretzel Girl (1).mp3",
+        "size_mb": 4.31,
+        "hash": "64a2f59ff9bc"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.31,
+    "modified_date": "2025-12-21T03:35:51.012625"
+  },
+  {
+    "song_name": "pretzel_girl_(1)",
+    "title": "Pretzel Girl (1)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Pretzel Girl (1) (1).mp3",
+        "size_mb": 4.31,
+        "hash": "64a2f59ff9bc"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.31,
+    "modified_date": "2025-12-21T17:37:12.859256"
+  },
+  {
+    "song_name": "progress",
+    "title": "Progress",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/progress.mp3",
+        "size_mb": 0.03,
+        "hash": "903e64dd3973"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.03,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "quickfixes",
+    "title": "Quickfixes",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/quickFixes.mp3",
+        "size_mb": 0.03,
+        "hash": "5bceb897a432"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.03,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "recording-1763126353252_(cover)_(cover)_(cover)",
+    "title": "Recording-1763126353252 (Cover) (Cover) (Cover)",
+    "artist": "BlackMamba",
+    "status": "wav_only",
+    "quality": "hq",
+    "formats": {
+      "wav": {
+        "path": "/Users/blackmamba/Downloads/recording-1763126353252 (Cover) (Cover) (Cover).wav",
+        "size_mb": 27.46,
+        "hash": "4e87918a4f1c"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 27.46,
+    "modified_date": "2025-12-23T14:50:28.638353"
+  },
+  {
+    "song_name": "rede",
+    "title": "Rede",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/rede.mp3",
+        "size_mb": 4.01,
+        "hash": "daf8879e8cf7"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.01,
+    "modified_date": "2025-12-18T16:24:11.539392"
+  },
+  {
+    "song_name": "reggae_roots_(cover)_(cover)",
+    "title": "Reggae Roots (Cover) (Cover)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Reggae Roots (Cover) (Cover).mp3",
+        "size_mb": 3.95,
+        "hash": "a1cdbdf4fc84"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.95,
+    "modified_date": "2025-12-22T06:57:20.818290"
+  },
+  {
+    "song_name": "requestsent",
+    "title": "Requestsent",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/requestSent.mp3",
+        "size_mb": 0.04,
+        "hash": "21944147f808"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.04,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "responsereceived1",
+    "title": "Responsereceived1",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/responseReceived1.mp3",
+        "size_mb": 0.03,
+        "hash": "7da4e1621d3c"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.03,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "responsereceived2",
+    "title": "Responsereceived2",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/responseReceived2.mp3",
+        "size_mb": 0.03,
+        "hash": "c7b0b2de7b91"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.03,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "responsereceived3",
+    "title": "Responsereceived3",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/responseReceived3.mp3",
+        "size_mb": 0.03,
+        "hash": "7e359dd07b1f"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.03,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "responsereceived4",
+    "title": "Responsereceived4",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/responseReceived4.mp3",
+        "size_mb": 0.03,
+        "hash": "0806e07090f3"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.03,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "retro_clericop",
+    "title": "Retro Clericop",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/RETRO Clericop.mp3",
+        "size_mb": 3.44,
+        "hash": "7635ffcac2f0"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.44,
+    "modified_date": "2025-12-20T17:41:44.808690"
+  },
+  {
+    "song_name": "retro_clericop_(cover)",
+    "title": "Retro Clericop (Cover)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/RETRO Clericop (Cover).mp3",
+        "size_mb": 3.48,
+        "hash": "e320362f24da"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.48,
+    "modified_date": "2025-12-19T13:25:35.783336"
+  },
+  {
+    "song_name": "rhythm_of_liberation",
+    "title": "Rhythm Of Liberation",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Rhythm of liberation (1).mp3",
+        "size_mb": 6.42,
+        "hash": "ac1267ea4108"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 6.42,
+    "modified_date": "2025-12-21T04:41:14.812762"
+  },
+  {
+    "song_name": "rhythm_of_liberation_(remastered)",
+    "title": "Rhythm Of Liberation (Remastered)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Rhythm of liberation (Remastered).mp3",
+        "size_mb": 6.43,
+        "hash": "84f3d8d456d3"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 6.43,
+    "modified_date": "2025-12-21T04:43:28.003094"
+  },
+  {
+    "song_name": "rise_of_the_serpent",
+    "title": "Rise Of The Serpent",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Rise of the Serpent (1).mp3",
+        "size_mb": 3.27,
+        "hash": "f70921212891"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.27,
+    "modified_date": "2025-12-21T03:13:19.316936"
+  },
+  {
+    "song_name": "rise_of_the_serpent_(remix)_(edit)",
+    "title": "Rise Of The Serpent (Remix) (Edit)",
+    "artist": "BlackMamba",
+    "status": "wav_only",
+    "quality": "hq",
+    "formats": {
+      "wav": {
+        "path": "/Users/blackmamba/Downloads/Rise of the Serpent (Remix) (Edit) (1).wav",
+        "size_mb": 41.8,
+        "hash": "12d5312504ff"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 41.8,
+    "modified_date": "2025-12-25T06:40:50.008528"
+  },
+  {
+    "song_name": "roar_like_a_lion_(cover)",
+    "title": "Roar Like A Lion (Cover)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Roar Like a Lion (Cover).mp3",
+        "size_mb": 3.53,
+        "hash": "f10ad430d497"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.53,
+    "modified_date": "2025-12-22T08:38:45.168575"
+  },
+  {
+    "song_name": "roots_&_bass",
+    "title": "Roots & Bass",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Roots & Bass.mp3",
+        "size_mb": 5.38,
+        "hash": "f93b24d9b335"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 5.38,
+    "modified_date": "2025-12-21T03:22:21.013410"
+  },
+  {
+    "song_name": "rubi",
+    "title": "Rubi",
+    "artist": "BlackMamba",
+    "status": "complete",
+    "quality": "premium",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Rubi.mp3",
+        "size_mb": 5.38,
+        "hash": "6bb0de37ee15"
+      },
+      "wav": {
+        "path": "/Users/blackmamba/Downloads/Rubi (1).wav",
+        "size_mb": 41.43,
+        "hash": "aadfdf336b57"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 46.81,
+    "modified_date": "2025-12-25T11:05:55.799920"
+  },
+  {
+    "song_name": "sa_(cover)",
+    "title": "Sa (Cover)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/sa (Cover).mp3",
+        "size_mb": 3.81,
+        "hash": "d1b76cfff12f"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.81,
+    "modified_date": "2025-12-23T14:06:56.332335"
+  },
+  {
+    "song_name": "salmon",
+    "title": "Salmon",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Salmon.mp3",
+        "size_mb": 4.02,
+        "hash": "5b3779977483"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.02,
+    "modified_date": "2025-12-25T11:25:14.933509"
+  },
+  {
+    "song_name": "saryhu",
+    "title": "Saryhu",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/saryhu.mp3",
+        "size_mb": 2.41,
+        "hash": "3de0ac43ad91"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 2.41,
+    "modified_date": "2025-12-18T13:19:23.491403"
+  },
+  {
+    "song_name": "save",
+    "title": "Save",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/save.mp3",
+        "size_mb": 0.03,
+        "hash": "a53b7318513e"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.03,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "shiv_a1",
+    "title": "Shiv A1",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/shiv a1.mp3",
+        "size_mb": 6.32,
+        "hash": "38d10e1e4524"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 6.32,
+    "modified_date": "2025-12-16T18:22:41.505462"
+  },
+  {
+    "song_name": "smoke_and_shadows_(cover)",
+    "title": "Smoke And Shadows (Cover)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Smoke and Shadows (Cover).mp3",
+        "size_mb": 4.2,
+        "hash": "f6f9ba5059d0"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.2,
+    "modified_date": "2025-12-21T12:22:59.522079"
+  },
+  {
+    "song_name": "smoke_signals",
+    "title": "Smoke Signals",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Smoke Signals.mp3",
+        "size_mb": 3.53,
+        "hash": "bf449dd0af1d"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.53,
+    "modified_date": "2025-12-21T10:16:59.544159"
+  },
+  {
+    "song_name": "smoke_signals_(cover)",
+    "title": "Smoke Signals (Cover)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Smoke Signals (Cover).mp3",
+        "size_mb": 3.75,
+        "hash": "3727faa3905c"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.75,
+    "modified_date": "2025-12-21T11:39:59.521596"
+  },
+  {
+    "song_name": "space_and_time",
+    "title": "Space And Time",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Space and Time.mp3",
+        "size_mb": 6.86,
+        "hash": "39093c12b9da"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 6.86,
+    "modified_date": "2025-12-21T08:48:38.151764"
+  },
+  {
+    "song_name": "stoned_(cover)_(cover)",
+    "title": "Stoned (Cover) (Cover)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Stoned (Cover) (Cover).mp3",
+        "size_mb": 4.12,
+        "hash": "c635ea211098"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.12,
+    "modified_date": "2025-12-22T08:29:48.486032"
+  },
+  {
+    "song_name": "stove_on",
+    "title": "Stove On",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Stove On (1).mp3",
+        "size_mb": 1.22,
+        "hash": "18fed03f00e4"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 1.22,
+    "modified_date": "2025-12-19T09:31:12.821457"
+  },
+  {
+    "song_name": "studio_selection_(cover)",
+    "title": "Studio Selection (Cover)",
+    "artist": "BlackMamba",
+    "status": "complete",
+    "quality": "premium",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Studio Selection (Cover) (1).mp3",
+        "size_mb": 4.76,
+        "hash": "8e7e453c197e"
+      },
+      "wav": {
+        "path": "/Users/blackmamba/Downloads/Studio Selection (Cover).wav",
+        "size_mb": 35.32,
+        "hash": "704a94ddc431"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 40.08,
+    "modified_date": "2025-12-23T14:52:17.117535"
+  },
+  {
+    "song_name": "success",
+    "title": "Success",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/success.mp3",
+        "size_mb": 0.02,
+        "hash": "ad3b15b0109d"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.02,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "suena_el_acordeón…",
+    "title": "Suena El Acordeón…",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Suena el acordeón….mp3",
+        "size_mb": 3.93,
+        "hash": "e7637c2281b1"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.93,
+    "modified_date": "2025-12-19T13:54:46.649165"
+  },
+  {
+    "song_name": "taskcompleted",
+    "title": "Taskcompleted",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/taskCompleted.mp3",
+        "size_mb": 0.06,
+        "hash": "dae044a9cb5c"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.06,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "taskfailed",
+    "title": "Taskfailed",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/taskFailed.mp3",
+        "size_mb": 0.07,
+        "hash": "d7a392256812"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.07,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "terminalbell",
+    "title": "Terminalbell",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/terminalBell.mp3",
+        "size_mb": 0.03,
+        "hash": "86147f851ee5"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.03,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "terminalcommandsucceeded",
+    "title": "Terminalcommandsucceeded",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/terminalCommandSucceeded.mp3",
+        "size_mb": 0.03,
+        "hash": "a1c945cfe419"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.03,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "the_ghost_of_my_hometown_(edit)",
+    "title": "The Ghost Of My Hometown (Edit)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/The Ghost of My Hometown (Edit).mp3",
+        "size_mb": 5.34,
+        "hash": "e3cb8f913d67"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 5.34,
+    "modified_date": "2025-12-21T04:19:54.958483"
+  },
+  {
+    "song_name": "tides_in_my_veins",
+    "title": "Tides In My Veins",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Tides in My Veins.mp3",
+        "size_mb": 3.86,
+        "hash": "c3267ddbc952"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.86,
+    "modified_date": "2025-12-21T12:04:26.061492"
+  },
+  {
+    "song_name": "título__manuela_en_polígonos_de_luz",
+    "title": "Título  Manuela En Polígonos De Luz",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Título_ Manuela en Polígonos de Luz.mp3",
+        "size_mb": 5.03,
+        "hash": "fddf24ed91e9"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 5.03,
+    "modified_date": "2025-12-21T09:22:35.435005"
+  },
+  {
+    "song_name": "título__“clara_caccia”",
+    "title": "Título  “Clara Caccia”",
+    "artist": "BlackMamba",
+    "status": "wav_only",
+    "quality": "hq",
+    "formats": {
+      "wav": {
+        "path": "/Users/blackmamba/Downloads/Título_ “Clara Caccia”.wav",
+        "size_mb": 38.98,
+        "hash": "7bfde3af40e7"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 38.98,
+    "modified_date": "2025-12-24T11:41:15.788361"
+  },
+  {
+    "song_name": "título__“código_en_la_piel”",
+    "title": "Título  “Código En La Piel”",
+    "artist": "BlackMamba",
+    "status": "wav_only",
+    "quality": "hq",
+    "formats": {
+      "wav": {
+        "path": "/Users/blackmamba/Downloads/Título_ “Código en la Piel”.wav",
+        "size_mb": 22.15,
+        "hash": "1ecec3c56518"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 22.15,
+    "modified_date": "2025-12-27T09:42:39.051418"
+  },
+  {
+    "song_name": "título__“eres_aitiana”",
+    "title": "Título  “Eres Aitiana”",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Título_ “Eres Aitiana”.mp3",
+        "size_mb": 3.76,
+        "hash": "ee841e88ce29"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.76,
+    "modified_date": "2025-12-26T00:11:52.361438"
+  },
+  {
+    "song_name": "título__“jerladi_love”",
+    "title": "Título  “Jerladi Love”",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Título_ “Jerladi Love”.mp3",
+        "size_mb": 3.53,
+        "hash": "9d23f1a9da80"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.53,
+    "modified_date": "2025-12-19T13:44:59.829931"
+  },
+  {
+    "song_name": "título__“luz_que_se_queda”",
+    "title": "Título  “Luz Que Se Queda”",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Título_ “Luz que se queda”.mp3",
+        "size_mb": 4.64,
+        "hash": "68a1ef3e26f2"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.64,
+    "modified_date": "2025-12-26T09:44:05.173979"
+  },
+  {
+    "song_name": "título__“mariana_ruiz”",
+    "title": "Título  “Mariana Ruiz”",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Título_ “Mariana Ruiz”.mp3",
+        "size_mb": 4.83,
+        "hash": "a0dec5b4271d"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.83,
+    "modified_date": "2025-12-26T10:25:41.439933"
+  },
+  {
+    "song_name": "título_sugerido___frecuencia_natural_(ja",
+    "title": "Título Sugerido   Frecuencia Natural (Ja",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Título Sugerido_ _Frecuencia Natural (Ja.mp3",
+        "size_mb": 4.45,
+        "hash": "2638d49958d9"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.45,
+    "modified_date": "2025-12-25T05:40:35.429255"
+  },
+  {
+    "song_name": "título_sugerido___principio_de_conservac",
+    "title": "Título Sugerido   Principio De Conservac",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Título Sugerido_ _Principio de Conservac (1).mp3",
+        "size_mb": 5.25,
+        "hash": "b7307a4d9cd7"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 5.25,
+    "modified_date": "2025-12-25T05:45:03.408655"
+  },
+  {
+    "song_name": "título_sugerido___principio_de_conservac_(cover)",
+    "title": "Título Sugerido   Principio De Conservac (Cover)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Título Sugerido_ _Principio de Conservac (Cover).mp3",
+        "size_mb": 5.28,
+        "hash": "b1d27aa1fc52"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 5.28,
+    "modified_date": "2025-12-25T05:51:48.860861"
+  },
+  {
+    "song_name": "ultima_pagina_(cover)",
+    "title": "Ultima Pagina (Cover)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Ultima Pagina (Cover).mp3",
+        "size_mb": 5.49,
+        "hash": "ec7f27501bf7"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 5.49,
+    "modified_date": "2025-12-25T19:22:33.971566"
+  },
+  {
+    "song_name": "under_desert_skies",
+    "title": "Under Desert Skies",
+    "artist": "BlackMamba",
+    "status": "wav_only",
+    "quality": "hq",
+    "formats": {
+      "wav": {
+        "path": "/Users/blackmamba/Downloads/Under Desert Skies.wav",
+        "size_mb": 34.06,
+        "hash": "72240d81e8e7"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 34.06,
+    "modified_date": "2025-12-27T07:32:42.228374"
+  },
+  {
+    "song_name": "untitled",
+    "title": "Untitled",
+    "artist": "BlackMamba",
+    "status": "complete",
+    "quality": "premium",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Untitled (4).mp3",
+        "size_mb": 4.63,
+        "hash": "0863c30c2489"
+      },
+      "wav": {
+        "path": "/Users/blackmamba/Downloads/Untitled (1).wav",
+        "size_mb": 76.88,
+        "hash": "1c6febd3b367"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 81.51,
+    "modified_date": "2025-12-22T12:00:02.967531"
+  },
+  {
+    "song_name": "untitled_(cover)",
+    "title": "Untitled (Cover)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Untitled (Cover) (1).mp3",
+        "size_mb": 4.62,
+        "hash": "472dde4f8977"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.62,
+    "modified_date": "2025-12-21T00:19:18.348238"
+  },
+  {
+    "song_name": "untitled_project",
+    "title": "Untitled Project",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Untitled Project.mp3",
+        "size_mb": 1.38,
+        "hash": "6d183f711922"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 1.38,
+    "modified_date": "2025-12-20T19:18:17.816278"
+  },
+  {
+    "song_name": "verse_1",
+    "title": "Verse 1",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Verse 1.mp3",
+        "size_mb": 4.56,
+        "hash": "f2a0d64a7e57"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.56,
+    "modified_date": "2025-12-21T11:29:09.755795"
+  },
+  {
+    "song_name": "voicerecordingstarted",
+    "title": "Voicerecordingstarted",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/voiceRecordingStarted.mp3",
+        "size_mb": 0.03,
+        "hash": "2ed321b4a878"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.03,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "voicerecordingstopped",
+    "title": "Voicerecordingstopped",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/voiceRecordingStopped.mp3",
+        "size_mb": 0.02,
+        "hash": "6f808887d585"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.02,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "warning",
+    "title": "Warning",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/warning.mp3",
+        "size_mb": 0.04,
+        "hash": "67e694f86d15"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 0.04,
+    "modified_date": "2025-12-10T02:05:40"
+  },
+  {
+    "song_name": "whatsapp_audio_2025-12-23_at_18.01.37_(cover)",
+    "title": "Whatsapp Audio 2025-12-23 At 18.01.37 (Cover)",
+    "artist": "BlackMamba",
+    "status": "complete",
+    "quality": "premium",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/WhatsApp Audio 2025-12-23 at 18.01.37 (Cover).mp3",
+        "size_mb": 1.72,
+        "hash": "0f0c98fd99a3"
+      },
+      "wav": {
+        "path": "/Users/blackmamba/Downloads/WhatsApp Audio 2025-12-23 at 18.01.37 (Cover) (1).wav",
+        "size_mb": 15.23,
+        "hash": "cb8b7582b388"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 16.95,
+    "modified_date": "2025-12-23T18:40:40.637707"
+  },
+  {
+    "song_name": "whatsapp_audio_2025-12-23_at_18.01.37_(cover)_(cover)",
+    "title": "Whatsapp Audio 2025-12-23 At 18.01.37 (Cover) (Cover)",
+    "artist": "BlackMamba",
+    "status": "complete",
+    "quality": "premium",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/WhatsApp Audio 2025-12-23 at 18.01.37 (Cover) (Cover) (1).mp3",
+        "size_mb": 3.87,
+        "hash": "de3614d88465"
+      },
+      "wav": {
+        "path": "/Users/blackmamba/Downloads/WhatsApp Audio 2025-12-23 at 18.01.37 (Cover) (Cover).wav",
+        "size_mb": 35.63,
+        "hash": "f0fa81d51d85"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 39.5,
+    "modified_date": "2025-12-23T19:43:30.489263"
+  },
+  {
+    "song_name": "whatsapp_audio_2025-12-25_at_22.58.21_(cover)",
+    "title": "Whatsapp Audio 2025-12-25 At 22.58.21 (Cover)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/WhatsApp Audio 2025-12-25 at 22.58.21 (Cover).mp3",
+        "size_mb": 5.02,
+        "hash": "706212961b73"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 5.02,
+    "modified_date": "2025-12-26T06:19:26.351665"
+  },
+  {
+    "song_name": "where_the_wildflowers_grow",
+    "title": "Where The Wildflowers Grow",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Where the Wildflowers Grow.mp3",
+        "size_mb": 5.07,
+        "hash": "db7ee95395ba"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 5.07,
+    "modified_date": "2025-12-21T04:12:42.328421"
+  },
+  {
+    "song_name": "your_hands",
+    "title": "Your Hands",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Your Hands.mp3",
+        "size_mb": 6.55,
+        "hash": "bbd752eaf7c5"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 6.55,
+    "modified_date": "2025-12-21T04:04:33.861323"
+  },
+  {
+    "song_name": "your_hands_(remix)",
+    "title": "Your Hands (Remix)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Your Hands (Remix) (1).mp3",
+        "size_mb": 4.93,
+        "hash": "5da0db219696"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.93,
+    "modified_date": "2025-12-21T04:19:17.183376"
+  },
+  {
+    "song_name": "your_shadow_crawls_across_my_bed",
+    "title": "Your Shadow Crawls Across My Bed",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/Your shadow crawls across my bed (1).mp3",
+        "size_mb": 5.67,
+        "hash": "d8824f940b01"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 5.67,
+    "modified_date": "2025-12-21T10:10:45.679536"
+  },
+  {
+    "song_name": "“luz_de_kali”",
+    "title": "“Luz De Kali”",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/“Luz de Kali”.mp3",
+        "size_mb": 4.25,
+        "hash": "4e619fcec8c2"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.25,
+    "modified_date": "2025-12-26T00:44:02.675387"
+  },
+  {
+    "song_name": "🌱_“la_vida_que_respira”",
+    "title": "🌱 “La Vida Que Respira”",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/🌱 “La Vida Que Respira”.mp3",
+        "size_mb": 3.63,
+        "hash": "64c2669cbb40"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 3.63,
+    "modified_date": "2025-12-23T05:59:30.227303"
+  },
+  {
+    "song_name": "🌴_“summer_never_ends_(did_i_mention_pt._(cover)",
+    "title": "🌴 “Summer Never Ends (Did I Mention Pt. (Cover)",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/🌴 “Summer Never Ends (Did I Mention Pt. (Cover).mp3",
+        "size_mb": 4.76,
+        "hash": "848314788d87"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.76,
+    "modified_date": "2025-12-19T09:44:38.225819"
+  },
+  {
+    "song_name": "🌺_“venus_vibez”_🌺",
+    "title": "🌺 “Venus Vibez” 🌺",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/🌺 “Venus Vibez” 🌺.mp3",
+        "size_mb": 4.67,
+        "hash": "b8a435c5e1fe"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.67,
+    "modified_date": "2025-12-21T09:27:34.713233"
+  },
+  {
+    "song_name": "🎵_belén_–_roots_&_west_coast_flow",
+    "title": "🎵 Belén – Roots & West Coast Flow",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/🎵 Belén – Roots & West Coast Flow.mp3",
+        "size_mb": 2.92,
+        "hash": "945665fc1148"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 2.92,
+    "modified_date": "2025-12-21T05:08:06.944409"
+  },
+  {
+    "song_name": "🎵_“luces_de_ciudad”",
+    "title": "🎵 “Luces De Ciudad”",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/🎵 “Luces de Ciudad”.mp3",
+        "size_mb": 2.86,
+        "hash": "06c42ba1ea7f"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 2.86,
+    "modified_date": "2025-12-21T10:03:58.137676"
+  },
+  {
+    "song_name": "🎵_“luces_rojas”",
+    "title": "🎵 “Luces Rojas”",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/🎵 “Luces Rojas”.mp3",
+        "size_mb": 2.84,
+        "hash": "c1ab5d4826ae"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 2.84,
+    "modified_date": "2025-12-21T10:01:48.351185"
+  },
+  {
+    "song_name": "🎵_“medianoche”",
+    "title": "🎵 “Medianoche”",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/🎵 “Medianoche” (1).mp3",
+        "size_mb": 2.58,
+        "hash": "20063d941cda"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 2.58,
+    "modified_date": "2025-12-21T09:53:37.754437"
+  },
+  {
+    "song_name": "🎶__antes_de_morir__🎶",
+    "title": "🎶  Antes De Morir  🎶",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/🎶 _Antes de Morir_ 🎶.mp3",
+        "size_mb": 4.96,
+        "hash": "1aad5c9b8479"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.96,
+    "modified_date": "2025-12-21T11:27:57.658103"
+  },
+  {
+    "song_name": "🎶__sekhmet,_mi_sol__🎶",
+    "title": "🎶  Sekhmet, Mi Sol  🎶",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/🎶 _Sekhmet, mi sol_ 🎶.mp3",
+        "size_mb": 5.95,
+        "hash": "ec3ec028033f"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 5.95,
+    "modified_date": "2025-12-21T09:44:09.454853"
+  },
+  {
+    "song_name": "🎶__vianey_vibes__🎶",
+    "title": "🎶  Vianey Vibes  🎶",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/🎶 _Vianey Vibes_ 🎶 (1).mp3",
+        "size_mb": 2.8,
+        "hash": "267dd5875f41"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 2.8,
+    "modified_date": "2025-12-21T09:48:32.749768"
+  },
+  {
+    "song_name": "🎶_rola_para_vianey_–_“afterglow”_🎶",
+    "title": "🎶 Rola Para Vianey – “Afterglow” 🎶",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/🎶 Rola para Vianey – “Afterglow” 🎶.mp3",
+        "size_mb": 4.95,
+        "hash": "e007d44a00c1"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.95,
+    "modified_date": "2025-12-21T09:35:04.591309"
+  },
+  {
+    "song_name": "🎶_“ganja_love”_–_blackmamba🐍🔥👑",
+    "title": "🎶 “Ganja Love” – Blackmamba🐍🔥👑",
+    "artist": "BlackMamba",
+    "status": "mp3_only",
+    "quality": "standard",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/🎶 “Ganja Love” – BlackMamba🐍🔥👑.mp3",
+        "size_mb": 4.09,
+        "hash": "4229bba365a2"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 4.09,
+    "modified_date": "2025-12-21T10:23:08.380291"
+  },
+  {
+    "song_name": "🎸_rubi_—_luz_de_fuego_(versión_rock_psi_(cover)",
+    "title": "🎸 Rubi — Luz De Fuego (Versión Rock Psi (Cover)",
+    "artist": "BlackMamba",
+    "status": "complete",
+    "quality": "premium",
+    "formats": {
+      "mp3": {
+        "path": "/Users/blackmamba/Downloads/🎸 Rubi — Luz de Fuego (Versión Rock Psi (Cover).mp3",
+        "size_mb": 2.75,
+        "hash": "3318c22f9f6f"
+      },
+      "wav": {
+        "path": "/Users/blackmamba/Downloads/🎸 Rubi — Luz de Fuego (Versión Rock Psi (Cover) (1).wav",
+        "size_mb": 29.29,
+        "hash": "27aae0d3a359"
+      }
+    },
+    "locations": [
+      "Downloads"
+    ],
+    "size_total_mb": 32.04,
+    "modified_date": "2025-12-25T23:16:26.987530"
+  }
+]
