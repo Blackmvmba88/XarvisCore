@@ -1,0 +1,65 @@
+#EXTM3U
+# BlackMamba - 30 Canciones Más Ligeras
+# Generated: 2025-12-27 23:48:33
+# Total tracks: 30
+
+#EXTINF:-1,BlackMamba - Taskcompleted
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/taskCompleted.mp3
+#EXTINF:-1,BlackMamba - Codeactionapplied
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/codeActionApplied.mp3
+#EXTINF:-1,BlackMamba - Codeactiontriggered
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/codeActionTriggered.mp3
+#EXTINF:-1,BlackMamba - Editskept
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/editsKept.mp3
+#EXTINF:-1,BlackMamba - Break
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/break.mp3
+#EXTINF:-1,BlackMamba - Difflinedeleted
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/diffLineDeleted.mp3
+#EXTINF:-1,BlackMamba - Difflineinserted
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/diffLineInserted.mp3
+#EXTINF:-1,BlackMamba - Difflinemodified
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/diffLineModified.mp3
+#EXTINF:-1,BlackMamba - Error
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/error.mp3
+#EXTINF:-1,BlackMamba - Format
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/format.mp3
+#EXTINF:-1,BlackMamba - Requestsent
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/requestSent.mp3
+#EXTINF:-1,BlackMamba - Warning
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/warning.mp3
+#EXTINF:-1,BlackMamba - Chatuseractionrequired
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/chatUserActionRequired.mp3
+#EXTINF:-1,BlackMamba - Clear
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/clear.mp3
+#EXTINF:-1,BlackMamba - Editsundone
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/editsUndone.mp3
+#EXTINF:-1,BlackMamba - Nexteditsuggestion
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/nextEditSuggestion.mp3
+#EXTINF:-1,BlackMamba - Progress
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/progress.mp3
+#EXTINF:-1,BlackMamba - Quickfixes
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/quickFixes.mp3
+#EXTINF:-1,BlackMamba - Responsereceived1
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/responseReceived1.mp3
+#EXTINF:-1,BlackMamba - Responsereceived2
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/responseReceived2.mp3
+#EXTINF:-1,BlackMamba - Responsereceived3
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/responseReceived3.mp3
+#EXTINF:-1,BlackMamba - Responsereceived4
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/responseReceived4.mp3
+#EXTINF:-1,BlackMamba - Save
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/save.mp3
+#EXTINF:-1,BlackMamba - Terminalbell
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/terminalBell.mp3
+#EXTINF:-1,BlackMamba - Terminalcommandsucceeded
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/terminalCommandSucceeded.mp3
+#EXTINF:-1,BlackMamba - Voicerecordingstarted
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/voiceRecordingStarted.mp3
+#EXTINF:-1,BlackMamba - Chateditmodifiedfile
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/chatEditModifiedFile.mp3
+#EXTINF:-1,BlackMamba - Foldedareas
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/foldedAreas.mp3
+#EXTINF:-1,BlackMamba - Success
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/success.mp3
+#EXTINF:-1,BlackMamba - Voicerecordingstopped
+/Users/blackmamba/Downloads/Visual Studio Code.app/Contents/Resources/app/out/vs/platform/accessibilitySignal/browser/media/voiceRecordingStopped.mp3

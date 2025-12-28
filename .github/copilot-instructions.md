@@ -1,5 +1,63 @@
 # Xarvis Core: Instrucciones para Agentes de IA
 
+## 🚀 Quick Start para Agentes
+
+### Comandos Esenciales
+```bash
+# Iniciar sistema completo
+python3 xarvis_supervisor.py
+
+# Validar estado del sistema
+bash 5_INFRA/validate_system.sh
+
+# Ver logs en tiempo real
+tail -f 5_INFRA/logs/{master,core,full_power,ram_guardian}.log
+
+# Verificar procesos activos
+lsof -i :5050,8080
+
+# Instalar dependencias
+pip install -r requirements.txt
+```
+
+### Patrones Clave de Código
+```python
+# Protocolo estándar (protocolo filosófico)
+class MiProtocolo:
+    def __init__(self):
+        self.philosophy = "Razón de ser"
+        self.status = "Operativo"
+    
+    def get_status_data(self):
+        return {"pillar": {...}, "timestamp": ...}
+
+# Motor estándar (sistema ejecutable)
+class MiEngine:
+    def __init__(self):
+        self.config = {...}
+    
+    def process(self, data):
+        # Lógica de procesamiento
+        return result
+
+# Singleton global para integración
+protocol = MiProtocolo()
+```
+
+### Estructura de Rutas Flask
+```python
+@app.route('/api/endpoint', methods=['GET', 'POST'])
+def endpoint():
+    return jsonify({"status": "ok", "data": {...}})
+```
+
+### Reglas de Oro
+1. **Rutas relativas**: Ejecuta módulos con `cwd=os.path.dirname(config["path"])`
+2. **Logs centralizados**: Todo en `5_INFRA/logs/`, nunca en directorios de módulos
+3. **Puertos hardcodeados**: 5050 (CORE), 8080 (POWER), 9001 (VPA), 8000 (varios)
+4. **Bilingüe**: Términos filosóficos en español, términos técnicos en inglés
+5. **Auto-recuperación**: Supervisor reinicia servicios caídos cada 15 segundos
+
 ## Filosofía del Proyecto
 XarvisCore es una **arquitectura de sistema soberano** construida sobre principios de autogobierno, custodia y toma de decisiones racional. El código implementa una infraestructura modular basada en "dominios" donde servicios independientes se orquestan en un todo unificado. Cada módulo refleja un compromiso filosófico con la transparencia, el honor y la resiliencia sistémica.
 
@@ -66,6 +124,12 @@ Ejecuta [../5_INFRA/setup_xarvis.sh](../5_INFRA/setup_xarvis.sh) primero en máq
 - Crea LaunchAgent `com.xarvis.autocheck` para monitoreo de salud del sistema
 - Configura script de auto-chequeo que valida Docker, red y servicios
 
+**Validación del Sistema**:
+```bash
+bash 5_INFRA/validate_system.sh
+# Verifica: dominios, archivos críticos, sintaxis Python, dependencias
+```
+
 ### Archivos de Configuración
 - **BASE_DIR hardcodeado**: `/Users/blackmamba/Desktop/XarvisCore` aparece en supervisor y módulos core
 - **Certificados**: Se esperan en `2_GUARDIANS/xarvis_certificados/{cert.pem, key.pem}`
@@ -75,11 +139,18 @@ Ejecuta [../5_INFRA/setup_xarvis.sh](../5_INFRA/setup_xarvis.sh) primero en máq
 ### Dependencias
 Los servicios core requieren dependencias mínimas:
 ```
-flask
-flask-cors
-psutil
-python-dotenv
+flask>=3.0.0
+flask-cors>=4.0.0
+psutil>=5.9.0
+python-dotenv>=1.0.0
 ```
+
+**Dependencias por Dominio**:
+- **10_CULTURAL_RENAISSANCE**: chromaprint, sox, shazamio (audio detector)
+- **15_TRANSCRIPTION_ENGINE**: whisper, language-detection (transcripción)
+- **17_AI_EXPERIMENTS**: ollama (para Hermes RAG), pygame, numpy
+
+Consulta `requirements.txt` en la raíz para la lista completa.
 
 **Gestión de Entorno Virtual**:
 ```bash
@@ -219,6 +290,16 @@ tail -f 5_INFRA/logs/{master,core,full_power}.log
 
 ### Estado del Roadmap
 Rastrea el progreso de implementación en [../EpicRoadmap.md](../EpicRoadmap.md) - usa sintaxis de checkbox `[x]` para fases completadas.
+
+### Estado de Submódulos
+Cinco directorios son submódulos Git con código local (sin URLs remotas):
+- `10_CULTURAL_RENAISSANCE/suno-suite`
+- `14_CREATIVE_TOOLS/metacraft`
+- `16_AGRICULTURE/cultivo-fresas`
+- `18_BLACKMAMBA_STATION/core`
+- `2_GUARDIANS/secure-ssh-vault`
+
+Ver [../SUBMODULES_STATUS.md](../SUBMODULES_STATUS.md) para detalles. Funcionan como código integrado sin necesidad de repos remotos independientes.
 
 ## Reglas de Organización de Archivos
 
