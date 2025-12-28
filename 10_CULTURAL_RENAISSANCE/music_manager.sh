@@ -20,7 +20,8 @@ echo "  6) 📁 Organizar en carpeta única"
 echo "  7) �️ Gestión de backups"
 echo "  8) 🎧 Analizar calidad de audio"
 echo "  9) 🔍 Buscar duplicados"
-echo "  10) �🚪 Salir"
+echo "  10) 🎤 Performance Suite (VPA + Detector)"
+echo "  11) 🚪 Salir"
 echo ""
 read -p "Opción: " option
 
@@ -70,6 +71,11 @@ case $option in
         python3 music_duplicate_finder.py
         ;;
     10)
+        echo "🎤 Iniciando Performance Suite..."
+        ./start_performance_suite.sh
+        ;;
+    11)
+        echo ""
         echo ""
         echo "👋 ¡Hasta pronto!"
         exit 0
