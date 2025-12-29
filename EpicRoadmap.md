@@ -80,8 +80,12 @@ Esta es la crónica de una promesa cumplida. Desde la creación del primer bit d
 - [x] **Filosofía de Becas:** Sistema "3+ áreas = GRATIS" implementado en la plataforma.
 - [x] **API REST:** Endpoints para catálogo, estadísticas y rutas de carrera.
 - [x] **UI Glassmorphism:** Tema Matrix/Cyberpunk con estética soberana.
+- [x] **Sistema de Planificación Pedagógica:** TEACHING_GUIDE.md + 4 planes detallados implementados.
+- [x] **Portal de Tutores:** Interfaz `/tutor` con metodología BMU completa.
+- [x] **Planes de Clase:** 4 cursos con desglose semanal (cimientos, teoría musical, ética, nutrición).
+- [x] **Metodología 70/30:** 70% práctica, 30% teoría con proyectos comunitarios reales.
+- [ ] **Expansión de Planes:** Crear 43 planes pedagógicos restantes (20 fundacionales + 23 avanzados).
 - [ ] **Red Federal BMU:** Cimentar la estructura de una universidad por estado y ciudad.
-- [ ] **Etapa 1 (Soberanía):** Desarrollar los módulos de habilidades vitales (Hogar, Higiene, Ética).
 - [ ] **Sistema de Estudiantes:** Base de datos, registro, tracking de progreso.
 - [ ] **Contenido Educativo:** Videos, quizzes, foros, materiales descargables.
 - [ ] **Certificación Automática:** Generador de certificados PDF con firma digital.

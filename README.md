@@ -91,6 +91,7 @@ BMU redefine la educación como un acto de valentía y aprendizaje multidiscipli
 *   **Tecnología de Vanguardia:** Basada en el estándar de excelencia del Arquitecto (ver [Certificaciones de Iyari](https://www.linkedin.com/in/iyari-c/details/certifications/)).
 *   **Nodos Globales:** Una universidad por estado y ciudad, conectadas por la inteligencia de Xarvis.
 *   **🎓 Plataforma Activa:** Acceso al catálogo completo en [http://localhost:7777](http://localhost:7777) (23+ certificaciones, 3 rutas de carrera)
+*   **👨‍🏫 Portal de Tutores:** Sistema completo de planificación pedagógica en [http://localhost:7777/tutor](http://localhost:7777/tutor)
 
 ### 📚 El Atlas de Conocimiento del Rey (Expertise BMU):
 Basado en las certificaciones alcanzadas por el Arquitecto Iyari Cancino Gomez en 2025:
@@ -100,6 +101,13 @@ Basado en las certificaciones alcanzadas por el Arquitecto Iyari Cancino Gomez e
 *   **📊 Ciencia de Datos:** Big Data con PySpark, Limpieza de Datos Avanzada y Data Science estratégico.
 *   **🎨 Creatividad & Videojuegos:** Diseño de Videojuegos, Modelado 3D (SketchUp) y Suite Visual de Canva.
 *   **🏫 Pedagogía Soberana:** Fundamentos docentes y democratización del conocimiento.
+
+### 👨‍🏫 Metodología Pedagógica BMU:
+*   **70% Práctica, 30% Teoría:** El aprendizaje real sucede haciendo, no memorizando.
+*   **Estructura de Sesión:** 150 minutos divididos en 5 segmentos (apertura, teoría, práctica guiada, práctica autónoma, cierre reflexivo).
+*   **Proyectos Comunitarios Reales:** Las evaluaciones finales impactan al mundo real (construcción de casas, conciertos comunitarios, sistemas de justicia).
+*   **Tutores como Facilitadores:** No dictadores de conocimiento, sino mentores que guían el descubrimiento.
+*   **Recursos Documentados:** Ver [TEACHING_GUIDE.md](7_EDUCATION_SYSTEM/TEACHING_GUIDE.md) para guías completas por curso.
 
 ---
 
