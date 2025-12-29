@@ -230,7 +230,7 @@ El RAM Guardian (`3_POWER/ram_guardian.py`) protege el sistema de sobrecarga de 
 - Cierre inteligente de procesos de baja prioridad (Chrome Helper, Slack, etc.)
 - Logging detallado de intervenciones y memoria liberada
 
-## Dominios Especializados (14-18)
+## Dominios Especializados (7, 14-19)
 
 ### 14_CREATIVE_TOOLS: Arsenal Creativo
 Suite completa de herramientas para producción multimedia:
@@ -239,6 +239,27 @@ Suite completa de herramientas para producción multimedia:
 - **Audio 3D Lab**: Laboratorio de audio espacial con backends Open3D, PyQtGraph, VTK
 - **Metacraft**: Herramienta de metacreación
 - **YTDLP-Web**: Interfaz web con pitch shifting
+
+### 7_EDUCATION_SYSTEM: BlackMamba University (BMU)
+Plataforma completa de educación soberana con 23+ certificaciones:
+- **Filosofía**: "Paga por una si quieres lujo; estudia tres y el Rey te las paga todas"
+- **bmu_platform.py**: Servidor Flask en puerto 7777 con catálogo completo
+- **Sistema de Becas**: 3+ áreas simultáneas = COSTO CERO
+- **6 Áreas de Conocimiento**: IA Neuronal, Ingeniería, Ciberseguridad, Data Science, Creatividad, Pedagogía
+- **3 Rutas de Carrera**: Polímata Tecnológico, Arquitecto de Datos, Ingeniero Creativo
+- **API REST**: `/api/catalog`, `/api/stats`, `/api/career/<path_id>`
+- **UI Glassmorphism**: Tema Matrix/Cyberpunk con estadísticas en vivo
+- **800+ Horas de Contenido**: Basado en certificaciones reales del Arquitecto
+- **Roadmap**: Fase 1 completa (catálogo), Fase 2-6 pendientes (estudiantes, contenido, certificación, IA)
+- **Launcher**: `start_bmu.sh` para ejecución rápida
+- **Estado**: ✅ Fase 1 operacional, puerto 7777
+
+**Ejecutar BMU**:
+```bash
+cd 7_EDUCATION_SYSTEM
+/Users/blackmamba/Desktop/XarvisCore/venv/bin/python3 bmu_platform.py
+# Acceso en: http://localhost:7777
+```
 
 ### 15_ESCRIBA/TRANSCRIPTION_ENGINE: Motor de Transcripción
 Sistema completo de transcripción con base de datos SQLite:
