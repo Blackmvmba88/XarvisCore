@@ -145,6 +145,198 @@ CERTIFICATIONS = {
     }
 }
 
+# === PLANIFICACIÓN PEDAGÓGICA PARA TUTORES ===
+# Cada curso tiene su propia guía didáctica completa
+TEACHING_PLANS = {
+    # FUNDAMENTOS - Construcción del Hogar
+    "cimientos": {
+        "duracion_semanas": 6,
+        "sesiones_semanales": 2,
+        "duracion_sesion": "2.5h",
+        "objetivo_general": "Capacitar al estudiante en la construcción de cimientos sólidos con técnicas seguras y profesionales",
+        "modulos": [
+            {
+                "semana": "1-2",
+                "tema": "Tipos de Suelo y Preparación",
+                "objetivos": ["Identificar tipos de suelo", "Realizar excavaciones seguras", "Calcular profundidad de cimientos"],
+                "actividades": ["Análisis de muestras de suelo", "Práctica de excavación manual", "Cálculos de resistencia"],
+                "materiales": ["Palas, piochas", "Muestras de suelo", "Nivel láser", "Calculadora de estructuras"],
+                "evaluacion": "Práctica supervisada de excavación + Quiz teórico"
+            },
+            {
+                "semana": "3-4",
+                "tema": "Mezcla de Concreto y Armado",
+                "objetivos": ["Preparar mezcla de concreto correcta", "Instalar armado de acero", "Cimbrar correctamente"],
+                "actividades": ["Práctica de mezclas 1:2:3", "Doblado y amarre de varillas", "Instalación de cimbra"],
+                "materiales": ["Cemento, arena, grava", "Varillas corrugadas", "Alambre recocido", "Madera para cimbra"],
+                "evaluacion": "Construcción de maqueta de cimiento a escala"
+            },
+            {
+                "semana": "5-6",
+                "tema": "Vaciado y Curado",
+                "objetivos": ["Vaciar concreto sin segregación", "Vibrar correctamente", "Aplicar técnicas de curado"],
+                "actividades": ["Vaciado simulado", "Uso de vibrador", "Métodos de curado húmedo"],
+                "materiales": ["Carretilla", "Vibrador de concreto", "Manguera", "Plástico para curado"],
+                "evaluacion": "Proyecto final: Construcción de cimiento real (práctica comunitaria)"
+            }
+        ],
+        "recursos_tutor": ["Manual de construcción ACI", "Videos técnicos de CEMEX", "Normas NTC para construcción"],
+        "evaluacion_final": "Construcción supervisada de cimiento para proyecto comunitario real"
+    },
+    
+    "teoria_musical": {
+        "duracion_semanas": 6,
+        "sesiones_semanales": 2,
+        "duracion_sesion": "2.5h",
+        "objetivo_general": "Dominar los fundamentos de teoría musical como base de comprensión universal",
+        "modulos": [
+            {
+                "semana": "1-2",
+                "tema": "Ritmo y Tiempo Universal",
+                "objetivos": ["Entender el tiempo como arquitectura", "Dominar compases básicos", "Sentir el pulso interno"],
+                "actividades": ["Ejercicios de percusión corporal", "Análisis de ritmos naturales (corazón, respiración)", "Práctica de compases 4/4, 3/4, 6/8"],
+                "materiales": ["Metrónomo", "Instrumentos de percusión básica", "Grabaciones de la naturaleza"],
+                "evaluacion": "Composición rítmica basada en patrones naturales"
+            },
+            {
+                "semana": "3-4",
+                "tema": "Melodía y Escalas",
+                "objetivos": ["Construcción de escalas mayores/menores", "Intervalos y su significado emocional", "Melodía como narrativa"],
+                "actividades": ["Construcción física de escalas", "Improvisación melódica", "Análisis de melodías famosas"],
+                "materiales": ["Teclado o piano", "Software de notación (MuseScore)", "Grabador de audio"],
+                "evaluacion": "Crear melodía original que cuente una historia"
+            },
+            {
+                "semana": "5-6",
+                "tema": "Armonía: La Geometría del Sonido",
+                "objetivos": ["Construir acordes triada", "Progresiones armónicas clásicas", "Armonía como arquitectura emocional"],
+                "actividades": ["Construcción de acordes I-IV-V", "Análisis armónico de canciones BlackMamba RECORDS", "Práctica de cifrado"],
+                "materiales": ["Instrumento armónico", "Partituras de análisis", "DAW básico (GarageBand/Reaper)"],
+                "evaluacion": "Armonización de melodía propia + Análisis escrito de progresión"
+            }
+        ],
+        "recursos_tutor": ["Catálogo BlackMamba RECORDS (280+ tracks)", "The Jazz Theory Book - Mark Levine", "Videos de análisis musical"],
+        "evaluacion_final": "Composición completa (ritmo + melodía + armonía) con análisis teórico adjunto"
+    },
+    
+    "etica_moral": {
+        "duracion_semanas": 4,
+        "sesiones_semanales": 2,
+        "duracion_sesion": "2.5h",
+        "objetivo_general": "Establecer el código de honor personal basado en principios inmutables",
+        "modulos": [
+            {
+                "semana": "1",
+                "tema": "El Fundamento: No Mentirse a Uno Mismo",
+                "objetivos": ["Identificar auto-engaños comunes", "Practicar honestidad radical", "Distinguir verdad de confort"],
+                "actividades": ["Diario de auto-reflexión", "Ejercicios de decisión ética", "Casos de estudio reales"],
+                "materiales": ["Diario personal", "Casos de estudio impresos", "Guía de reflexión"],
+                "evaluacion": "Ensayo sobre una decisión difícil propia analizada con honestidad"
+            },
+            {
+                "semana": "2",
+                "tema": "Responsabilidad Total",
+                "objetivos": ["Eliminar mentalidad de víctima", "Asumir consecuencias", "Distinguir control vs. influencia"],
+                "actividades": ["Mapeo de áreas de control", "Role-playing de situaciones complejas", "Análisis de El Manifiesto Soberano"],
+                "materiales": ["The Long Manifesto (lectura obligatoria)", "Círculos de influencia (diagrama)", "Casos prácticos"],
+                "evaluacion": "Plan de acción para problema personal asumiendo responsabilidad total"
+            },
+            {
+                "semana": "3",
+                "tema": "Justicia sin Venganza",
+                "objetivos": ["Diferenciar justicia de venganza", "Aplicar consecuencias proporcionales", "Restauración vs. Castigo"],
+                "actividades": ["Debate socrático", "Análisis de sistemas judiciales", "Resolución de conflictos reales"],
+                "materiales": ["Códigos de honor históricos", "Casos legales para análisis", "Principios restaurativos"],
+                "evaluacion": "Diseño de sistema de justicia para comunidad pequeña"
+            },
+            {
+                "semana": "4",
+                "tema": "El Código Personal",
+                "objetivos": ["Definir principios propios inmutables", "Crear código de honor escrito", "Comprometerse públicamente"],
+                "actividades": ["Redacción de código personal", "Ceremonia de compromiso", "Establecer accountability"],
+                "materiales": ["Formato de código de honor", "Ejemplos históricos", "Testigos de compromiso"],
+                "evaluacion": "Presentación pública de código de honor personal + compromiso ante comunidad"
+            }
+        ],
+        "recursos_tutor": ["The Long Manifesto - Iyari Cancino Gomez", "Meditations - Marcus Aurelius", "Código de Hammurabi (análisis)"],
+        "evaluacion_final": "Código de Honor Personal firmado + Proyecto de aplicación en comunidad"
+    },
+    
+    "nutricion": {
+        "duracion_semanas": 4,
+        "sesiones_semanales": 2,
+        "duracion_sesion": "2.5h",
+        "objetivo_general": "Dominar nutrición inteligente para soberanía alimentaria",
+        "modulos": [
+            {
+                "semana": "1",
+                "tema": "Macronutrientes y Energía",
+                "objetivos": ["Calcular necesidades calóricas", "Balancear carbohidratos/proteínas/grasas", "Leer etiquetas correctamente"],
+                "actividades": ["Cálculo de TDEE personal", "Análisis de dieta actual", "Comparación de alimentos"],
+                "materiales": ["Calculadora nutricional", "Báscula de alimentos", "App de tracking (MyFitnessPal)"],
+                "evaluacion": "Plan nutricional personalizado de 1 semana"
+            },
+            {
+                "semana": "2",
+                "tema": "Micronutrientes y Suplementación",
+                "objetivos": ["Identificar deficiencias comunes", "Fuentes naturales de vitaminas/minerales", "Cuándo suplementar"],
+                "actividades": ["Análisis de sangre (lectura)", "Diseño de menú rico en micronutrientes", "Comparativa suplementos"],
+                "materiales": ["Tablas nutricionales", "Muestras de suplementos", "Guía de síntomas de deficiencia"],
+                "evaluacion": "Menú de 3 días optimizado para micronutrientes sin suplementos"
+            },
+            {
+                "semana": "3",
+                "tema": "Nutrición Deportiva y Rendimiento",
+                "objetivos": ["Timing de nutrientes", "Pre/post entrenamiento", "Hidratación inteligente"],
+                "actividades": ["Diseño de protocolo deportivo", "Preparación de comidas pre/post", "Práctica de hidratación"],
+                "materiales": ["Shakers", "Ingredientes deportivos", "Medidor de hidratación"],
+                "evaluacion": "Protocolo nutricional completo para rutina de ejercicio personal"
+            },
+            {
+                "semana": "4",
+                "tema": "Cocina Nutritiva Práctica",
+                "objetivos": ["Técnicas que preservan nutrientes", "Meal prep eficiente", "Presupuesto inteligente"],
+                "actividades": ["Sesión de cocina grupal", "Batch cooking", "Compra inteligente en mercado"],
+                "materiales": ["Utensilios de cocina", "Ingredientes frescos", "Contenedores meal prep"],
+                "evaluacion": "Meal prep de 5 días con presupuesto < $500 MXN + análisis nutricional"
+            }
+        ],
+        "recursos_tutor": ["Tablas USDA de nutrición", "Guía de suplementación basada en evidencia", "Recetarios de alto rendimiento"],
+        "evaluacion_final": "Plan nutricional de 30 días + Meal prep + Presupuesto + Análisis de macro/micronutrientes"
+    }
+}
+
+# Metodología Pedagógica BMU
+TEACHING_METHODOLOGY = {
+    "filosofia": "Aprender haciendo. La teoría sin práctica es conocimiento muerto.",
+    "principios": [
+        "70% práctica, 30% teoría",
+        "Proyectos comunitarios reales como evaluación",
+        "Mentorías peer-to-peer",
+        "No hay fracaso, solo retroalimentación",
+        "Enseñar es la mejor forma de aprender"
+    ],
+    "estructura_sesion": {
+        "apertura": "15min - Repaso y conexión con vida real",
+        "teoria": "30min - Conceptos fundamentales",
+        "practica_guiada": "60min - Hacer junto al tutor",
+        "practica_autonoma": "30min - Hacer con supervisión",
+        "cierre": "15min - Reflexión y siguiente sesión"
+    },
+    "evaluacion": {
+        "diagnostica": "Entrevista inicial + prueba práctica",
+        "formativa": "Retroalimentación continua en cada sesión",
+        "sumativa": "Proyecto final aplicado a comunidad real"
+    },
+    "rol_tutor": [
+        "Facilitador, no dictador",
+        "Modelo a seguir en la práctica",
+        "Mentor emocional y técnico",
+        "Conector con recursos comunitarios",
+        "Evaluador justo basado en esfuerzo y progreso"
+    ]
+}
+
 # Rutas de carreras múltiples (3+ = GRATIS)
 CAREER_PATHS = {
     "soberano_completo": {
@@ -707,6 +899,222 @@ def get_career_path(path_id):
         "path": path,
         "detailed_areas": detailed_areas
     })
+
+@app.route('/api/tutor/plan/<curso_id>')
+def get_teaching_plan(curso_id):
+    """Obtener planificación pedagógica de un curso"""
+    if curso_id not in TEACHING_PLANS:
+        return jsonify({"error": "Plan no encontrado. Planificaciones disponibles en desarrollo continuo."}), 404
+    
+    plan = TEACHING_PLANS[curso_id]
+    return jsonify({
+        "curso_id": curso_id,
+        "plan": plan,
+        "metodologia": TEACHING_METHODOLOGY
+    })
+
+@app.route('/api/tutor/methodology')
+def get_methodology():
+    """Metodología pedagógica completa de BMU"""
+    return jsonify(TEACHING_METHODOLOGY)
+
+@app.route('/api/tutor/plans')
+def list_teaching_plans():
+    """Listar todos los planes pedagógicos disponibles"""
+    plans_summary = {}
+    for curso_id, plan in TEACHING_PLANS.items():
+        plans_summary[curso_id] = {
+            "duracion_semanas": plan["duracion_semanas"],
+            "sesiones_semanales": plan["sesiones_semanales"],
+            "objetivo_general": plan["objetivo_general"],
+            "total_modulos": len(plan["modulos"])
+        }
+    
+    return jsonify({
+        "total_plans": len(TEACHING_PLANS),
+        "plans": plans_summary,
+        "philosophy": TEACHING_METHODOLOGY["filosofia"]
+    })
+
+@app.route('/tutor')
+def tutor_dashboard():
+    """Dashboard para tutores con planificaciones"""
+    
+    TUTOR_TEMPLATE = """
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMU - Portal de Tutores</title>
+    <style>{{ css }}</style>
+    <style>
+        .plan-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .modulo {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--primary);
+            border-radius: 8px;
+        }
+        .modulo h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .section {
+            margin: 1rem 0;
+        }
+        .section strong {
+            color: var(--secondary);
+        }
+        .tag {
+            display: inline-block;
+            background: rgba(0, 255, 65, 0.2);
+            color: var(--primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            margin: 0.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>👨‍🏫 Portal de Tutores BMU</h1>
+        <p>Planificación Pedagógica y Metodología</p>
+    </div>
+
+    <div class="container">
+        <h2 class="section-title">🎯 Metodología BMU</h2>
+        <div class="plan-card">
+            <h3 style="color: var(--primary);">{{ metodologia.filosofia }}</h3>
+            <div class="section">
+                <strong>Principios Fundamentales:</strong>
+                <ul style="color: #888; margin-top: 0.5rem;">
+                    {% for principio in metodologia.principios %}
+                    <li>{{ principio }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <div class="section">
+                <strong>Estructura de Sesión (150min):</strong>
+                <ul style="color: #888; margin-top: 0.5rem;">
+                    <li>{{ metodologia.estructura_sesion.apertura }}</li>
+                    <li>{{ metodologia.estructura_sesion.teoria }}</li>
+                    <li>{{ metodologia.estructura_sesion.practica_guiada }}</li>
+                    <li>{{ metodologia.estructura_sesion.practica_autonoma }}</li>
+                    <li>{{ metodologia.estructura_sesion.cierre }}</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <strong>Rol del Tutor:</strong>
+                <ul style="color: #888; margin-top: 0.5rem;">
+                    {% for rol in metodologia.rol_tutor %}
+                    <li>{{ rol }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <h2 class="section-title">📚 Planificaciones Disponibles</h2>
+        {% for curso_id, plan in planes.items() %}
+        <div class="plan-card">
+            <h3 style="color: var(--primary);">Curso: {{ curso_id }}</h3>
+            <p style="color: #888; margin: 1rem 0;">{{ plan.objetivo_general }}</p>
+            
+            <div class="section">
+                <strong>Duración:</strong> {{ plan.duracion_semanas }} semanas | 
+                <strong>Sesiones:</strong> {{ plan.sesiones_semanales }}/semana ({{ plan.duracion_sesion }} c/u)
+            </div>
+            
+            <h4 style="color: var(--secondary); margin-top: 1.5rem;">Módulos del Curso:</h4>
+            {% for modulo in plan.modulos %}
+            <div class="modulo">
+                <h4>📅 Semana {{ modulo.semana }}: {{ modulo.tema }}</h4>
+                
+                <div class="section">
+                    <strong>Objetivos:</strong>
+                    <ul style="color: #888; margin-top: 0.5rem;">
+                        {% for objetivo in modulo.objetivos %}
+                        <li>{{ objetivo }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                
+                <div class="section">
+                    <strong>Actividades:</strong>
+                    <ul style="color: #888; margin-top: 0.5rem;">
+                        {% for actividad in modulo.actividades %}
+                        <li>{{ actividad }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                
+                <div class="section">
+                    <strong>Materiales Necesarios:</strong><br>
+                    {% for material in modulo.materiales %}
+                    <span class="tag">{{ material }}</span>
+                    {% endfor %}
+                </div>
+                
+                <div class="section" style="margin-top: 1rem;">
+                    <strong>Evaluación:</strong> <span style="color: #888;">{{ modulo.evaluacion }}</span>
+                </div>
+            </div>
+            {% endfor %}
+            
+            <div class="section" style="margin-top: 2rem; padding: 1rem; background: rgba(255, 170, 0, 0.1); border-radius: 8px;">
+                <strong style="color: var(--secondary);">📖 Recursos para el Tutor:</strong>
+                <ul style="color: #888; margin-top: 0.5rem;">
+                    {% for recurso in plan.recursos_tutor %}
+                    <li>{{ recurso }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <div class="section" style="margin-top: 1rem; padding: 1rem; background: rgba(0, 255, 65, 0.1); border-radius: 8px;">
+                <strong style="color: var(--primary);">✅ Evaluación Final:</strong>
+                <p style="color: #888; margin-top: 0.5rem;">{{ plan.evaluacion_final }}</p>
+            </div>
+        </div>
+        {% endfor %}
+        
+        <div class="cta-section">
+            <h2 class="cta-title">¿Quieres ser Tutor BMU?</h2>
+            <p class="cta-text">
+                Los tutores son pilares de la educación soberana.<br>
+                Si tienes experiencia en alguna área fundacional, únete al equipo.
+            </p>
+            <button onclick="alert('Proceso de certificación de tutores próximamente. Contacta: LinkedIn/in/iyari-c')">
+                📝 APLICAR COMO TUTOR
+            </button>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>🦅 BlackMamba University - Portal de Tutores</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">
+            "Enseñar es la mejor forma de aprender"
+        </p>
+    </div>
+</body>
+</html>
+    """
+    
+    return render_template_string(
+        TUTOR_TEMPLATE,
+        css=BMU_CSS,
+        metodologia=TEACHING_METHODOLOGY,
+        planes=TEACHING_PLANS
+    )
 
 if __name__ == '__main__':
     print("🎓 BlackMamba University Platform")
