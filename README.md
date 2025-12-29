@@ -90,6 +90,7 @@ BMU redefine la educación como un acto de valentía y aprendizaje multidiscipli
 *   **Cimientos de Soberanía (Nivel 1):** Antes de la teoría, enseñamos la vida: construcción de hogar, cocina, higiene, ética y responsabilidad.
 *   **Tecnología de Vanguardia:** Basada en el estándar de excelencia del Arquitecto (ver [Certificaciones de Iyari](https://www.linkedin.com/in/iyari-c/details/certifications/)).
 *   **Nodos Globales:** Una universidad por estado y ciudad, conectadas por la inteligencia de Xarvis.
+*   **🎓 Plataforma Activa:** Acceso al catálogo completo en [http://localhost:7777](http://localhost:7777) (23+ certificaciones, 3 rutas de carrera)
 
 ### 📚 El Atlas de Conocimiento del Rey (Expertise BMU):
 Basado en las certificaciones alcanzadas por el Arquitecto Iyari Cancino Gomez en 2025:
