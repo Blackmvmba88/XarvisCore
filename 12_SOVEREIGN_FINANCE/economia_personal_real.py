@@ -31,6 +31,14 @@ class InventarioActivos:
                 ],
                 "motocicletas": [],  # Usuario confirma que tiene
                 "instrumentos": [],
+                "seguridad": [
+                    {
+                        "tipo": "Raspberry Pi",
+                        "uso_actual": "Disponible",
+                        "potencial": ["Firewall", "VPN", "Backup automático", "Monitoring 24/7", "Honeypot"],
+                        "ventaja": "Consumo bajo, siempre encendida, aislada de Mac principal"
+                    }
+                ],
                 "otros": []
             },
             "digitales": {
@@ -85,6 +93,12 @@ class InventarioActivos:
                         "motocicleta": True,
                         "competencia_local": "Media-baja",
                         "ventaja": "Vehículo atractivo + múltiples especialidades"
+                    },
+                    "ciberseguridad_distribuida": {
+                        "hardware": "Raspberry Pi",
+                        "certificaciones": ["CompTIA Security+", "Gestión de Incidentes", "Shell Scripting"],
+                        "capacidades": ["Firewall personalizado", "VPN propia", "Monitoring 24/7", "Backups automáticos"],
+                        "ventaja": "Seguridad física separada del sistema principal"
                     }
                 }
             },
