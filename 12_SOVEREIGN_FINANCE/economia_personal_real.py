@@ -21,6 +21,15 @@ class InventarioActivos:
             "fisicos": {
                 "computadoras": [],
                 "equipo_dmx": [],
+                "vehiculos": [
+                    {
+                        "tipo": "Golf MK7 Turbo",
+                        "uso_actual": "Personal",
+                        "potencial": ["Clases manejo deportivo", "Clases turbo", "Experiencias conducción"],
+                        "estado": "Operativo"
+                    }
+                ],
+                "motocicletas": [],  # Usuario confirma que tiene
                 "instrumentos": [],
                 "otros": []
             },
@@ -69,6 +78,13 @@ class InventarioActivos:
                         "velocidad": "Alta",
                         "calidad": "Profesional",
                         "monetizacion": "Ya activa (6 meses)"
+                    },
+                    "conduccion_especializada": {
+                        "vehiculo_deportivo": "Golf MK7 Turbo",
+                        "especialidades": ["Manejo deportivo", "Control de turbo", "Conducción defensiva"],
+                        "motocicleta": True,
+                        "competencia_local": "Media-baja",
+                        "ventaja": "Vehículo atractivo + múltiples especialidades"
                     }
                 }
             },
@@ -397,6 +413,41 @@ class PlanMonetizacion:
                         "accion": "Grabar primeros 3 cursos"
                     }
                 }
+            },
+            "conduccion": {
+                "canales": {
+                    "clases_manejo_deportivo": {
+                        "status": "Disponible",
+                        "vehiculo": "Golf MK7 Turbo",
+                        "precio_sugerido": "$800-1,500 MXN por clase (2-3h)",
+                        "paquetes": {
+                            "basico": "$3,000 MXN (4 clases)",
+                            "deportivo": "$5,000 MXN (5 clases + circuito)",
+                            "turbo_avanzado": "$7,000 MXN (6 clases especializadas)"
+                        },
+                        "target": "Jóvenes 18-35, entusiastas autos",
+                        "accion": "Diseñar programa + publicitar en grupos autos"
+                    },
+                    "clases_motocicleta": {
+                        "status": "Disponible",
+                        "precio_sugerido": "$600-1,200 MXN por clase",
+                        "paquetes": {
+                            "principiante": "$2,500 MXN (4 clases)",
+                            "intermedio": "$3,500 MXN (5 clases)",
+                            "avanzado": "$4,500 MXN (6 clases)"
+                        },
+                        "certificacion": "Opcional - Licencia tipo A",
+                        "accion": "Programa + redes motociclistas"
+                    },
+                    "experiencias_conduccion": {
+                        "status": "No activado",
+                        "descripcion": "Experiencia conducción Golf Turbo en circuito/carretera",
+                        "precio_sugerido": "$2,000-3,500 MXN por experiencia",
+                        "duracion": "3-4 horas (teoría + práctica)",
+                        "target": "Regalos, cumpleaños, empresas",
+                        "accion": "Paquete experiencia + video del día"
+                    }
+                }
             }
         }
     
@@ -432,6 +483,13 @@ class PlanMonetizacion:
                 "prioridad": 2
             },
             {
+                "accion": "Lanzar clases de manejo deportivo (Golf Turbo)",
+                "tiempo": "7-14 días",
+                "potencial": "$3,000-7,000 MXN por alumno",
+                "dificultad": "Baja",
+                "prioridad": 2
+            },
+            {
                 "accion": "LinkedIn + pitch Xarvis Enterprise",
                 "tiempo": "30-90 días",
                 "potencial": "$50,000-200,000 MXN/año",
@@ -456,17 +514,19 @@ class PlanMonetizacion:
                 "musica_streaming": 1200,
                 "beats_online": 8000,
                 "curso_dmx": 15000,  # 1 alumno
+                "clases_manejo": 6000,  # 2 alumnos
                 "servicios_eventos": 5000,
-                "total": 29200
+                "total": 35200
             },
             "mes_7_9": {
                 "rentas": 0,
                 "musica_streaming": 1500,
                 "beats_online": 12000,
                 "curso_dmx": 30000,  # 2 alumnos
+                "clases_manejo": 12000,  # 4 alumnos
                 "herramientas_digitales": 4000,
                 "servicios_eventos": 8000,
-                "total": 55500
+                "total": 67500
             },
             "mes_10_12": {
                 "rentas": 0,
@@ -474,10 +534,12 @@ class PlanMonetizacion:
                 "beats_online": 15000,
                 "licencias_exclusivas": 10000,
                 "curso_dmx": 45000,  # 3 alumnos
+                "clases_manejo": 18000,  # 6 alumnos
+                "experiencias_conduccion": 6000,  # 2 experiencias
                 "xarvis_consultoria": 20000,
                 "servicios_eventos": 12000,
                 "diseño_freelance": 15000,
-                "total": 119000
+                "total": 143000
             }
         }
         
@@ -618,6 +680,8 @@ class EconomiaPersonalReal:
         print(f"💰 Total histórico: ${self.tracker.total_historico()} MXN")
         print(f"🎵 Música: 280+ tracks en distribución")
         print(f"💡 DMX: Especialista con baja competencia")
+        print(f"🚗 Golf MK7 Turbo: Clases deportivas + experiencias")
+        print(f"🏍️ Motocicleta: Clases especializadas")
         print(f"🤖 Xarvis Core: Sistema único sin competencia")
         print("\n🎯 Próximas acciones:")
         for i, accion in enumerate(self.plan.priorizar_acciones_inmediatas()[:3], 1):
