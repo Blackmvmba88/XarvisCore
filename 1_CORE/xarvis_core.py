@@ -4,8 +4,18 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 import secrets
+import sys
 
 load_dotenv()
+
+# Importar Quantum Core Protocol
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '19_QUANTUM_CORE'))
+try:
+    from quantum_core_protocol import quantum_core
+    QUANTUM_AVAILABLE = True
+except ImportError:
+    QUANTUM_AVAILABLE = False
+    print("⚠️ Quantum Core no disponible - Dashboard en modo básico")
 
 # --- Configuración Robusta ---
 BASE_DIR = "/Users/blackmamba/Desktop/XarvisCore"
@@ -144,7 +154,74 @@ DASHBOARD_PAGE = """
                 console.error("Master Power offline");
             }
         }
+        
+        async function updateQuantumCore() {
+            try {
+                const statusResponse = await fetch('/api/quantum/status');
+                const status = await statusResponse.json();
+                
+                if (status.error) {
+                    document.getElementById('quantum-status').innerText = 'STANDBY';
+                    document.getElementById('quantum-ollama').innerText = '❌ No disponible';
+                    return;
+                }
+                
+                // Estado de Ollama
+                const ollamaStatus = status.pilar_4_ollama.metricas.conectado;
+                document.getElementById('quantum-status').innerText = ollamaStatus ? 'OPERATIVO' : 'STANDBY';
+                document.getElementById('quantum-ollama').innerText = ollamaStatus ? '✅ ACTIVO' : '⚠️ Offline';
+                
+                // Modelos disponibles
+                const models = status.pilar_4_ollama.metricas.modelos_disponibles;
+                document.getElementById('quantum-models').innerText = models.length > 0 ? models.join(', ') : 'Ninguno';
+                
+                // Predicción
+                const predResponse = await fetch('/api/quantum/predict');
+                const prediction = await predResponse.json();
+                
+                if (prediction.scenarios && prediction.scenarios.length > 0) {
+                    const scenario = prediction.scenarios[0];
+                    document.getElementById('quantum-prediction').innerText = 
+                        `${scenario.name} (${Math.round(scenario.probability * 100)}%)`;
+                    document.getElementById('quantum-prediction').style.color = 
+                        scenario.impact === 'high' ? '#ff4444' : '#ffaa00';
+                } else {
+                    document.getElementById('quantum-prediction').innerText = 'Sistema estable';
+                    document.getElementById('quantum-prediction').style.color = 'var(--primary)';
+                }
+                
+            } catch (e) {
+                console.error("Quantum Core offline:", e);
+                document.getElementById('quantum-status').innerText = 'OFFLINE';
+            }
+        }
+        
+        async function queryOllama() {
+            const userPrompt = window.prompt('¿Qué quieres consultar al cerebro?', '¿Cuál es el estado del sistema?');
+            if (!userPrompt) return;
+            
+            document.getElementById('ollama-response').innerText = 'Pensando...';
+            
+            try {
+                const response = await fetch('/api/quantum/intelligence');
+                const data = await response.json();
+                
+                // Mostrar métricas básicas como respuesta
+                const msg = `CPU: ${data.hardware_metrics.cpu.usage_percent}%\\n` +
+                           `RAM: ${data.hardware_metrics.memory.percent}%\\n` +
+                           `Ollama: ${data.neural_processing.ollama_ready ? 'Activo' : 'Offline'}`;
+                document.getElementById('ollama-response').innerText = msg;
+            } catch (e) {
+                document.getElementById('ollama-response').innerText = 'Error en consulta';
+            }
+        }
+        
         setInterval(updateStats, 2000);
+        setInterval(updateQuantumCore, 5000);
+        
+        // Ejecutar al cargar
+        updateStats();
+        updateQuantumCore();
     </script>
 </head>
 <body>
@@ -188,6 +265,26 @@ DASHBOARD_PAGE = """
             <p>Alerta: <code style="color: var(--primary);">CERO CARENCIAS</code></p>
             <button onclick="alert('Calculando rutas de abasto...')">ESTADO SUMINISTROS</button>
         </div>
+        
+        <div class="glass-card" style="grid-column: span 2; background: linear-gradient(135deg, rgba(0, 255, 65, 0.05), rgba(0, 0, 0, 0.8)); border: 2px solid var(--primary);">
+            <h3>🧠 QUANTUM INTELLIGENCE CORE</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div>
+                    <p><strong>Estado:</strong> <span id="quantum-status" style="color: var(--primary);">CARGANDO...</span></p>
+                    <p><strong>Ollama:</strong> <span id="quantum-ollama">Verificando...</span></p>
+                    <p><strong>Modelos:</strong> <span id="quantum-models" style="font-size: 0.85em; color: #888;">--</span></p>
+                </div>
+                <div>
+                    <p><strong>Predicción Activa:</strong></p>
+                    <p id="quantum-prediction" style="color: var(--primary); font-size: 0.9em; margin-top: 0.5rem;">Analizando...</p>
+                    <p id="ollama-response" style="color: #888; font-size: 0.85em; margin-top: 0.5rem; white-space: pre-line;"></p>
+                </div>
+            </div>
+            <div style="margin-top: 1rem; display: flex; gap: 1rem;">
+                <button onclick="queryOllama()" style="flex: 1;">🔮 CONSULTAR CEREBRO</button>
+                <button onclick="window.open('/api/quantum/intelligence', '_blank')" style="flex: 1; background: #333;">📊 REPORTE COMPLETO</button>
+            </div>
+        </div>
     </div>
 
     <div class="glass-card" style="margin: 20px; text-align: center;">
@@ -216,6 +313,43 @@ def login():
 @app.route('/api/health')
 def health():
     return jsonify({"status": "healthy", "version": "2.0.0-SOVEREIGN"})
+
+@app.route('/api/quantum/status')
+def quantum_status():
+    """Endpoint para obtener el estado del Quantum Core"""
+    if not QUANTUM_AVAILABLE:
+        return jsonify({"error": "Quantum Core no disponible"}), 503
+    
+    try:
+        status = quantum_core.get_core_status()
+        return jsonify(status)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/quantum/predict')
+def quantum_predict():
+    """Endpoint para generar predicción de escenario"""
+    if not QUANTUM_AVAILABLE:
+        return jsonify({"error": "Quantum Core no disponible"}), 503
+    
+    try:
+        horizon = request.args.get('horizon', 'short')
+        prediction = quantum_core.predict_scenario({}, horizon=horizon)
+        return jsonify(prediction)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/quantum/intelligence')
+def quantum_intelligence():
+    """Endpoint para reporte de inteligencia del sistema"""
+    if not QUANTUM_AVAILABLE:
+        return jsonify({"error": "Quantum Core no disponible"}), 503
+    
+    try:
+        report = quantum_core.get_system_intelligence_report()
+        return jsonify(report)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     # Validar certificados antes de iniciar
