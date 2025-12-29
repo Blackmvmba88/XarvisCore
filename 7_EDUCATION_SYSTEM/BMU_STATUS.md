@@ -7,14 +7,23 @@
 
 ## 📊 Resumen Ejecutivo
 
-### Estado General: ✅ **FASE 1 OPERACIONAL**
+### Estado General: ✅ **FASE 1 OPERACIONAL** (Digital)
 
-BlackMamba University ha completado su infraestructura base con:
+BlackMamba University ha completado su infraestructura digital base con:
 - **47 cursos catalogados** (24 fundacionales + 23 avanzados)
 - **1,300+ horas totales de contenido**
 - **Plataforma web funcional** en puerto 7777
 - **Portal de tutores** con sistema pedagógico completo
 - **4 planes de clase detallados** listos para ejecución
+
+### Visión del Campus Físico: 🌱 **EN DISEÑO**
+
+**Cuando tengamos instalaciones físicas**:
+- **5 salones** (infraestructura mínima de excelencia)
+- **Sistema de autosustentación alimentaria** con fresas hidropónicas (integración 16_AGRICULTURE)
+- **80% de frutas y verduras autoproducidas**
+- **Campus modelo replicable** de soberanía educativa y alimentaria
+- Ver [BMU_CAMPUS_DESIGN.md](BMU_CAMPUS_DESIGN.md) para diseño completo
 
 ---
 
@@ -133,7 +142,35 @@ Fundacionales: 4/24 (16.7%)
 Avanzados: 0/23 (0%)
 ```
 
-### Accesibilidad
+### 🌱 Campus Físico (Visión Estratégica)
+- [ ] **Fase 1: Terreno y Permisos** (3 meses)
+  - Adquisición/donación terreno 800-1,000 M²
+  - Permisos de construcción
+  - Diseño arquitectónico detallado
+  
+- [ ] **Fase 2: Sistema de Autosustentación** (8 meses)
+  - 4 módulos hidropónicos de fresas (40 M²) - integración `16_AGRICULTURE/cultivo-fresas`
+  - Huerto tradicional (100 M²) - lechugas, tomates, chiles
+  - 15 árboles frutales (limones, guayabas, papayas, plátanos)
+  - Sistema IoT de monitoreo agrícola
+  - **Producción objetivo**: 1,600 kg alimentos/año
+  
+- [ ] **Fase 3: Construcción 5 Salones** (6 meses)
+  - S1: Fundamentos de Vida (100 M²)
+  - S2: Música y Creatividad (70 M²)
+  - S3: Tecnología y Computación (80 M²)
+  - S4: Ética y Filosofía (55 M²)
+  - S5: Laboratorio Multiuso (90 M²)
+  
+- [ ] **Fase 4: Energía Renovable**
+  - Paneles solares 10 kW
+  - Baterías respaldo
+  - Sistema captación agua lluvia
+  
+**Inversión estimada**: $1,600,000 MXN | **ROI**: 3-4 años  
+Ver diseño completo en [BMU_CAMPUS_DESIGN.md](BMU_CAMPUS_DESIGN.md)
+
+### Alta Prioridad (Digital - Ahora)
 - **Nivel 1**: 100% gratuito
 - **Nivel 2+**: Gratis con beca de audacia (3+ áreas)
 - **Costo Individual**: Solo si quieres lujo (pagar 1 curso)

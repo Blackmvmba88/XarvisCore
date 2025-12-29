@@ -84,8 +84,12 @@ Esta es la crónica de una promesa cumplida. Desde la creación del primer bit d
 - [x] **Portal de Tutores:** Interfaz `/tutor` con metodología BMU completa.
 - [x] **Planes de Clase:** 4 cursos con desglose semanal (cimientos, teoría musical, ética, nutrición).
 - [x] **Metodología 70/30:** 70% práctica, 30% teoría con proyectos comunitarios reales.
+- [x] **Diseño Campus Físico:** BMU_CAMPUS_DESIGN.md con sistema de autosustentación alimentaria.
+- [x] **Integración Agricultura:** Vinculación con dominio 16_AGRICULTURE (fresas hidropónicas).
 - [ ] **Expansión de Planes:** Crear 43 planes pedagógicos restantes (20 fundacionales + 23 avanzados).
-- [ ] **Red Federal BMU:** Cimentar la estructura de una universidad por estado y ciudad.
+- [ ] **Campus Físico Fase 1:** Terreno + permisos + diseño arquitectónico (3 meses).
+- [ ] **Campus Físico Fase 2:** Sistema autosustentación - 4 módulos hidropónicos + huerto 100 M² (8 meses).
+- [ ] **Campus Físico Fase 3:** Construcción 5 salones + energía renovable (6 meses).
 - [ ] **Sistema de Estudiantes:** Base de datos, registro, tracking de progreso.
 - [ ] **Contenido Educativo:** Videos, quizzes, foros, materiales descargables.
 - [ ] **Certificación Automática:** Generador de certificados PDF con firma digital.
