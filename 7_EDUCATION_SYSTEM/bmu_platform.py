@@ -303,6 +303,256 @@ TEACHING_PLANS = {
         ],
         "recursos_tutor": ["Tablas USDA de nutrición", "Guía de suplementación basada en evidencia", "Recetarios de alto rendimiento"],
         "evaluacion_final": "Plan nutricional de 30 días + Meal prep + Presupuesto + Análisis de macro/micronutrientes"
+    },
+    
+    "higiene_personal": {
+        "duracion_semanas": 3,
+        "sesiones_semanales": 2,
+        "duracion_sesion": "2.5h",
+        "objetivo_general": "Dominar hábitos de higiene personal como base de salud y dignidad",
+        "modulos": [
+            {
+                "semana": "1",
+                "tema": "Higiene Corporal Fundamental",
+                "objetivos": ["Microbiología básica de la piel", "Técnicas correctas de baño", "Rutina sostenible"],
+                "actividades": ["Demostración de lavado correcto", "Análisis de productos (químicos vs naturales)", "Diseño de rutina personal"],
+                "materiales": ["Productos de higiene básicos", "Microscopio", "Jabones artesanales"],
+                "evaluacion": "Demostración práctica + explicación científica"
+            },
+            {
+                "semana": "2",
+                "tema": "Higiene Dental y Bucal",
+                "objetivos": ["Técnica de cepillado Bass", "Prevención de caries", "Hábitos alimenticios saludables"],
+                "actividades": ["Práctica con modelos dentales", "Análisis de pH bucal", "Pasta dental natural"],
+                "materiales": ["Modelos dentales", "Cepillos variados", "Bicarbonato, aceite coco"],
+                "evaluacion": "Técnica de cepillado + plan dental 30 días"
+            },
+            {
+                "semana": "3",
+                "tema": "Higiene Íntima y Ciclo Menstrual",
+                "objetivos": ["Anatomía y fisiología básica", "Productos higiénicos sostenibles", "Manejo digno del ciclo"],
+                "actividades": ["Sesiones género-específicas", "Comparativa de productos", "Higiene durante deporte"],
+                "materiales": ["Modelos anatómicos", "Muestras de productos", "Copas, toallas reutilizables"],
+                "evaluacion": "Ensayo reflexivo + plan sostenible"
+            }
+        ],
+        "recursos_tutor": ["Manual OMS de salud pública", "Guía de higiene sostenible", "Red de profesionales salud"],
+        "evaluacion_final": "Rutina 30 días documentada + presentación de hábitos saludables"
+    },
+    
+    "higiene_hogar": {
+        "duracion_semanas": 4,
+        "sesiones_semanales": 2,
+        "duracion_sesion": "2.5h",
+        "objetivo_general": "Mantener espacios habitables limpios, ordenados y saludables",
+        "modulos": [
+            {
+                "semana": "1",
+                "tema": "Limpieza Profunda de Superficies",
+                "objetivos": ["Tipos de superficies y productos", "Desinfección efectiva", "Limpiadores naturales"],
+                "actividades": ["Limpieza de cocina completa", "Preparación de limpiadores caseros", "Test bacteriano"],
+                "materiales": ["Productos básicos", "Vinagre, bicarbonato", "Trapos microfibra", "Cultivos"],
+                "evaluacion": "Limpieza supervisada + protocolo escrito"
+            },
+            {
+                "semana": "2",
+                "tema": "Organización y Orden Funcional",
+                "objetivos": ["Método KonMari adaptado", "Almacenamiento inteligente", "Sistemas sostenibles"],
+                "actividades": ["Reorganización closet/alacena", "Almacenamiento reciclado", "Técnicas de doblado"],
+                "materiales": ["Cajas organizadoras", "Etiquetas", "Materiales reciclados"],
+                "evaluacion": "Antes/después + manual de mantenimiento"
+            },
+            {
+                "semana": "3",
+                "tema": "Manejo de Plagas y Prevención",
+                "objetivos": ["Identificar plagas comunes", "Prevención mediante limpieza", "Control natural"],
+                "actividades": ["Inspección espacios", "Sellado de grietas", "Repelentes naturales"],
+                "materiales": ["Masilla", "Trampas no tóxicas", "Cítricos, menta"],
+                "evaluacion": "Plan de prevención + protocolo acción"
+            },
+            {
+                "semana": "4",
+                "tema": "Lavandería y Textiles",
+                "objetivos": ["Lavar diferentes telas", "Secado y planchado", "Costura básica"],
+                "actividades": ["Lavado manual y máquina", "Clasificación textil", "Reparación de ropa"],
+                "materiales": ["Detergentes", "Plancha", "Kit costura", "Telas práctica"],
+                "evaluacion": "Lavado completo + 3 reparaciones"
+            }
+        ],
+        "recursos_tutor": ["Manual limpieza profesional", "Guía eco-friendly", "Videos organización"],
+        "evaluacion_final": "Limpieza hogar comunitario + documentación foto + checklist"
+    },
+    
+    "residuos_compostaje": {
+        "duracion_semanas": 3,
+        "sesiones_semanales": 2,
+        "duracion_sesion": "2.5h",
+        "objetivo_general": "Gestionar residuos mediante separación, reciclaje y compostaje",
+        "modulos": [
+            {
+                "semana": "1",
+                "tema": "Separación y Reciclaje",
+                "objetivos": ["Clasificar orgánicos/reciclables/inorgánicos", "Ciclo de vida materiales", "Consumo consciente"],
+                "actividades": ["Auditoría basura 1 semana", "Sistema de separación hogar", "Visita virtual reciclaje"],
+                "materiales": ["Contenedores separación", "Guías reciclaje local", "Básculas"],
+                "evaluacion": "Reporte auditoría + plan reducción 50%"
+            },
+            {
+                "semana": "2",
+                "tema": "Compostaje Doméstico",
+                "objetivos": ["Construir compostera casera", "Balance C:N ratio", "Mantenimiento óptimo"],
+                "actividades": ["Construcción compostera", "Inicio pila compost", "Volteo y temperatura"],
+                "materiales": ["Contenedor", "Residuos orgánicos", "Termómetro", "Material seco"],
+                "evaluacion": "Compostera funcional + bitácora 2 semanas"
+            },
+            {
+                "semana": "3",
+                "tema": "Vermicompostaje y Aplicación",
+                "objetivos": ["Cultivar lombrices rojas", "Cosechar humus", "Aplicar compost"],
+                "actividades": ["Setup vermicompostera", "Cuidado lombrices", "Cosecha y aplicación"],
+                "materiales": ["Contenedor opaco", "Lombrices 500g", "Residuos", "Plantas"],
+                "evaluacion": "Vermicompostera activa + 2kg humus + aplicación"
+            }
+        ],
+        "recursos_tutor": ["Manual EPA compostaje", "Guía vermicompost", "Integración 16_AGRICULTURE"],
+        "evaluacion_final": "Sistema residuos completo + 5kg compost + reporte impacto"
+    },
+    
+    "fitness_acondicionamiento": {
+        "duracion_semanas": 8,
+        "sesiones_semanales": 3,
+        "duracion_sesion": "1.5h",
+        "objetivo_general": "Desarrollar condición física mediante entrenamiento progresivo",
+        "modulos": [
+            {
+                "semana": "1-2",
+                "tema": "Evaluación y Fundamentos",
+                "objetivos": ["Medir condición física actual", "Principios de entrenamiento", "Metas SMART"],
+                "actividades": ["Test de Cooper", "Test de fuerza", "Flexibilidad", "Plan personalizado"],
+                "materiales": ["Cronómetro", "Cinta métrica", "Báscula", "Formato evaluación"],
+                "evaluacion": "Reporte inicial + plan 8 semanas"
+            },
+            {
+                "semana": "3-4",
+                "tema": "Entrenamiento Cardiovascular",
+                "objetivos": ["Resistencia aeróbica", "Técnicas respiración", "Prevenir lesiones"],
+                "actividades": ["Trote 20-30min", "HIIT básico", "Movilidad articular"],
+                "materiales": ["Espacio abierto", "Ropa deportiva", "Agua", "Monitor cardíaco"],
+                "evaluacion": "Test 5K + frecuencia cardíaca reposo"
+            },
+            {
+                "semana": "5-6",
+                "tema": "Fuerza con Peso Corporal",
+                "objetivos": ["Movimientos básicos", "Fuerza funcional", "Progresiones"],
+                "actividades": ["Calistenia", "Circuitos 3x semana", "Core"],
+                "materiales": ["Colchoneta", "Barra dominadas", "Bandas elásticas"],
+                "evaluacion": "50 push-ups, 100 squats, plank 3min"
+            },
+            {
+                "semana": "7-8",
+                "tema": "Flexibilidad y Recuperación",
+                "objetivos": ["Rango movimiento", "Foam rolling", "Hábito sostenible"],
+                "actividades": ["Yoga/stretching", "Foam rolling", "Rutina mantenimiento"],
+                "materiales": ["Colchoneta yoga", "Foam roller", "Bloques"],
+                "evaluacion": "Test final (vs semana 1) + rutina continua"
+            }
+        ],
+        "recursos_tutor": ["Manual entrenamiento funcional", "Videos técnica", "Prevención lesiones"],
+        "evaluacion_final": "Mejora 3 áreas + rutina personalizada + presentación progreso"
+    },
+    
+    "primeros_auxilios": {
+        "duracion_semanas": 4,
+        "sesiones_semanales": 2,
+        "duracion_sesion": "3h",
+        "objetivo_general": "Responder a emergencias médicas y salvar vidas",
+        "modulos": [
+            {
+                "semana": "1",
+                "tema": "Evaluación y RCP",
+                "objetivos": ["Evaluar seguridad escena", "RCP adultos/niños/bebés", "Usar DEA"],
+                "actividades": ["Simulacros evaluación", "Práctica RCP maniquíes", "Uso DEA"],
+                "materiales": ["Maniquíes RCP", "DEA entrenamiento", "Guantes"],
+                "evaluacion": "Certificación RCP: 5 ciclos + DEA correcto"
+            },
+            {
+                "semana": "2",
+                "tema": "Hemorragias y Shock",
+                "objetivos": ["Presión directa y torniquetes", "Reconocer shock", "Estabilizar paciente"],
+                "actividades": ["Vendaje compresivo", "Torniquete", "Manejo shock"],
+                "materiales": ["Vendas", "Torniquetes", "Mantas térmicas"],
+                "evaluacion": "Detener hemorragia <3min + protocolo shock"
+            },
+            {
+                "semana": "3",
+                "tema": "Fracturas y Quemaduras",
+                "objetivos": ["Inmovilizar fracturas", "Clasificar quemaduras", "Curar heridas"],
+                "actividades": ["Entablillado", "Tratamiento quemaduras", "Sutura sintética"],
+                "materiales": ["Férulas", "Apósitos", "Kit curación"],
+                "evaluacion": "3 fracturas + herida estéril"
+            },
+            {
+                "semana": "4",
+                "tema": "Emergencias Comunes",
+                "objetivos": ["Infarto, stroke, convulsiones", "Heimlich", "Hipo/hipertermia"],
+                "actividades": ["Simulacros variados", "Heimlich", "Activación emergencias"],
+                "materiales": ["Maniquí Heimlich", "Tarjetas escenarios", "Números emergencia"],
+                "evaluacion": "5 emergencias resueltas correctamente"
+            }
+        ],
+        "recursos_tutor": ["Manual Cruz Roja", "Certificación Cruz Roja", "Servicios emergencia"],
+        "evaluacion_final": "Certificado Primeros Auxilios (válido 2 años) + examen 90%+"
+    },
+    
+    "salud_mental": {
+        "duracion_semanas": 6,
+        "sesiones_semanales": 2,
+        "duracion_sesion": "2h",
+        "objetivo_general": "Desarrollar inteligencia emocional y herramientas de salud mental",
+        "modulos": [
+            {
+                "semana": "1-2",
+                "tema": "Autoconocimiento Emocional",
+                "objetivos": ["Identificar emociones", "Triggers y patrones", "Emoción vs pensamiento"],
+                "actividades": ["Diario emocional", "Rueda Plutchik", "Meditación escaneo"],
+                "materiales": ["Diario", "Rueda emociones", "App Insight Timer"],
+                "evaluacion": "14 días diario + 3 patrones personales"
+            },
+            {
+                "semana": "3",
+                "tema": "Estrés y Ansiedad",
+                "objetivos": ["Signos estrés crónico", "Respiración 4-7-8", "Grounding"],
+                "actividades": ["Respiración diafragmática", "Técnica 5-4-3-2-1", "Plan anti-estrés"],
+                "materiales": ["Colchoneta", "Audio meditación", "Objetos sensoriales"],
+                "evaluacion": "3 técnicas respiración + plan personal"
+            },
+            {
+                "semana": "4",
+                "tema": "Relaciones y Límites",
+                "objetivos": ["Límites personales", "Comunicación asertiva", "Detectar toxicidad"],
+                "actividades": ["Role-playing", "Decir 'no' con respeto", "Análisis relaciones"],
+                "materiales": ["Guía CNV", "Casos estudio", "Ejercicios asertividad"],
+                "evaluacion": "3 límites establecidos + asertividad"
+            },
+            {
+                "semana": "5",
+                "tema": "Depresión y Ayuda Profesional",
+                "objetivos": ["Signos depresión DSM-5", "Desestigmatizar terapia", "Recursos disponibles"],
+                "actividades": ["Educación salud mental", "Mitos vs realidades", "Directorio recursos"],
+                "materiales": ["Material educativo", "Lista psicólogos", "Testimonios"],
+                "evaluacion": "Ensayo desestigmatización + plan acción"
+            },
+            {
+                "semana": "6",
+                "tema": "Hábitos de Vida Saludable",
+                "objetivos": ["Higiene del sueño", "Ejercicio antidepresivo", "Propósito de vida"],
+                "actividades": ["Rutina sueño", "Integración fitness", "Voluntariado"],
+                "materiales": ["Diario sueño", "Plan ejercicio", "Oportunidades voluntariado"],
+                "evaluacion": "Rutina sueño 7 días + ejercicio + actividad comunitaria"
+            }
+        ],
+        "recursos_tutor": ["Manual OMS salud mental", "Primeros auxilios psicológicos", "Red psicólogos"],
+        "evaluacion_final": "Plan integral salud mental + presentación + compromiso autocuidado"
     }
 }
 

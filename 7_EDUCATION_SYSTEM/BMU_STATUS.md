@@ -79,8 +79,8 @@ BlackMamba University ha completado su infraestructura digital base con:
   - Rol del tutor: facilitador, modelo, mentor, conector, evaluador
   - Código de honor del tutor
 
-### Planes de Clase Implementados (4/47)
-**Estado**: ⚠️ **8.5% completo**
+### Planes de Clase Implementados (10/47)
+**Estado**: ⚠️ **21.3% completo**
 
 #### ✅ Plan 1: Cimientos (Construcción del Hogar)
 - **Duración**: 6 semanas, 2 sesiones/semana
@@ -105,6 +105,42 @@ BlackMamba University ha completado su infraestructura digital base con:
 - **Módulos**: 4 (macros, micros, nutrición deportiva, cocina práctica)
 - **Evaluación Final**: Meal prep 5 días < $500 MXN + análisis nutricional
 - **Recursos**: Tablas USDA, Examine.com, Cronometer app
+
+#### ✅ Plan 5: Higiene Personal (Higiene y Limpieza)
+- **Duración**: 3 semanas, 2 sesiones/semana
+- **Módulos**: 3 (corporal, dental, íntima)
+- **Evaluación Final**: Rutina de higiene 30 días documentada + presentación
+- **Recursos**: Manual OMS, productos naturales, modelos anatómicos
+
+#### ✅ Plan 6: Higiene del Hogar (Higiene y Limpieza)
+- **Duración**: 4 semanas, 2 sesiones/semana
+- **Módulos**: 4 (limpieza profunda, organización, plagas, lavandería)
+- **Evaluación Final**: Limpieza completa de hogar comunitario + checklist
+- **Recursos**: Manual de limpieza profesional, productos eco-friendly, Marie Kondo
+
+#### ✅ Plan 7: Residuos y Compostaje (Higiene y Limpieza)
+- **Duración**: 3 semanas, 2 sesiones/semana
+- **Módulos**: 3 (separación, compostaje, vermicompost)
+- **Evaluación Final**: Sistema completo de residuos + 5 kg compost producido
+- **Recursos**: Manual EPA, integración 16_AGRICULTURE (fresas hidropónicas)
+
+#### ✅ Plan 8: Fitness y Acondicionamiento (Salud Física y Mental)
+- **Duración**: 8 semanas, 3 sesiones/semana
+- **Módulos**: 4 (evaluación, cardio, fuerza, flexibilidad)
+- **Evaluación Final**: Mejora medible en 3 áreas + rutina de mantenimiento
+- **Recursos**: Test de Cooper, manual de entrenamiento funcional
+
+#### ✅ Plan 9: Primeros Auxilios Básicos (Salud Física y Mental)
+- **Duración**: 4 semanas, 2 sesiones/semana
+- **Módulos**: 4 (RCP/DEA, hemorragias, fracturas, emergencias)
+- **Evaluación Final**: Certificado Cruz Roja válido 2 años + examen práctico
+- **Recursos**: Manual Cruz Roja Mexicana, maniquíes de entrenamiento
+
+#### ✅ Plan 10: Salud Mental y Emocional (Salud Física y Mental)
+- **Duración**: 6 semanas, 2 sesiones/semana
+- **Módulos**: 6 (autoconocimiento, estrés, relaciones, depresión, hábitos)
+- **Evaluación Final**: Plan integral de salud mental + presentación
+- **Recursos**: Manual OMS, red de psicólogos voluntarios, rueda de Plutchik
 
 ---
 
@@ -131,15 +167,15 @@ BlackMamba University ha completado su infraestructura digital base con:
 ### Contenido Educativo
 - **Total Cursos**: 47
 - **Horas Totales**: 1,300+
-- **Planes Pedagógicos**: 4 completos, 43 pendientes
+- **Planes Pedagógicos**: 10 completos, 37 pendientes
 - **Certificaciones Base**: 30+ (del Arquitecto)
 
 ### Cobertura de Planificación
 ```
-████░░░░░░░░░░░░░░░░ 8.5%
+███████████░░░░░░░░░ 21.3%
 
-Fundacionales: 4/24 (16.7%)
-Avanzados: 0/23 (0%)
+Fundacionales: 7/24 (29.2%)
+Avanzados: 3/23 (13.0%)
 ```
 
 ### 🌱 Campus Físico (Visión Estratégica)

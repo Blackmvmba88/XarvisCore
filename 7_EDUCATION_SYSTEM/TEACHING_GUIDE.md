@@ -388,6 +388,436 @@
 
 ---
 
+#### 🧹 Higiene y Limpieza - Higiene Personal
+**Duración**: 3 semanas | 2 sesiones/semana | 2.5h cada una
+
+**Objetivo General**: Dominar hábitos de higiene personal como base de salud y dignidad.
+
+**Módulos**:
+
+##### Semana 1: Higiene Corporal Fundamental
+- **Objetivos**:
+  - Entender microbiología básica de la piel
+  - Dominar técnicas correctas de baño
+  - Establecer rutina sostenible
+  
+- **Actividades**:
+  - Demostración práctica de lavado correcto
+  - Análisis de productos (químicos vs naturales)
+  - Diseño de rutina personal adaptada
+
+- **Materiales**: Productos básicos, microscopio educativo, jabones artesanales
+
+- **Evaluación**: Demostración práctica + explicación científica
+
+##### Semana 2: Higiene Dental y Bucal
+- **Objetivos**:
+  - Técnica correcta de cepillado (Bass modificado)
+  - Prevención de caries y enfermedad periodontal
+  - Hábitos alimenticios para salud dental
+
+- **Actividades**:
+  - Práctica con modelos dentales
+  - Análisis de pH bucal antes/después alimentos
+  - Taller de pasta dental natural
+
+- **Materiales**: Modelos dentales educativos, cepillos variados, bicarbonato, aceite de coco
+
+- **Evaluación**: Técnica de cepillado + plan dental 30 días
+
+##### Semana 3: Higiene Íntima y Ciclo Menstrual
+- **Objetivos**:
+  - Entender anatomía y fisiología básica
+  - Productos higiénicos: ventajas/desventajas
+  - Manejo digno y sostenible del ciclo
+
+- **Actividades**:
+  - Sesiones separadas (género-específicas)
+  - Comparativa de productos higiénicos
+  - Taller durante actividad física
+
+- **Materiales**: Modelos anatómicos, muestras de productos, copas menstruales, toallas reutilizables
+
+- **Evaluación Final**: Rutina de higiene personal completa de 30 días documentada + presentación sobre hábitos saludables
+
+**Recursos del Tutor**:
+- Manual de salud pública OMS
+- Guía de higiene sostenible
+- Red de profesionales de salud comunitaria
+
+---
+
+#### 🏠 Higiene y Limpieza - Higiene del Hogar
+**Duración**: 4 semanas | 2 sesiones/semana | 2.5h cada una
+
+**Objetivo General**: Mantener espacios habitables limpios, ordenados y saludables mediante técnicas efectivas.
+
+**Módulos**:
+
+##### Semana 1: Limpieza Profunda de Superficies
+- **Objetivos**:
+  - Identificar tipos de superficies y productos apropiados
+  - Técnicas de desinfección efectiva
+  - Limpiadores naturales sin tóxicos
+
+- **Actividades**:
+  - Limpieza de cocina completa práctica
+  - Preparación de limpiadores caseros (vinagre, bicarbonato)
+  - Test de efectividad con cultivos bacterianos
+
+- **Materiales**: Productos básicos, ingredientes naturales, trapos microfibra, kits de cultivo
+
+- **Evaluación**: Limpieza supervisada + protocolo escrito
+
+##### Semana 2: Organización y Orden Funcional
+- **Objetivos**:
+  - Método KonMari adaptado a espacios pequeños
+  - Almacenamiento inteligente
+  - Sistemas sostenibles
+
+- **Actividades**:
+  - Reorganización de closet/alacena
+  - Diseño con materiales reciclados
+  - Técnicas de doblado eficiente
+
+- **Materiales**: Cajas organizadoras, etiquetas, materiales reciclados
+
+- **Evaluación**: Antes/después fotográfico + manual de mantenimiento
+
+##### Semana 3: Manejo de Plagas y Prevención
+- **Objetivos**:
+  - Identificar plagas comunes (cucarachas, hormigas, roedores)
+  - Prevención mediante limpieza y sellado
+  - Control sin químicos tóxicos
+
+- **Actividades**:
+  - Inspección de espacios vulnerables
+  - Sellado de grietas y puntos de entrada
+  - Repelentes naturales (cítricos, menta)
+
+- **Materiales**: Masilla, trampas no tóxicas, ingredientes naturales
+
+- **Evaluación**: Plan de prevención + protocolo de acción
+
+##### Semana 4: Lavandería y Cuidado de Textiles
+- **Objetivos**:
+  - Lavar diferentes tipos de telas correctamente
+  - Técnicas de secado y planchado eficientes
+  - Reparación básica de ropa (botones, parches)
+
+- **Actividades**:
+  - Práctica de lavado manual y máquina
+  - Clasificación por color/tipo de tela
+  - Taller de costura básica
+
+- **Materiales**: Detergentes variados, plancha, kit de costura, telas de práctica
+
+- **Evaluación Final**: Limpieza y organización completa de hogar real (voluntario comunitario) + documentación fotográfica + checklist
+
+**Recursos del Tutor**:
+- Manual de limpieza profesional
+- Guía de productos eco-friendly
+- Videos de técnicas de organización (Marie Kondo)
+
+---
+
+#### ♻️ Higiene y Limpieza - Residuos y Compostaje
+**Duración**: 3 semanas | 2 sesiones/semana | 2.5h cada una
+
+**Objetivo General**: Gestionar residuos domésticos mediante separación, reciclaje y compostaje efectivo.
+
+**Módulos**:
+
+##### Semana 1: Separación de Residuos y Reciclaje
+- **Objetivos**:
+  - Clasificar orgánicos, reciclables e inorgánicos
+  - Entender el ciclo de vida de materiales
+  - Reducir generación de basura (consumo consciente)
+
+- **Actividades**:
+  - Auditoría de basura doméstica (1 semana)
+  - Diseño de sistema de separación para hogar
+  - Visita virtual a centro de reciclaje
+
+- **Materiales**: Contenedores de separación, guías de reciclaje local, básculas
+
+- **Evaluación**: Reporte de auditoría + plan de reducción 50%
+
+##### Semana 2: Compostaje Doméstico
+- **Objetivos**:
+  - Construir compostera casera con materiales reciclados
+  - Balancear materiales verdes/cafés (C:N ratio)
+  - Mantener condiciones óptimas (humedad, oxigenación)
+
+- **Actividades**:
+  - Construcción de compostera (balde o caja madera)
+  - Inicio de primera pila de compost
+  - Práctica de volteo y monitoreo de temperatura
+
+- **Materiales**: Contenedor, residuos orgánicos, termómetro de compost, material seco (hojas, aserrín)
+
+- **Evaluación**: Compostera funcional iniciada + bitácora 2 semanas
+
+##### Semana 3: Vermicompostaje y Uso de Compost
+- **Objetivos**:
+  - Cultivar lombrices rojas californianas
+  - Cosechar humus de lombriz
+  - Aplicar compost en huerto/jardín
+
+- **Actividades**:
+  - Setup de vermicompostera
+  - Alimentación y cuidado de lombrices
+  - Cosecha de vermicompost y aplicación práctica
+
+- **Materiales**: Contenedor opaco, lombrices rojas (500g), residuos orgánicos, plantas
+
+- **Evaluación Final**: Sistema completo de gestión de residuos implementado en hogar + 5 kg de compost producido + reporte de impacto ambiental
+
+**Recursos del Tutor**:
+- Manual de compostaje EPA
+- Guía de vermicompostaje
+- Integración con 16_AGRICULTURE (fresas hidropónicas)
+
+---
+
+#### 💪 Salud Física y Mental - Fitness y Acondicionamiento
+**Duración**: 8 semanas | 3 sesiones/semana | 1.5h cada una
+
+**Objetivo General**: Desarrollar condición física básica mediante entrenamiento progresivo y sostenible.
+
+**Módulos**:
+
+##### Semana 1-2: Evaluación Física y Fundamentos
+- **Objetivos**:
+  - Medir condición física actual (VO2max, fuerza, flexibilidad)
+  - Entender principios de entrenamiento (sobrecarga, especificidad)
+  - Establecer metas realistas SMART
+
+- **Actividades**:
+  - Test de Cooper (12 min corriendo)
+  - Test de fuerza (push-ups, squats, plank)
+  - Medición de flexibilidad (sit-and-reach)
+  - Diseño de plan personalizado
+
+- **Materiales**: Cronómetro, cinta métrica, báscula, formato de evaluación física
+
+- **Evaluación**: Reporte de condición física inicial + plan de entrenamiento 8 semanas
+
+##### Semana 3-4: Entrenamiento Cardiovascular
+- **Objetivos**:
+  - Desarrollar resistencia aeróbica básica
+  - Dominar técnicas de respiración
+  - Prevenir lesiones mediante calentamiento
+
+- **Actividades**:
+  - Trote continuo 20-30 min
+  - Intervalos de alta intensidad (HIIT básico)
+  - Ejercicios de movilidad articular
+
+- **Materiales**: Espacio abierto, ropa deportiva, agua, monitor de frecuencia cardíaca (opcional)
+
+- **Evaluación**: Test de 5K cronometrado + frecuencia cardíaca en reposo
+
+##### Semana 5-6: Entrenamiento de Fuerza con Peso Corporal
+- **Objetivos**:
+  - Dominar movimientos básicos (push-up, squat, lunge, plank)
+  - Construir fuerza funcional sin equipo
+  - Progresiones para todos los niveles
+
+- **Actividades**:
+  - Rutina de calistenia básica
+  - Circuitos de fuerza 3x por semana
+  - Trabajo de core (abdomen, espalda baja)
+
+- **Materiales**: Colchoneta, barra de dominadas (opcional), bandas elásticas (opcional)
+
+- **Evaluación**: Test de fuerza: 50 push-ups, 100 squats, plank 3min
+
+##### Semana 7-8: Flexibilidad, Recuperación y Mantenimiento
+- **Objetivos**:
+  - Mejorar rango de movimiento mediante stretching
+  - Aplicar técnicas de recuperación (foam rolling, descanso)
+  - Crear hábito de ejercicio sostenible
+
+- **Actividades**:
+  - Sesiones de yoga/stretching
+  - Práctica de foam rolling
+  - Diseño de rutina de mantenimiento post-curso
+
+- **Materiales**: Colchoneta de yoga, foam roller, bloques de yoga (opcional)
+
+- **Evaluación Final**: Mejora medible en 3 áreas (cardio, fuerza, flexibilidad) + rutina de mantenimiento personalizada + presentación de progreso
+
+**Recursos del Tutor**:
+- Manual de entrenamiento funcional
+- Videos de técnica correcta
+- Protocolos de prevención de lesiones
+
+---
+
+#### 🚑 Salud Física y Mental - Primeros Auxilios Básicos
+**Duración**: 4 semanas | 2 sesiones/semana | 3h cada una
+
+**Objetivo General**: Responder efectivamente a emergencias médicas básicas y salvar vidas.
+
+**Módulos**:
+
+##### Semana 1: Evaluación de Escena y RCP
+- **Objetivos**:
+  - Evaluar seguridad de escena antes de actuar
+  - Realizar RCP en adultos, niños y bebés
+  - Usar desfibrilador automático (DEA)
+
+- **Actividades**:
+  - Simulacros de evaluación de emergencias
+  - Práctica de RCP con maniquíes
+  - Simulación de uso de DEA
+
+- **Materiales**: Maniquíes de RCP (adulto, niño, bebé), DEA de entrenamiento, guantes desechables
+
+- **Evaluación**: Certificación de RCP: 5 ciclos correctos + uso correcto de DEA
+
+##### Semana 2: Control de Hemorragias y Shock
+- **Objetivos**:
+  - Aplicar presión directa y torniquetes
+  - Reconocer signos de shock
+  - Estabilizar paciente hasta llegada de ambulancia
+
+- **Actividades**:
+  - Práctica de vendaje compresivo
+  - Simulación de aplicación de torniquete
+  - Role-playing de manejo de shock
+
+- **Materiales**: Vendas de diferentes tamaños, torniquetes de entrenamiento, mantas térmicas
+
+- **Evaluación**: Detener hemorragia simulada en <3min + protocolo de shock
+
+##### Semana 3: Fracturas, Quemaduras y Heridas
+- **Objetivos**:
+  - Inmovilizar fracturas con materiales improvisados
+  - Clasificar quemaduras (1°, 2°, 3°)
+  - Limpiar y vendar heridas correctamente
+
+- **Actividades**:
+  - Práctica de entablillado de extremidades
+  - Tratamiento de quemaduras simuladas
+  - Técnica de curación con método estéril
+
+- **Materiales**: Férulas y materiales de inmovilización, apósitos para quemaduras, kit de curación de heridas
+
+- **Evaluación**: Inmovilizar 3 tipos de fracturas + curar herida con técnica estéril
+
+##### Semana 4: Emergencias Médicas Comunes
+- **Objetivos**:
+  - Reconocer y actuar ante infarto, stroke, convulsiones
+  - Maniobra de Heimlich (atragantamiento)
+  - Hipotermia e hipertermia
+
+- **Actividades**:
+  - Simulacros de emergencias variadas
+  - Práctica de Heimlich en maniquíes
+  - Protocolos de activación de servicios de emergencia
+
+- **Materiales**: Maniquí para Heimlich, tarjetas de escenarios de emergencia, números de emergencia locales
+
+- **Evaluación Final**: Certificado de Primeros Auxilios Básicos (válido 2 años) + examen teórico 90%+ + examen práctico aprobado
+
+**Recursos del Tutor**:
+- Manual Cruz Roja Mexicana
+- Certificación Cruz Roja o equivalente
+- Contacto con servicios de emergencia locales
+
+---
+
+#### 🧠 Salud Física y Mental - Salud Mental y Emocional
+**Duración**: 6 semanas | 2 sesiones/semana | 2h cada una
+
+**Objetivo General**: Desarrollar inteligencia emocional y herramientas de salud mental para vida equilibrada.
+
+**Módulos**:
+
+##### Semana 1-2: Autoconocimiento Emocional
+- **Objetivos**:
+  - Identificar y nombrar emociones propias
+  - Entender triggers y patrones emocionales
+  - Diferenciar emoción vs pensamiento
+
+- **Actividades**:
+  - Diario emocional diario
+  - Rueda de emociones (Plutchik)
+  - Meditación de escaneo corporal
+
+- **Materiales**: Diario personal, rueda de emociones impresa, app de meditación (Insight Timer)
+
+- **Evaluación**: Diario de 14 días completo + identificación de 3 patrones emocionales personales
+
+##### Semana 3: Gestión de Estrés y Ansiedad
+- **Objetivos**:
+  - Reconocer signos de estrés crónico
+  - Aplicar técnicas de respiración (4-7-8, box breathing)
+  - Herramientas de grounding para ansiedad
+
+- **Actividades**:
+  - Práctica de respiración diafragmática
+  - Técnicas de grounding 5-4-3-2-1
+  - Diseño de plan personal anti-estrés
+
+- **Materiales**: Colchoneta para prácticas, audio de meditaciones guiadas, objetos sensoriales
+
+- **Evaluación**: Demostración de 3 técnicas de respiración + plan de manejo de estrés personal
+
+##### Semana 4: Relaciones Saludables y Límites
+- **Objetivos**:
+  - Establecer límites personales claros
+  - Comunicación asertiva (no agresiva ni pasiva)
+  - Detectar relaciones tóxicas
+
+- **Actividades**:
+  - Role-playing de situaciones difíciles
+  - Práctica de decir 'no' con respeto
+  - Análisis de relaciones actuales
+
+- **Materiales**: Guía de comunicación no violenta (CNV), casos de estudio de relaciones, ejercicios de asertividad
+
+- **Evaluación**: Establecer 3 límites personales + demostración de comunicación asertiva
+
+##### Semana 5: Depresión y Cuándo Buscar Ayuda
+- **Objetivos**:
+  - Reconocer signos de depresión (DSM-5)
+  - Desestigmatizar la terapia psicológica
+  - Conocer recursos de salud mental disponibles
+
+- **Actividades**:
+  - Educación sobre salud mental
+  - Mitos vs realidades de la terapia
+  - Directorio de recursos locales gratuitos/accesibles
+
+- **Materiales**: Material educativo sobre depresión, lista de psicólogos y líneas de crisis, testimonios de recuperación
+
+- **Evaluación**: Ensayo sobre desestigmatización + plan de acción si se detectan síntomas
+
+##### Semana 6: Hábitos de Vida para Salud Mental
+- **Objetivos**:
+  - Sueño de calidad (higiene del sueño)
+  - Ejercicio como antidepresivo natural
+  - Conexión social y propósito de vida
+
+- **Actividades**:
+  - Diseño de rutina de sueño óptima
+  - Integración con curso de fitness
+  - Proyecto de voluntariado comunitario
+
+- **Materiales**: Diario de sueño, plan de ejercicio semanal, oportunidades de voluntariado local
+
+- **Evaluación Final**: Plan integral de salud mental personal + presentación sobre importancia de salud emocional + compromiso de autocuidado continuo
+
+**Recursos del Tutor**:
+- Manual de salud mental OMS
+- Certificación en primeros auxilios psicológicos
+- Red de psicólogos voluntarios
+
+---
+
 ## 🔧 Herramientas para Tutores
 
 ### Plataforma Digital
