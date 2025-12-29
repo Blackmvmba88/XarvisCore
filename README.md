@@ -109,6 +109,16 @@ Basado en las certificaciones alcanzadas por el Arquitecto Iyari Cancino Gomez e
 *   **Tutores como Facilitadores:** No dictadores de conocimiento, sino mentores que guían el descubrimiento.
 *   **Recursos Documentados:** Ver [TEACHING_GUIDE.md](7_EDUCATION_SYSTEM/TEACHING_GUIDE.md) para guías completas por curso.
 
+### 🌱 Campus Físico Autosustentable (Visión):
+*   **5 Salones Estratégicos:** Infraestructura mínima de excelencia (400 M² educativos).
+*   **Sistema Hidropónico:** 4 módulos de fresas (integración 16_AGRICULTURE) - 500 kg/año.
+*   **Huerto Tradicional:** 100 M² policultivo - lechugas, tomates, chiles (400 kg/año).
+*   **Árboles Frutales:** 15 árboles - limones, guayabas, papayas, plátanos (700 kg/año).
+*   **80% Autosustentación:** 1,600 kg alimentos/año producidos en campus.
+*   **Aprender Cultivando:** Todos los estudiantes rotan en tareas agrícolas diarias.
+*   **Modelo Replicable:** Blueprint para red federal de campus soberanos.
+*   **Ver diseño completo:** [BMU_CAMPUS_DESIGN.md](7_EDUCATION_SYSTEM/BMU_CAMPUS_DESIGN.md)
+
 ---
 
 ## 🥗 Seguridad de Plenitud: El Estándar de los 4 Carritos
