@@ -80,13 +80,15 @@ Esta es la crónica de una promesa cumplida. Desde la creación del primer bit d
 - [x] **Filosofía de Becas:** Sistema "3+ áreas = GRATIS" implementado en la plataforma.
 - [x] **API REST:** Endpoints para catálogo, estadísticas y rutas de carrera.
 - [x] **UI Glassmorphism:** Tema Matrix/Cyberpunk con estética soberana.
-- [x] **Sistema de Planificación Pedagógica:** TEACHING_GUIDE.md + 4 planes detallados implementados.
+- [x] **Sistema de Planificación Pedagógica:** TEACHING_GUIDE.md + 10 planes detallados implementados.
 - [x] **Portal de Tutores:** Interfaz `/tutor` con metodología BMU completa.
-- [x] **Planes de Clase:** 4 cursos con desglose semanal (cimientos, teoría musical, ética, nutrición).
+- [x] **Planes de Clase (Fase 1):** 4 cursos iniciales (cimientos, teoría musical, ética, nutrición).
+- [x] **Planes de Clase (Fase 2):** 6 cursos adicionales (higiene personal, higiene hogar, residuos/compostaje, fitness, primeros auxilios, salud mental) - **21.3% completitud**.
 - [x] **Metodología 70/30:** 70% práctica, 30% teoría con proyectos comunitarios reales.
 - [x] **Diseño Campus Físico:** BMU_CAMPUS_DESIGN.md con sistema de autosustentación alimentaria.
 - [x] **Integración Agricultura:** Vinculación con dominio 16_AGRICULTURE (fresas hidropónicas).
-- [ ] **Expansión de Planes:** Crear 43 planes pedagógicos restantes (20 fundacionales + 23 avanzados).
+- [ ] **Expansión de Planes (Fase 3):** Crear 4 planes (Música + Gastronomía) → 29.8% completitud.
+- [ ] **Expansión de Planes (Fase 4):** +10 planes fundacionales restantes → 50% completitud.
 - [ ] **Campus Físico Fase 1:** Terreno + permisos + diseño arquitectónico (3 meses).
 - [ ] **Campus Físico Fase 2:** Sistema autosustentación - 4 módulos hidropónicos + huerto 100 M² (8 meses).
 - [ ] **Campus Físico Fase 3:** Construcción 5 salones + energía renovable (6 meses).
