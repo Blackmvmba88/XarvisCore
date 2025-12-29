@@ -224,13 +224,14 @@ class QuantumCoreProtocol:
             "mensaje": f"Red neuronal entrenándose con dataset '{dataset_name}'"
         }
     
-    def query_ollama(self, prompt, model="llama2"):
+    def query_ollama(self, prompt, model="llama2", timeout=60):
         """
         Consulta a Ollama para procesamiento de lenguaje natural
         
         Args:
             prompt (str): Prompt para el modelo
             model (str): Modelo de Ollama a usar
+            timeout (int): Timeout en segundos (default 60)
         
         Returns:
             dict: Respuesta del modelo
@@ -246,7 +247,7 @@ class QuantumCoreProtocol:
                 ["ollama", "run", model, prompt],
                 capture_output=True,
                 text=True,
-                timeout=30
+                timeout=timeout
             )
             
             return {

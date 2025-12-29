@@ -57,28 +57,30 @@ Entrenamiento de IA en vivo con retroalimentación continua.
 **Función actual**: `train_neural_network(dataset_name, config)`
 
 ### 4. **Ollama Integration** 🤖
-**Estado**: 🟢 Operativo (50%)
+**Estado**: 🟢 Operativo (100%)
 
 Integración con Ollama para capacidades RAG y procesamiento de lenguaje natural.
 
 **Características**:
-- Detección automática de Ollama instalado
-- Consultas a modelos locales (llama2, mistral, etc.)
-- Sistema Hermes (RAG) ya integrado en 1_CORE
-- Procesamiento de prompts con timeout seguro
+- ✅ Ollama instalado y configurado (v0.13.5)
+- ✅ Modelos activos: Mistral (4.4GB), Llama2 (3.8GB)
+- ✅ Servidor permanente mediante brew services
+- ✅ Consultas NLP funcionales con timeout ajustable (60s)
+- ✅ Sistema Hermes (RAG) integrado en 1_CORE
+- ✅ Detección automática de modelos disponibles
 
-**Función actual**: `query_ollama(prompt, model)`
+**Función actual**: `query_ollama(prompt, model, timeout=60)`
 
 ---
 
 ## 📊 Estado Actual del Dominio
 
 ```
-███████░░░░░░░░░░░░░░░░░░░░ 20% OPERATIVO
+█████████████████░░░░░░░░░░░ 50% OPERATIVO
 
 Componentes Totales: 4
-├─ Operativos: 1 (Ollama Integration)
-├─ Cimentación: 3 (Q-BRN, Ultron, Trainer)
+├─ Operativos: 2 (Ollama 100%, Ultron 40%)
+├─ Cimentación: 2 (Q-BRN, Trainer)
 └─ Pendientes: 0
 ```
 
