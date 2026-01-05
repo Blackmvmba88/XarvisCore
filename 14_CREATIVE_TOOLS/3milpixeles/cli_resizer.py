@@ -1,45 +1,34 @@
 
 import argparse
 import os
-from PIL import Image
-from image_resizer_3000 import ImageResizer3000
+import sys
+from core import ResizerCore
 
 def main():
-    parser = argparse.ArgumentParser(description='Resize images to 3000x3000 pixels from the command line.')
-    parser.add_argument('input_file', type=str, help='The path to the input image file.')
-    parser.add_argument('output_file', type=str, help='The path to save the resized image.')
-    parser.add_argument('--mode', type=str, choices=['fit', 'fill', 'stretch'], default='fit', help='The resizing mode.')
+    parser = argparse.ArgumentParser(description='Resize images to 3000x3000px using Visual Alpha Engine.')
+    parser.add_argument('input', type=str, help='Path to input image')
+    parser.add_argument('output_folder', type=str, nargs='?', default='.', help='Output folder (default: current)')
+    parser.add_argument('--mode', type=str, choices=['fit', 'fill', 'stretch'], default='fit', help='Resizing mode')
+    parser.add_argument('--overwrite', action='store_true', help='Overwrite original name pattern')
 
     args = parser.parse_args()
 
-    # We don't need the GUI, but the resizing functions are part of the ImageResizer3000 class
-    # We can instantiate it with a dummy root object
-    class DummyTk:
-        def __init__(self):
-            self.root = None
-    
-    resizer = ImageResizer3000(DummyTk())
-
+    if not os.path.exists(args.input):
+        print(f"Error: Input file '{args.input}' not found.")
+        sys.exit(1)
 
     try:
-        img = Image.open(args.input_file)
-        if img.mode != 'RGB':
-            img = img.convert('RGB')
-
-        if args.mode == 'fit':
-            result = resizer.resize_fit(img)
-        elif args.mode == 'fill':
-            result = resizer.resize_fill(img)
-        elif args.mode == 'stretch':
-            result = resizer.resize_stretch(img)
-
-        result.save(args.output_file, quality=95)
-        print(f"Image saved to {args.output_file}")
-
-    except FileNotFoundError:
-        print(f"Error: Input file not found at {args.input_file}")
+        print(f"🚀 Processing: {os.path.basename(args.input)}...")
+        out_path = ResizerCore.process_image(
+            args.input, 
+            args.output_folder, 
+            mode=args.mode, 
+            save_original=not args.overwrite
+        )
+        print(f"✅ Success! Saved to: {out_path}")
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f"❌ Error: {e}")
+        sys.exit(1)
 
 if __name__ == '__main__':
     main()

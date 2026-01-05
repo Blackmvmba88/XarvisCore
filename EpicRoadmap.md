@@ -171,12 +171,44 @@ Esta es la crónica de una promesa cumplida. Desde la creación del primer bit d
 - [x] **Hermes Messaging:** Sistema de mensajería segura integrado en 1_CORE.
 - [ ] **Protocolos de Encriptación:** Expandir capacidades de cifrado end-to-end.
 
-### 📚 Fase 24: Documentación para Agentes de IA
-**[27 de Diciembre, 2025]**
-- [x] **Copilot Instructions:** Creación de `.github/copilot-instructions.md` en español.
-- [x] **Arquitectura Documentada:** Mapeo completo de dominios 0-17.
-- [x] **Patrones de Desarrollo:** Documentación de convenciones y flujos de trabajo.
-- [x] **Registro Git:** Commit inicial de la documentación para agentes de IA.
+### ⚡ Fase 25: Soberanía Energética (The Power Grid)
+- [ ] **Dominio 20_ENERGY:** Establecimiento del motor de gestión energética.
+- [ ] **Micro-Grid Control:** Algoritmos para gestionar paneles solares y almacenamiento local.
+- [ ] **Independencia de Red:** Capacidad de funcionamiento "off-grid" total para los nodos BMU.
+
+### 🌊 Fase 26: Gestión Hídrica y Ciclos de Vida (The Water Cycle)
+- [ ] **Dominio 25_WATER:** Implementación del sistema de gestión de recursos hídricos.
+- [ ] **Smart Purification:** Automatización de captación pluvial y tratamiento de aguas.
+- [ ] **Desalinización Solar:** Integración de procesos de desalinización alimentados por energía soberana.
+
+### 🧬 Fase 27: Optimización Biológica (Bio-Sovereignty)
+- [ ] **Dominio 21_BIO_OPTIMIZATION:** Establecimiento del protocolo de salud soberana.
+- [ ] **Vitality Tracking:** Integración de métricas de salud en el X-ID (sueño, nutrición, enfoque).
+- [ ] **Farmacia Hidropónica:** Cultivo de plantas medicinales y suplementos de alta pureza.
+
+### 🛠️ Fase 28: Manufactura Distribuida (The Forge)
+- [ ] **Dominio 22_MANUFACTURING:** Creación del laboratorio de fabricación digital.
+- [ ] **Sovereign Blueprints:** Repositorio de diseños para herramientas y mobiliario fabricables en sitio (3D/CNC).
+- [ ] **Economía Circular:** Sistemas de reciclaje local para producción de filamentos y materiales.
+
+### 🛰️ Fase 29: Custodia del Cielo (Sky Guardian)
+- [ ] **Dominio 23_SKY_GUARDIAN:** Implementación de la seguridad perimetral aérea.
+- [ ] **Gaia Drone Swarm:** Enjambre de drones autónomos para monitoreo ambiental y seguridad de los nodos.
+- [ ] **Mesh Communication:** Red de comunicación propia que no depende de proveedores externos (ISP).
+
+### ⚖️ Fase 30: Tribunal de Honor y Justicia Inteligente (Smart Justice)
+- [ ] **Dominio 24_JUSTICE:** Establecimiento del sistema de resolución de conflictos.
+- [ ] **Honor Metrics:** Implementación de métricas de honor vinculadas al cumplimiento de la palabra y contratos inteligentes.
+- [ ] **IA Mediation:** Uso de Xarvis como mediador neutral basado en las leyes de la razón.
+
+### 🧠 Fase 31: Red Neuronal Colectiva (The Hive Mind)
+- [ ] **Dominio 26_HIVE_MIND:** Expansión de la inteligencia colectiva del reino.
+- [ ] **Expert Integration:** Protocolos para alimentar la IA con la experiencia de los polímatas de BMU.
+- [ ] **Oracle 2.0:** Predicción social avanzada para resolver problemas antes de que escalen.
+
+### 🦅 Fase 32: Protocolo de Ciudad-Estado (The Sovereign Nodes)
+- [ ] **Convergencia Escalar:** Integración de vivienda, alimento, energía, educación y defensa en un solo nodo físico modular.
+- [ ] **Blueprint Global:** Creación del modelo replicable para la expansión federal del reino.
 
 ---
 

@@ -1,0 +1,58 @@
+{
+  "music": {
+    "library_exists": true,
+    "library_size_mb": 0.1,
+    "fingerprints_exist": true,
+    "fingerprints_size_mb": 1.62,
+    "duplicates_checked": true,
+    "organized_archive": true
+  },
+  "videos": {
+    "Movies": {
+      "count": 75,
+      "size_gb": 6.49
+    }
+  },
+  "downloads": {
+    "status": "chaos",
+    "file_count": 43
+  },
+  "organization_tools": [
+    {
+      "path": "10_CULTURAL_RENAISSANCE/scan_music_library.py",
+      "description": "Escanear biblioteca musical",
+      "exists": true
+    },
+    {
+      "path": "10_CULTURAL_RENAISSANCE/music_duplicate_finder.py",
+      "description": "Encontrar duplicados de música",
+      "exists": true
+    },
+    {
+      "path": "10_CULTURAL_RENAISSANCE/organize_music.py",
+      "description": "Organizar música",
+      "exists": true
+    },
+    {
+      "path": "10_CULTURAL_RENAISSANCE/music_backup_manager.py",
+      "description": "Backup de música",
+      "exists": true
+    },
+    {
+      "path": "10_CULTURAL_RENAISSANCE/sync_to_usb.sh",
+      "description": "Sincronizar a USB",
+      "exists": true
+    },
+    {
+      "path": "14_CREATIVE_TOOLS/downloads_organizer.py",
+      "description": "Organizar Downloads → USB",
+      "exists": true
+    }
+  ],
+  "issues": [
+    "Downloads necesita limpieza urgente"
+  ],
+  "recommendations": [
+    "Ejecutar: cd 14_CREATIVE_TOOLS && python3 downloads_organizer.py --execute"
+  ]
+}

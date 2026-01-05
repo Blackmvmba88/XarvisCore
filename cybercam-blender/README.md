@@ -77,3 +77,19 @@ Parámetros CLI relevantes (ejemplos):
 Documentación detallada del pipeline de render: `docs/RENDER_PIPELINE.md`.
 
 Philosofía: preferimos determinismo y reproducibilidad sobre decisiones artísticas tempranas — los presets ofrecen ‘preview’ rápido y ‘final’ reproducible.
+
+## Hero Render (High-Res)
+
+For screenshots and announcements, run the hero render script (Cycles, final preset):
+
+```bash
+BLENDER_BIN=/opt/homebrew/bin/blender ./scripts/dev/render_hero.sh mk1
+```
+
+This produces a single high-resolution Cycles render at:
+
+```
+exports/renders/<preset>/frame_0001.png
+```
+
+Note: this is an editorial, human-oriented command (Cycles high-res). Do NOT add it to CI — it is intentionally excluded from automated runs.

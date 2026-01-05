@@ -1,4 +1,11 @@
-from fastapi import FastAPI, Request, Form, Query
+#!/usr/bin/env python3
+"""
+🎬 BlackMamba YTDLP WebUI - Robustecido y Validado
+Arquitecto: Iyari Cancino Gomez
+Fecha: 1 de Enero, 2026
+"""
+
+from fastapi import FastAPI, Request, Form, Query, HTTPException
 from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -7,40 +14,175 @@ from pathlib import Path
 import yt_dlp
 import subprocess
 import sys
+import logging
+from typing import Optional
+from urllib.parse import urlparse
 
 from shared import get_manager, load_config
 
+# Configurar logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
 BASE_DIR = Path(__file__).resolve().parent
+
+# Validar que el directorio de templates exista
+if not (BASE_DIR / "templates").exists():
+    logger.error(f"❌ Directorio de templates no encontrado: {BASE_DIR / 'templates'}")
+    raise FileNotFoundError("Templates directory missing")
+
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 
-app = FastAPI(title="Descargas yt-dlp (WebUI)", docs_url=None, redoc_url=None)
+app = FastAPI(
+    title="BlackMamba YTDLP WebUI",
+    description="Sistema de descargas inteligente",
+    version="2.0.0",
+    docs_url=None,
+    redoc_url=None
+)
 
-app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
+# Validar que static existe antes de montar
+static_dir = BASE_DIR / "static"
+if static_dir.exists():
+    app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
+else:
+    logger.warning(f"⚠️ Directorio static no encontrado: {static_dir}")
+
+# URLs válidas para descargas
+VALID_DOMAINS = {
+    'youtube.com', 'youtu.be', 'soundcloud.com', 'vimeo.com',
+    'dailymotion.com', 'twitch.tv', 'twitter.com', 'x.com',
+    'instagram.com', 'facebook.com', 'tiktok.com'
+}
+
+# Extensiones permitidas
+VIDEO_EXTENSIONS = {'.mp4', '.mkv', '.webm', '.mov', '.avi', '.flv'}
+AUDIO_EXTENSIONS = {'.mp3', '.m4a', '.aac', '.opus', '.ogg', '.wav', '.flac'}
+ALLOWED_EXTENSIONS = VIDEO_EXTENSIONS | AUDIO_EXTENSIONS
+
+def validate_url(url: str) -> bool:
+    """Valida que la URL sea segura y de un dominio permitido"""
+    try:
+        parsed = urlparse(url)
+        domain = parsed.netloc.lower().replace('www.', '')
+        return any(allowed in domain for allowed in VALID_DOMAINS)
+    except Exception as e:
+        logger.error(f"Error validando URL {url}: {e}")
+        return False
+
+def sanitize_path(base: Path, rel_path: str) -> Optional[Path]:
+    """Sanitiza y valida rutas para prevenir path traversal"""
+    try:
+        rel_path = rel_path.strip()
+        if not rel_path:
+            return None
+        
+        full_path = (base / rel_path).resolve()
+        
+        # Verificar que esté dentro del directorio base
+        if not str(full_path).startswith(str(base)):
+            logger.warning(f"⚠️ Path traversal attempt: {rel_path}")
+            return None
+        
+        if not full_path.exists():
+            return None
+        
+        # Verificar extensión si es archivo
+        if full_path.is_file() and full_path.suffix.lower() not in ALLOWED_EXTENSIONS:
+            logger.warning(f"⚠️ Invalid file extension: {full_path.suffix}")
+            return None
+        
+        return full_path
+    except Exception as e:
+        logger.error(f"Error sanitizando path {rel_path}: {e}")
+        return None
 
 @app.on_event("startup")
 async def startup():
-    # Asegurar que el gestor tenga workers activos
-    get_manager().start()
-    # Montar carpeta de descargas como media para reproducir
-    cfg = load_config()
-    media_dir = Path(cfg.get("download_root", str(BASE_DIR))).resolve()
+    """Inicialización robusta del sistema"""
+    logger.info("🚀 Iniciando BlackMamba YTDLP WebUI...")
+    
     try:
-        app.mount("/media", StaticFiles(directory=str(media_dir)), name="media")
-    except Exception:
-        # Si ya estuviera montado, ignorar
-        pass
+        manager = get_manager()
+        manager.start()
+        logger.info("✅ Manager de descargas iniciado")
+        
+        cfg = load_config()
+        media_dir = Path(cfg.get("download_root", str(BASE_DIR))).resolve()
+        media_dir.mkdir(parents=True, exist_ok=True)
+        
+        if not media_dir.is_dir():
+            logger.error(f"❌ Media dir no es directorio válido: {media_dir}")
+            raise ValueError("Invalid media directory")
+        
+        try:
+            app.mount("/media", StaticFiles(directory=str(media_dir)), name="media")
+            logger.info(f"✅ Media directory montado: {media_dir}")
+        except RuntimeError:
+            logger.info("⚠️ Media directory ya estaba montado")
+        
+        logger.info("✅ Sistema iniciado correctamente")
+    except Exception as e:
+        logger.error(f"❌ Error crítico en startup: {e}")
+        raise
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
-    manager = get_manager()
-    return templates.TemplateResponse("index.html", {"request": request, "jobs": manager.list_jobs()})
+    """Página principal con validación"""
+    try:
+        manager = get_manager()
+        jobs = manager.list_jobs() or []
+        return templates.TemplateResponse("index.html", {
+            "request": request,
+            "jobs": jobs
+        })
+    except Exception as e:
+        logger.error(f"Error en index: {e}")
+        raise HTTPException(status_code=500, detail="Error cargando página principal")
 
 @app.post("/jobs")
 async def create_job(urls: str = Form(...), mode: str = Form("video")):
-    manager = get_manager()
-    url_list = [u.strip() for u in urls.replace("\r\n"," ").replace("\n"," ").split(" ") if u.strip()]
-    manager.add_job(url_list, mode)
-    return RedirectResponse("/", status_code=303)
+    """Crear trabajo de descarga con validación robusta"""
+    try:
+        if mode not in ['video', 'audio']:
+            raise HTTPException(status_code=400, detail="Modo inválido")
+        
+        url_list = [
+            u.strip() 
+            for u in urls.replace("\r\n", " ").replace("\n", " ").split(" ") 
+            if u.strip()
+        ]
+        
+        if not url_list:
+            raise HTTPException(status_code=400, detail="No se proporcionaron URLs válidas")
+        
+        valid_urls = []
+        invalid_urls = []
+        
+        for url in url_list:
+            if validate_url(url):
+                valid_urls.append(url)
+            else:
+                invalid_urls.append(url)
+                logger.warning(f"⚠️ URL inválida: {url}")
+        
+        if not valid_urls:
+            raise HTTPException(status_code=400, detail="Ninguna URL válida")
+        
+        manager = get_manager()
+        manager.add_job(valid_urls, mode)
+        
+        logger.info(f"✅ {len(valid_urls)} URLs agregadas ({mode})")
+        return RedirectResponse("/", status_code=303)
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creando trabajo: {e}")
+        raise HTTPException(status_code=500, detail="Error procesando descarga")
 
 @app.get("/jobs", response_class=HTMLResponse)
 async def jobs_partial(request: Request):
@@ -89,18 +231,42 @@ async def search(request: Request, q: str = Query("") ):
 
 @app.get("/play", response_class=HTMLResponse)
 async def play(request: Request, rel: str = Query("")):
-    cfg = load_config()
-    root = Path(cfg.get("download_root", ".")).resolve()
-    rel_path = Path(rel)
-    file_path = (root / rel_path).resolve()
-    # Seguridad: evitar traversal y exigir existencia
-    if not str(file_path).startswith(str(root)) or not file_path.exists():
-        return HTMLResponse("Archivo no disponible", status_code=404)
-    ext = file_path.suffix.lower().lstrip(".")
-    is_audio = ext in ["mp3","m4a","aac","opus","ogg","wav","flac"]
-    is_video = ext in ["mp4","mkv","webm","mov"]
-    file_url = "/media/" + rel_path.as_posix()
-    return templates.TemplateResponse("play.html", {"request": request, "file_url": file_url, "file_name": file_path.name, "is_audio": is_audio, "is_video": is_video})
+    """Reproductor con validación de seguridad robusta"""
+    try:
+        if not rel:
+            raise HTTPException(status_code=400, detail="Ruta no especificada")
+        
+        cfg = load_config()
+        root = Path(cfg.get("download_root", ".")).resolve()
+        
+        file_path = sanitize_path(root, rel)
+        if not file_path or not file_path.is_file():
+            raise HTTPException(status_code=404, detail="Archivo no disponible")
+        
+        ext = file_path.suffix.lower().lstrip(".")
+        is_audio = ext in ["mp3","m4a","aac","opus","ogg","wav","flac"]
+        is_video = ext in ["mp4","mkv","webm","mov","avi","flv"]
+        
+        if not (is_audio or is_video):
+            raise HTTPException(status_code=400, detail="Tipo no soportado")
+        
+        rel_path = file_path.relative_to(root)
+        file_url = "/media/" + rel_path.as_posix()
+        
+        logger.info(f"🎬 Reproduciendo: {file_path.name}")
+        
+        return templates.TemplateResponse("play.html", {
+            "request": request,
+            "file_url": file_url,
+            "file_name": file_path.name,
+            "is_audio": is_audio,
+            "is_video": is_video
+        })
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error en reproductor: {e}")
+        raise HTTPException(status_code=500, detail="Error cargando reproductor")
 
 @app.get("/videos", response_class=HTMLResponse)
 async def videos(request: Request):
