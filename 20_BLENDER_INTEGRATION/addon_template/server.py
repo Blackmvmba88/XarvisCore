@@ -298,6 +298,80 @@ class JSONHandler(http.server.BaseHTTPRequestHandler):
             self._send_ok({"job_id": job_id, "status": "scheduled"})
             return
 
+        if action == "export_mesh":
+            # privileged action: check token
+            if not self._check_token():
+                self._send_error("unauthorized", "Missing or invalid token", None, 403)
+                return
+            fmt = obj.get("format")
+            output = obj.get("output_path")
+            objects = obj.get("objects")
+            export_selected = bool(obj.get("selected", False))
+            # validate format
+            SUPPORTED = ("GLTF", "FBX", "OBJ")
+            if not fmt or fmt not in SUPPORTED:
+                self._send_error("unsupported_format", "unsupported format", {"supported": list(SUPPORTED)})
+                return
+            # output path validation: must be absolute and under allowed roots
+            import os
+            if not output or not isinstance(output, str):
+                self._send_error("invalid_input", "output_path is required and must be a string")
+                return
+            output_real = os.path.realpath(os.path.expanduser(output))
+            allowed_roots = [os.path.realpath(os.path.expanduser("~")), os.path.realpath("/tmp")]
+            ok_root = False
+            for r in allowed_roots:
+                try:
+                    if os.path.commonpath([output_real, r]) == r:
+                        ok_root = True
+                        break
+                except Exception:
+                    continue
+            if not ok_root:
+                self._send_error("forbidden_path", "output_path is not allowed")
+                return
+
+            def export_runner(jobmgr, job, fmt, output, objects=None, export_selected=False):
+                import os
+                try:
+                    import bpy
+                    # minimal progress semantics: 0 -> 100
+                    with jobmgr._lock:
+                        job['progress'] = 0.0
+                    # prepare kwargs
+                    kwargs = {"filepath": output}
+                    if export_selected:
+                        kwargs['use_selection'] = True
+                    # object filtering would set selection; keep minimal and best-effort
+                    if objects:
+                        # attempt to select given objects by name
+                        try:
+                            for o in bpy.data.objects:
+                                if o.name in objects:
+                                    o.select_set(True)
+                                else:
+                                    o.select_set(False)
+                        except Exception:
+                            pass
+                    # call exporter
+                    if fmt == 'GLTF':
+                        bpy.ops.export_scene.gltf(**kwargs)
+                    elif fmt == 'FBX':
+                        bpy.ops.export_scene.fbx(**kwargs)
+                    elif fmt == 'OBJ':
+                        bpy.ops.export_scene.obj(**kwargs)
+                    with jobmgr._lock:
+                        job['progress'] = 100.0
+                    return {"output": output}
+                except Exception as e:
+                    raise
+
+            # schedule job (async by default)
+            st = _server_thread
+            job_id = st.jobs.create_job(export_runner, args=(fmt, output, objects, export_selected), meta={'export': True})
+            self._send_ok({"job_id": job_id, "status": "scheduled"})
+            return
+
         if action == "get_job_status":
             job_id = obj.get("job_id")
             if not job_id:

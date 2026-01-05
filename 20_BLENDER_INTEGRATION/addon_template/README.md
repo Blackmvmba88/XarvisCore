@@ -34,3 +34,20 @@ Frame hooks (optional, experimental)
 - The hook is best-effort and will register only when there are active jobs that requested frame hooks (e.g., `render_animation`) and will deregister automatically when no longer needed.
 - The hook acts as a sensor: it reads `frame_current` and updates job `progress` but does not perform control actions, cancellation, or side effects.
 - If Blender is not available, the system will still operate using per-frame updates from `render_animation` itself.
+
+Export mesh
+- Command: `export_mesh`
+- Inputs:
+  - `format` (required): one of `GLTF`, `FBX`, `OBJ`.
+  - `output_path` (required): absolute path under your home directory or `/tmp`.
+  - `objects` (optional): list of object names to export (best-effort selection).
+  - `selected` (optional): boolean, export selected objects.
+- Behavior:
+  - Runs as a job (scheduled async) and will return a `job_id` you can poll with `get_job_status`.
+  - Progress semantics: minimal (0.0 at start, 100.0 on success). Do not expect per-frame granularity.
+- Errors:
+  - `unsupported_format`: requested format not supported
+  - `forbidden_path`: output path not allowed (must be under home or /tmp)
+  - `bpy_unavailable`: Blender (`bpy`) is not available
+  - `export_failed`: exporter raised an error
+- Security: this is a privileged operation and requires the addon token if token enforcement is enabled (see Token-based authentication above).
