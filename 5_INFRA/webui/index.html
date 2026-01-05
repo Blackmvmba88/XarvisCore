@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>RAM Guardian</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; }
+    .card { border: 1px solid #ddd; padding: 12px; margin-bottom: 12px; border-radius: 6px; }
+    button { padding: 8px 12px; }
+    input[type=text] { padding:6px; }
+  </style>
+</head>
+<body>
+  <h1>RAM Guardian — Web UI</h1>
+  <div class="card">
+    <strong>Status</strong>
+    <div id="status">Loading...</div>
+    <button id="refresh">Refresh</button>
+  </div>
+
+  <div class="card">
+    <strong>Metrics</strong>
+    <div><button id="load-metrics">Load latest</button></div>
+    <pre id="metrics">(metrics will appear here)</pre>
+  </div>
+
+  <div class="card">
+    <strong>Actions</strong>
+    <div>
+      <label>Web secret (if configured): <input type="text" id="secret" placeholder="optional" /></label>
+    </div>
+    <div style="margin-top:8px;">
+      <button id="estimate">Estimate potential free</button>
+      <button id="quit">Quit app (confirm)</button>
+      <button id="kill">Kill pid (confirm)</button>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
