@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Xarvis Blender WebUI</title>
+  </head>
+  <body>
+    <h1>Xarvis — Blender WebUI (headless)</h1>
+    <form method="post" action="/run">
+      <label>Blender binary (opcional):</label>
+      <input type="text" name="blender_bin" placeholder="/Applications/Blender.app/Contents/MacOS/Blender" style="width:60%"/>
+      <div style="margin-top:1em">
+        {% for key, script in commands.items() %}
+          <div style="margin-bottom:0.5em">
+            <button type="submit" name="cmd" value="{{key}}">{{ key.replace('_',' ').title() }}</button>
+            <small>→ {{ script }}</small>
+          </div>
+        {% endfor %}
+      </div>
+    </form>
+  </body>
+</html>

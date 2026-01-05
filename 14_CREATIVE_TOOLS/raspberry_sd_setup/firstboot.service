@@ -1,0 +1,11 @@
+[Unit]
+Description=Run XarvisCore first‑boot setup
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/boot/xarvis/raspberry_sd_setup/firstboot.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎬 BlackMamba Cinema - Netflix para Pobres</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #141414;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Header estilo Netflix */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 50px;
+            background: linear-gradient(180deg, rgba(0,0,0,0.7) 10%, transparent);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: background 0.3s;
+        }
+
+        .header.scrolled {
+            background: rgba(20, 20, 20, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            color: #00ff41;
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+        }
+
+        .nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-item {
+            cursor: pointer;
+            transition: color 0.3s;
+            font-size: 14px;
+        }
+
+        .nav-item:hover {
+            color: #00ff41;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            padding: 8px 15px;
+            color: white;
+            width: 250px;
+            font-size: 14px;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Hero Banner */
+        .hero {
+            height: 80vh;
+            background: linear-gradient(to bottom, transparent, #141414),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%23222" width="1200" height="800"/><text x="50%" y="50%" font-family="Arial" font-size="200" fill="%23333" text-anchor="middle">🎬</text></svg>');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end;
+            padding: 100px 50px 50px;
+            margin-bottom: 20px;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero-title {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .hero-description {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-play {
+            background: #00ff41;
+            color: #000;
+        }
+
+        .btn-play:hover {
+            background: #00cc33;
+            transform: scale(1.05);
+        }
+
+        .btn-info {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-info:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Genre Filter */
+        .genre-filter {
+            padding: 20px 50px;
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .genre-filter::-webkit-scrollbar {
+            display: none;
+        }
+
+        .genre-chip {
+            padding: 8px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+            font-size: 14px;
+        }
+
+        .genre-chip:hover, .genre-chip.active {
+            background: #00ff41;
+            color: #000;
+            border-color: #00ff41;
+        }
+
+        /* Movie Rows */
+        .movie-section {
+            padding: 40px 50px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #00ff41;
+        }
+
+        .movie-row {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding-bottom: 15px;
+            scrollbar-width: thin;
+            scrollbar-color: #00ff41 #333;
+        }
+
+        .movie-row::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .movie-row::-webkit-scrollbar-track {
+            background: #333;
+        }
+
+        .movie-row::-webkit-scrollbar-thumb {
+            background: #00ff41;
+            border-radius: 4px;
+        }
+
+        .movie-card {
+            min-width: 250px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 255, 65, 0.3);
+            border-color: #00ff41;
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: 350px;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            position: relative;
+        }
+
+        .movie-info {
+            padding: 15px;
+        }
+
+        .movie-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .movie-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 8px;
+        }
+
+        .movie-genres {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .genre-tag {
+            font-size: 10px;
+            padding: 3px 8px;
+            background: rgba(0, 255, 65, 0.2);
+            border-radius: 3px;
+            color: #00ff41;
+        }
+
+        .rating {
+            color: #ffd700;
+        }
+
+        /* Modal de Video */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            width: 90%;
+            max-width: 1200px;
+            background: #1a1a1a;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border: none;
+            color: white;
+            font-size: 24px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            background: #00ff41;
+            color: #000;
+        }
+
+        .video-player {
+            width: 100%;
+            height: 600px;
+            background: #000;
+        }
+
+        .video-info {
+            padding: 30px;
+        }
+
+        .video-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .video-details {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .video-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        /* Stats */
+        .stats {
+            padding: 40px 50px;
+            text-align: center;
+            background: rgba(0, 255, 65, 0.05);
+            margin: 40px 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .stat-item {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 65, 0.3);
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: bold;
+            color: #00ff41;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 10px;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 100px;
+            font-size: 24px;
+            color: #00ff41;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 40px 50px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 60px;
+        }
+
+        .footer-text {
+            font-size: 14px;
+        }
+
+        .signature {
+            margin-top: 20px;
+            color: #00ff41;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+
+            .logo {
+                font-size: 24px;
+            }
+
+            .nav {
+                display: none;
+            }
+
+            .hero {
+                padding: 80px 20px 30px;
+            }
+
+            .hero-title {
+                font-size: 32px;
+            }
+
+            .movie-section {
+                padding: 20px;
+            }
+
+            .modal-content {
+                width: 95%;
+            }
+
+            .video-player {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header" id="header">
+        <div class="logo">🎬 BlackMamba Cinema</div>
+        <div class="nav">
+            <div class="nav-item" onclick="filterGenre('all')">Todo</div>
+            <div class="nav-item" onclick="filterGenre('recent')">Recientes</div>
+            <div class="nav-item" onclick="scanLibrary()">🔄 Escanear</div>
+        </div>
+        <div class="search-box">
+            <input type="text" class="search-input" placeholder="Buscar películas..." id="searchInput" onkeyup="searchMovies()">
+        </div>
+    </div>
+
+    <!-- Hero Banner -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">🦅 Netflix para Pobres</h1>
+            <p class="hero-description">
+                Con inteligencia no necesitas dinero. Tu biblioteca personal de películas,
+                organizada y lista para disfrutar después del trabajo.
+            </p>
+            <div class="hero-buttons">
+                <button class="btn btn-play" onclick="playRandom()">▶ Ver Aleatoria</button>
+                <button class="btn btn-info" onclick="showStats()">📊 Estadísticas</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Genre Filter -->
+    <div class="genre-filter" id="genreFilter"></div>
+
+    <!-- Stats Section -->
+    <div class="stats" id="statsSection" style="display: none;">
+        <h2 class="section-title">📊 Tu Colección</h2>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number" id="totalMovies">0</div>
+                <div class="stat-label">Películas</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="totalSize">0</div>
+                <div class="stat-label">GB Totales</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="totalGenres">0</div>
+                <div class="stat-label">Géneros</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="watchedCount">0</div>
+                <div class="stat-label">Vistas</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Movies Container -->
+    <div id="moviesContainer"></div>
+
+    <!-- Video Modal -->
+    <div class="modal" id="videoModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">✕</button>
+            <video class="video-player" id="videoPlayer" controls autoplay>
+                Tu navegador no soporta video.
+            </video>
+            <div class="video-info">
+                <h2 class="video-title" id="modalTitle"></h2>
+                <div class="video-details" id="modalDetails"></div>
+                <div class="video-actions">
+                    <button class="btn btn-play" onclick="rateMovie(5)">⭐⭐⭐⭐⭐</button>
+                    <button class="btn btn-info">Agregar a Favoritos</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-text">
+            "Con inteligencia no necesitas dinero. Solo necesitas el poder del código."
+        </div>
+        <div class="signature">
+            🦅 Arquitecto: Iyari Cancino Gomez | Sistema: XarvisCore
+        </div>
+    </div>
+
+    <script>
+        let allMovies = [];
+        let currentMovie = null;
+
+        // Cargar header effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Cargar películas al inicio
+        async function loadMovies() {
+            try {
+                const response = await fetch('/api/movies');
+                const data = await response.json();
+                allMovies = data.movies;
+                
+                renderMovies(allMovies);
+                loadGenres();
+                updateStats();
+            } catch (error) {
+                console.error('Error cargando películas:', error);
+                document.getElementById('moviesContainer').innerHTML = `
+                    <div class="loading">❌ Error cargando películas. ¿Está el servidor corriendo?</div>
+                `;
+            }
+        }
+
+        // Renderizar películas
+        function renderMovies(movies) {
+            const container = document.getElementById('moviesContainer');
+            
+            if (movies.length === 0) {
+                container.innerHTML = `
+                    <div class="loading">
+                        📽️ No hay películas. <br><br>
+                        <button class="btn btn-play" onclick="scanLibrary()">Escanear Biblioteca</button>
+                    </div>
+                `;
+                return;
+            }
+
+            // Agrupar por género
+            const byGenre = {};
+            movies.forEach(movie => {
+                movie.genres.forEach(genre => {
+                    if (!byGenre[genre]) byGenre[genre] = [];
+                    byGenre[genre].push(movie);
+                });
+            });
+
+            let html = '';
+            
+            // Recientes primero
+            html += '<div class="movie-section">';
+            html += '<h2 class="section-title">🆕 Agregadas Recientemente</h2>';
+            html += '<div class="movie-row">';
+            movies.slice(0, 10).forEach(movie => {
+                html += renderMovieCard(movie);
+            });
+            html += '</div></div>';
+
+            // Por género
+            Object.entries(byGenre).forEach(([genre, genreMovies]) => {
+                html += `<div class="movie-section">`;
+                html += `<h2 class="section-title">🎭 ${genre.toUpperCase()}</h2>`;
+                html += '<div class="movie-row">';
+                genreMovies.forEach(movie => {
+                    html += renderMovieCard(movie);
+                });
+                html += '</div></div>';
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Renderizar card de película
+        function renderMovieCard(movie) {
+            const rating = movie.rating ? '⭐'.repeat(movie.rating) : '';
+            const year = movie.year || 'N/A';
+            
+            return `
+                <div class="movie-card" onclick='playMovie(${JSON.stringify(movie).replace(/'/g, "&#39;")})'>
+                    <div class="movie-poster">🎬</div>
+                    <div class="movie-info">
+                        <div class="movie-title">${movie.title}</div>
+                        <div class="movie-meta">
+                            <span>${year}</span>
+                            <span>${rating || '☆☆☆☆☆'}</span>
+                        </div>
+                        <div class="movie-genres">
+                            ${movie.genres.map(g => `<span class="genre-tag">${g}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Reproducir película
+        function playMovie(movie) {
+            currentMovie = movie;
+            const modal = document.getElementById('videoModal');
+            const player = document.getElementById('videoPlayer');
+            const title = document.getElementById('modalTitle');
+            const details = document.getElementById('modalDetails');
+
+            player.src = `/api/stream/${movie.id}`;
+            title.textContent = movie.title;
+            details.innerHTML = `
+                <span>📅 ${movie.year || 'N/A'}</span>
+                <span>📦 ${movie.size_mb} MB</span>
+                <span>👁️ ${movie.watch_count || 0} veces</span>
+            `;
+
+            modal.classList.add('active');
+        }
+
+        // Cerrar modal
+        function closeModal() {
+            const modal = document.getElementById('videoModal');
+            const player = document.getElementById('videoPlayer');
+            player.pause();
+            player.src = '';
+            modal.classList.remove('active');
+        }
+
+        // Buscar películas
+        function searchMovies() {
+            const query = document.getElementById('searchInput').value;
+            if (query.length < 2) {
+                renderMovies(allMovies);
+                return;
+            }
+
+            const filtered = allMovies.filter(m => 
+                m.title.toLowerCase().includes(query.toLowerCase())
+            );
+            renderMovies(filtered);
+        }
+
+        // Filtrar por género
+        function filterGenre(genre) {
+            if (genre === 'all') {
+                renderMovies(allMovies);
+            } else if (genre === 'recent') {
+                const recent = allMovies.slice(0, 20);
+                renderMovies(recent);
+            } else {
+                const filtered = allMovies.filter(m => m.genres.includes(genre));
+                renderMovies(filtered);
+            }
+        }
+
+        // Cargar géneros
+        async function loadGenres() {
+            try {
+                const response = await fetch('/api/genres');
+                const data = await response.json();
+                
+                const filter = document.getElementById('genreFilter');
+                let html = '<div class="genre-chip active" onclick="filterGenre(\'all\')">Todos</div>';
+                html += '<div class="genre-chip" onclick="filterGenre(\'recent\')">Recientes</div>';
+                
+                data.genres.forEach(genre => {
+                    html += `<div class="genre-chip" onclick="filterGenre('${genre}')">${genre}</div>`;
+                });
+                
+                filter.innerHTML = html;
+            } catch (error) {
+                console.error('Error cargando géneros:', error);
+            }
+        }
+
+        // Actualizar estadísticas
+        function updateStats() {
+            const totalSize = allMovies.reduce((sum, m) => sum + (m.size_mb || 0), 0) / 1024;
+            const watched = allMovies.filter(m => m.watch_count > 0).length;
+            const genres = new Set();
+            allMovies.forEach(m => m.genres.forEach(g => genres.add(g)));
+
+            document.getElementById('totalMovies').textContent = allMovies.length;
+            document.getElementById('totalSize').textContent = totalSize.toFixed(1);
+            document.getElementById('totalGenres').textContent = genres.size;
+            document.getElementById('watchedCount').textContent = watched;
+        }
+
+        // Mostrar estadísticas
+        function showStats() {
+            const stats = document.getElementById('statsSection');
+            stats.style.display = stats.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Película aleatoria
+        function playRandom() {
+            if (allMovies.length > 0) {
+                const random = allMovies[Math.floor(Math.random() * allMovies.length)];
+                playMovie(random);
+            }
+        }
+
+        // Calificar película
+        async function rateMovie(rating) {
+            if (!currentMovie) return;
+            
+            try {
+                await fetch(`/api/movie/${currentMovie.id}/rate`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({rating})
+                });
+                alert(`¡Película calificada con ${rating} estrellas!`);
+                loadMovies();
+            } catch (error) {
+                console.error('Error calificando:', error);
+            }
+        }
+
+        // Escanear biblioteca
+        async function scanLibrary() {
+            if (!confirm('¿Re-escanear la biblioteca de películas?')) return;
+            
+            try {
+                document.getElementById('moviesContainer').innerHTML = '<div class="loading">🔄 Escaneando...</div>';
+                await fetch('/api/scan', {method: 'POST'});
+                await loadMovies();
+                alert('¡Biblioteca actualizada!');
+            } catch (error) {
+                console.error('Error escaneando:', error);
+                alert('Error al escanear');
+            }
+        }
+
+        // Iniciar
+        loadMovies();
+    </script>
+</body>
+</html>

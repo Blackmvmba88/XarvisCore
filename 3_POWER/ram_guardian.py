@@ -9,14 +9,17 @@ import os
 import signal
 import time
 import logging
+import subprocess
 from datetime import datetime
 from collections import defaultdict
 
 # === CONFIGURACIÓN ===
-RAM_THRESHOLD_WARNING = 75  # % - Advertencia
-RAM_THRESHOLD_CRITICAL = 85  # % - Acción inmediata
-RAM_THRESHOLD_OPTIMAL = 60  # % - Objetivo óptimo
-CHECK_INTERVAL = 10  # segundos entre chequeos
+RAM_THRESHOLD_WARNING = 65  # % - Advertencia (más agresivo)
+RAM_THRESHOLD_CRITICAL = 75  # % - Acción inmediata (más agresivo)
+RAM_THRESHOLD_OPTIMAL = 50  # % - Objetivo óptimo
+RAM_THRESHOLD_PURGE = 70  # % - Activar purge de memoria
+CHECK_INTERVAL = 5  # segundos entre chequeos (más frecuente)
+AGGRESSIVE_MODE = True  # Modo agresivo de limpieza
 
 # Procesos protegidos (nunca cerrar)
 PROTECTED_PROCESSES = {
@@ -36,15 +39,21 @@ PROTECTED_PROCESSES = {
 # Procesos de baja prioridad (candidatos a cierre)
 LOW_PRIORITY_PATTERNS = [
     'Google Chrome Helper',
+    'ChatGPT Atlas (Renderer)',
+    'Code Helper (Renderer)',
+    'Code Helper (Plugin)',
+    'Spotify Helper',
     'slack',
     'discord',
-    'spotify',
     'Steam',
     'Epic',
     'firefox',
     'safari',
     'mail',
-    'calendar'
+    'calendar',
+    'Messages',
+    'Photos',
+    'Music'
 ]
 
 # Configurar logging
@@ -164,38 +173,100 @@ class RAMGuardian:
             logging.warning(f"No se pudo cerrar {name} (PID: {pid}): {e}")
             return False
     
+    def purge_memory_cache(self):
+        """Ejecuta purge para limpiar caché de memoria del sistema"""
+        try:
+            logging.info("🧹 Ejecutando purge del sistema...")
+            result = subprocess.run(['sudo', 'purge'], capture_output=True, timeout=30)
+            if result.returncode == 0:
+                logging.info("✅ Purge completado - Caché limpiado")
+                return True
+            else:
+                logging.warning("⚠️ Purge requiere permisos sudo")
+                return False
+        except Exception as e:
+            logging.error(f"❌ Error en purge: {e}")
+            return False
+    
+    def kill_duplicate_renderers(self):
+        """Cierra procesos duplicados de renderers (ChatGPT, VSCode, etc)"""
+        renderers = defaultdict(list)
+        
+        # Agrupar renderers por tipo
+        for proc in psutil.process_iter(['pid', 'name', 'memory_percent']):
+            try:
+                name = proc.info['name']
+                if 'Renderer' in name or 'Helper' in name:
+                    base_name = name.split('(')[0].strip()
+                    renderers[base_name].append({
+                        'pid': proc.info['pid'],
+                        'name': name,
+                        'mem': proc.info['memory_percent']
+                    })
+            except (psutil.NoSuchProcess, psutil.AccessDenied):
+                continue
+        
+        killed = 0
+        # Si hay más de 3 del mismo tipo, cerrar los que menos memoria usan
+        for base_name, procs in renderers.items():
+            if len(procs) > 3:
+                # Ordenar por uso de memoria (menor a mayor)
+                procs.sort(key=lambda x: x['mem'])
+                # Cerrar los menos usados (dejar solo 3)
+                for proc in procs[:-3]:
+                    if self.kill_process(proc['pid'], proc['name']):
+                        killed += 1
+                        self.total_memory_freed += proc['mem'] * psutil.virtual_memory().total / 100 / (1024**2)
+        
+        if killed > 0:
+            logging.info(f"✂️ Cerrados {killed} procesos helper duplicados")
+        
+        return killed
+    
     def free_memory(self, target_percent=RAM_THRESHOLD_OPTIMAL):
         """Libera memoria hasta alcanzar el objetivo"""
         mem_before = psutil.virtual_memory().percent
         logging.warning(f"⚠️ LIBERANDO MEMORIA: {mem_before}% → objetivo {target_percent}%")
         
-        processes = self.get_memory_hogs(limit=50)
-        freed_count = 0
+        # Paso 1: Cerrar helpers/renderers duplicados primero
+        self.kill_duplicate_renderers()
+        time.sleep(1)
         
-        for proc in processes:
-            # Verificar si ya alcanzamos el objetivo
-            current_mem = psutil.virtual_memory().percent
-            if current_mem <= target_percent:
-                logging.info(f"✅ Objetivo alcanzado: {current_mem}%")
-                break
+        # Paso 2: Cerrar procesos de baja prioridad si es necesario
+        current_mem = psutil.virtual_memory().percent
+        if current_mem > target_percent:
+            processes = self.get_memory_hogs(limit=50)
+            freed_count = 0
             
-            # Solo cerrar procesos no protegidos de baja prioridad
-            if not proc['protected'] and proc['low_priority']:
-                if self.kill_process(proc['pid'], proc['name']):
-                    freed_count += 1
-                    self.total_memory_freed += proc['memory_mb']
-                    time.sleep(0.5)  # Pequeña pausa entre cierres
+            for proc in processes:
+                # Verificar si ya alcanzamos el objetivo
+                current_mem = psutil.virtual_memory().percent
+                if current_mem <= target_percent:
+                    logging.info(f"✅ Objetivo alcanzado: {current_mem}%")
+                    break
+                
+                # Solo cerrar procesos no protegidos de baja prioridad
+                if not proc['protected'] and proc['low_priority']:
+                    if self.kill_process(proc['pid'], proc['name']):
+                        freed_count += 1
+                        self.total_memory_freed += proc['memory_mb']
+                        time.sleep(0.5)  # Pequeña pausa entre cierres
+        
+        # Paso 3: Purge si aún está alto
+        current_mem = psutil.virtual_memory().percent
+        if current_mem > RAM_THRESHOLD_PURGE:
+            self.purge_memory_cache()
+            time.sleep(2)
         
         mem_after = psutil.virtual_memory().percent
         mem_freed = mem_before - mem_after
         
         self.interventions += 1
         
-        logging.info(f"🧹 Limpieza completada: {freed_count} procesos cerrados")
+        logging.info(f"🧹 Limpieza completada")
         logging.info(f"📊 Memoria: {mem_before}% → {mem_after}% (liberado: {mem_freed:.1f}%)")
         
         return {
-            'processes_killed': freed_count,
             'memory_before': mem_before,
             'memory_after': mem_after,
             'memory_freed': mem_freed
