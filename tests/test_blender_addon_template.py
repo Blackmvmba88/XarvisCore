@@ -1,0 +1,32 @@
+import requests
+import threading
+import time
+
+from pathlib import Path
+import importlib.util
+
+# import our server without relying on Blender
+spec = importlib.util.spec_from_file_location("addon_server", Path(__file__).resolve().parents[1] / "20_BLENDER_INTEGRATION" / "addon_template" / "server.py")
+server = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(server)
+
+
+def test_server_ping_and_shutdown():
+    host, port = server.start_server(host="127.0.0.1", port=0)
+    url = f"http://{host}:{port}/"
+    # ping
+    r = requests.post(url, json={"action": "ping"}, timeout=2)
+    assert r.status_code == 200
+    assert r.json().get("status") == "ok"
+    # stop
+    server.stop_server()
+
+
+def test_list_objects_when_bpy_missing():
+    host, port = server.start_server(host="127.0.0.1", port=0)
+    url = f"http://{host}:{port}/"
+    r = requests.post(url, json={"action": "list_objects"}, timeout=2)
+    j = r.json()
+    # outside Blender the handler should return an explanatory error
+    assert "error" in j
+    server.stop_server()

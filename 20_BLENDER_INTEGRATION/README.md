@@ -38,3 +38,8 @@ venv/bin/python3 20_BLENDER_INTEGRATION/connector.py --blender-bin /Applications
 
 Siguientes pasos
 - Dime qué enfoque prefieres (headless vs. addon vs. socket). Yo prepararé el siguiente PR con más detalles y/o un addon template si quieres interactividad.
+
+Addon template
+- Se añadió un addon template en `20_BLENDER_INTEGRATION/addon_template` que expone un pequeño servidor HTTP JSON en `127.0.0.1:47211`.
+- Uso: copiar la carpeta al directorio de addons de Blender e instalar/activar. Ejecuta `POST` a `http://127.0.0.1:47211/` con `{"action":"ping"}` o `{"action":"list_objects"}`.
+- Seguridad: el addon está pensado para entornos de desarrollo. Añade autenticación y restricciones para uso en producción.
