@@ -162,3 +162,105 @@ def test_render_animation_progress_cancel_mid():
     assert st_data.get("status") == "cancelled"
     assert 0 <= st_data.get("progress",0) < 100.0
     server.stop_server()
+
+
+def test_frame_hook_registers_and_releases():
+    # env enable frame hooks
+    import os
+    os.environ['XARVIS_BLENDER_FRAME_HOOKS'] = '1'
+    host, port = server.start_server(host="127.0.0.1", port=0)
+    url = f"http://{host}:{port}/"
+    st = server._server_thread
+
+    def long_job(jobmgr, job, duration=1.0):
+        import time
+        # keep running until cancelled
+        for i in range(100):
+            if job.get('cancel_requested'):
+                return {'msg': 'cancelled'}
+            time.sleep(duration/100.0)
+        return {'msg': 'done'}
+
+    job_id = st.jobs.create_job(long_job, args=(1.0,), use_frame_hook=True, meta={'frame_start':1,'frame_end':100})
+    # wait until job is running and hook registered
+    import time
+    t0 = time.time()
+    while time.time() - t0 < 2.0:
+        if st._frame_hook_registered:
+            break
+        time.sleep(0.01)
+    assert st._frame_hook_registered is True
+    # cancel job and ensure hook de-registers
+    r = requests.post(url, json={"action":"cancel_job","job_id":job_id}, timeout=2)
+    assert r.status_code == 200
+    # wait until hook is deactivated
+    t0 = time.time()
+    while time.time() - t0 < 2.0:
+        if not st._frame_hook_registered:
+            break
+        time.sleep(0.01)
+    assert st._frame_hook_registered is False
+    server.stop_server()
+
+
+def test_frame_hook_simulated_updates_progress():
+    import os
+    os.environ['XARVIS_BLENDER_FRAME_HOOKS'] = '1'
+    host, port = server.start_server(host="127.0.0.1", port=0)
+    st = server._server_thread
+
+    def sleeper(jobmgr, job, duration=1.0):
+        import time
+        # remain running for a short while
+        for i in range(50):
+            if job.get('cancel_requested'):
+                return {'msg': 'cancelled'}
+            time.sleep(duration/50.0)
+        return {'msg': 'done'}
+
+    job_id = st.jobs.create_job(sleeper, args=(1.0,), use_frame_hook=True, meta={'frame_start':1,'frame_end':10})
+    # wait until hook active
+    import time
+    t0 = time.time()
+    while time.time() - t0 < 2.0:
+        if st._frame_hook_registered:
+            break
+        time.sleep(0.01)
+    assert st._frame_hook_registered is True
+    # simulate blender reporting frame 5
+    st._frame_hook_notify(5)
+    # check job progress updated to expected value
+    j = st.jobs.get_job(job_id)
+    assert j.get('progress') is not None
+    expected = (5 - 1 + 1) / (10 - 1 + 1) * 100.0
+    assert j.get('progress') >= expected
+    # cleanup
+    r = requests.post(f"http://{host}:{port}/", json={"action":"cancel_job","job_id":job_id}, timeout=2)
+    server.stop_server()
+
+
+def test_frame_hook_disabled_no_effect():
+    import os
+    os.environ.pop('XARVIS_BLENDER_FRAME_HOOKS', None)
+    host, port = server.start_server(host="127.0.0.1", port=0)
+    st = server._server_thread
+
+    def sleeper(jobmgr, job, duration=0.5):
+        import time
+        for i in range(20):
+            if job.get('cancel_requested'):
+                return {'msg': 'cancelled'}
+            time.sleep(duration/20.0)
+        return {'msg': 'done'}
+
+    job_id = st.jobs.create_job(sleeper, args=(0.5,), use_frame_hook=True, meta={'frame_start':1,'frame_end':10})
+    # ensure hook not active
+    import time
+    time.sleep(0.05)
+    assert st._frame_hook_registered is False
+    # simulate frame notify - should have no effect
+    st._frame_hook_notify(5)
+    j = st.jobs.get_job(job_id)
+    assert j.get('progress') == 0.0
+    r = requests.post(f"http://{host}:{port}/", json={"action":"cancel_job","job_id":job_id}, timeout=2)
+    server.stop_server()

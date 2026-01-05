@@ -14,6 +14,7 @@ from . import server
 
 
 import bpy
+import os
 
 
 class XarvisAddonPreferences(bpy.types.AddonPreferences):
@@ -31,6 +32,12 @@ class XarvisAddonPreferences(bpy.types.AddonPreferences):
         default="~/.config/xarvis/blender.token",
     )
 
+    use_frame_hooks: bpy.props.BoolProperty(
+        name="Use Blender Frame Hooks (experimental)",
+        description="Allow addon to subscribe to Blender's frame_change_post handler to improve render progress reporting",
+        default=False,
+    )
+
     def draw(self, context):
         layout = self.layout
         layout.prop(self, "require_token")
@@ -39,6 +46,11 @@ class XarvisAddonPreferences(bpy.types.AddonPreferences):
         if self.require_token and not os.path.exists(os.path.expanduser(self.token_path)):
             row = layout.row()
             row.label(text="Warning: Token file not found at token path", icon="ERROR")
+        layout.separator()
+        layout.prop(self, "use_frame_hooks")
+        if self.use_frame_hooks:
+            row = layout.row()
+            row.label(text="Experimental: frame hooks are best-effort and opt-in", icon='INFO')
 
 
 def register():

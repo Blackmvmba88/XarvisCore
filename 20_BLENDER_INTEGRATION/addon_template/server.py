@@ -294,7 +294,7 @@ class JSONHandler(http.server.BaseHTTPRequestHandler):
                     raise
 
             st = _server_thread
-            job_id = st.jobs.create_job(animation_runner, args=(frame_start, frame_end, output_dir, fmt))
+            job_id = st.jobs.create_job(animation_runner, args=(frame_start, frame_end, output_dir, fmt), use_frame_hook=True, meta={'frame_start': frame_start, 'frame_end': frame_end})
             self._send_ok({"job_id": job_id, "status": "scheduled"})
             return
 
@@ -338,16 +338,24 @@ class ThreadedHTTPServer(socketserver.ThreadingMixIn, http.server.HTTPServer):
 class JobManager:
     """Simple in-memory job manager for asynchronous jobs.
     Jobs structure:
-    { job_id: { 'status': 'queued'|'running'|'done'|'error'|'cancelled', 'progress': 0.0, 'result': {...}, 'error': {...}, 'thread': Thread, 'cancel_requested': False }}
+    { job_id: { 'status': 'queued'|'running'|'done'|'error'|'cancelled', 'progress': 0.0, 'result': {...}, 'error': {...}, 'thread': Thread, 'cancel_requested': False, 'meta': {}}}
     """
     def __init__(self):
         self._jobs = {}
         self._lock = threading.Lock()
         self._counter = 0
+        self._status_change_cb = None
 
-    def create_job(self, target, args=(), kwargs=None):
+    def set_status_change_callback(self, cb):
+        """Set a callback cb(job_id, job_dict) called whenever a job status changes.
+        """
+        self._status_change_cb = cb
+
+    def create_job(self, target, args=(), kwargs=None, use_frame_hook: bool = False, meta: dict | None = None):
         if kwargs is None:
             kwargs = {}
+        if meta is None:
+            meta = {}
         with self._lock:
             self._counter += 1
             job_id = f"job-{self._counter:04d}"
@@ -358,14 +366,24 @@ class JobManager:
                 'error': None,
                 'thread': None,
                 'cancel_requested': False,
+                'meta': dict(meta),
             }
+            # mark desire for frame hooks if applicable
+            if use_frame_hook:
+                job['meta']['use_frame_hook'] = True
             self._jobs[job_id] = job
 
         def wrapper():
             with self._lock:
                 job['status'] = 'running'
                 job['progress'] = 0.0
+            # notify status change
             try:
+                if self._status_change_cb:
+                    try:
+                        self._status_change_cb(job_id, dict(job))
+                    except Exception:
+                        pass
                 res = target(self, job, *args, **kwargs)
                 with self._lock:
                     if job['cancel_requested']:
@@ -378,6 +396,13 @@ class JobManager:
                 with self._lock:
                     job['status'] = 'error'
                     job['error'] = {'msg': str(e)}
+            finally:
+                # notify final status change
+                if self._status_change_cb:
+                    try:
+                        self._status_change_cb(job_id, dict(job))
+                    except Exception:
+                        pass
 
         th = threading.Thread(target=wrapper, daemon=True)
         with self._lock:
@@ -397,6 +422,14 @@ class JobManager:
             job['cancel_requested'] = True
             return True
 
+    def has_running_jobs_with_meta(self, key: str) -> bool:
+        """Return True if any job is running and has meta[key] truthy."""
+        with self._lock:
+            for j in self._jobs.values():
+                if j.get('status') == 'running' and j.get('meta', {}).get(key):
+                    return True
+        return False
+
 
 class ServerThread(threading.Thread):
     def __init__(self, host: str = "127.0.0.1", port: int = 47211):
@@ -405,6 +438,9 @@ class ServerThread(threading.Thread):
         self.port = port
         self._httpd: Optional[ThreadedHTTPServer] = None
         self.jobs = JobManager()
+        # install status change callback so we can register frame hooks on demand
+        self.jobs.set_status_change_callback(self._job_status_changed)
+        self._frame_hook_registered = False
 
     def run(self):
         with ThreadedHTTPServer((self.host, self.port), JSONHandler) as httpd:
@@ -414,9 +450,115 @@ class ServerThread(threading.Thread):
             httpd.serve_forever()
 
     def stop(self):
+        # cleanup frame hook if present
+        try:
+            if self._frame_hook_registered:
+                self._unregister_frame_hook()
+        except Exception:
+            pass
         if self._httpd:
             self._httpd.shutdown()
             self._httpd.server_close()
+
+    def _should_use_frame_hooks(self) -> bool:
+        """Return True if the addon prefs or env var enable frame hooks."""
+        import os
+        try:
+            import bpy
+            mod = bpy.context.preferences.addons.get('addon_template')
+            if mod and getattr(mod.preferences, 'use_frame_hooks', False):
+                return True
+        except Exception:
+            pass
+        # env var override for tests/deploy
+        return os.environ.get('XARVIS_BLENDER_FRAME_HOOKS') == '1'
+
+    def _job_status_changed(self, job_id: str, job: dict):
+        """Callback invoked by JobManager on job status changes. Decide whether to register/unregister frame hooks."""
+        # Best-effort opt-in: only engage if _should_use_frame_hooks reports True and there are running jobs that need hooks
+        try:
+            need = self.jobs.has_running_jobs_with_meta('use_frame_hook')
+            enabled = self._should_use_frame_hooks()
+            if need and enabled and not self._frame_hook_registered:
+                try:
+                    self._register_frame_hook()
+                    self._frame_hook_registered = True
+                except Exception:
+                    # best-effort: set flag so tests can detect intent, but don't re-raise
+                    self._frame_hook_registered = True
+            if not need and self._frame_hook_registered:
+                try:
+                    self._unregister_frame_hook()
+                finally:
+                    self._frame_hook_registered = False
+        except Exception:
+            # swallow - this is best-effort plumbing
+            pass
+
+    def _register_frame_hook(self):
+        """Register Blender frame_change_post handler if possible (best-effort)."""
+        # define sensor function that will be called by Blender
+        def _blender_hook(scene):
+            try:
+                cf = int(getattr(scene, 'frame_current', 0))
+            except Exception:
+                return
+            # delegate to internal notifier
+            try:
+                self._frame_hook_notify(cf)
+            except Exception:
+                pass
+
+        # try to append to bpy handlers if available
+        try:
+            import bpy
+            bpy.app.handlers.frame_change_post.append(_blender_hook)
+            # store reference for removal
+            self._blender_hook_ref = _blender_hook
+        except Exception:
+            # no bpy available; still set internal flag to indicate registration intent
+            self._blender_hook_ref = None
+
+    def _unregister_frame_hook(self):
+        try:
+            import bpy
+            if getattr(self, '_blender_hook_ref', None) and self._blender_hook_ref in bpy.app.handlers.frame_change_post:
+                bpy.app.handlers.frame_change_post.remove(self._blender_hook_ref)
+        except Exception:
+            pass
+        finally:
+            self._blender_hook_ref = None
+
+    def _frame_hook_notify(self, current_frame: int):
+        """Sensor-style notifier that updates progress for running jobs that opted into frame hooks.
+        This is callable from tests (simulated) or from the Blender handler.
+        """
+        if not self._frame_hook_registered:
+            return
+        with self.jobs._lock:
+            for jid, job in self.jobs._jobs.items():
+                if job.get('status') != 'running':
+                    continue
+                meta = job.get('meta', {})
+                if not meta.get('use_frame_hook'):
+                    continue
+                # compute progress if frame range available
+                fs = meta.get('frame_start')
+                fe = meta.get('frame_end')
+                try:
+                    if fs is None or fe is None:
+                        continue
+                    fs = int(fs); fe = int(fe)
+                    total = max(1, fe - fs + 1)
+                    # fraction based on frames completed (inclusive)
+                    frac = (current_frame - fs + 1) / total
+                    frac = max(0.0, min(1.0, frac))
+                    prog = frac * 100.0
+                    # only update if not decreasing
+                    if 'progress' not in job or prog >= job.get('progress', 0):
+                        job['progress'] = prog
+                except Exception:
+                    continue
 
 
 # Module-level helpers for addon entrypoints

@@ -27,3 +27,10 @@ Progress semantics
 - If a cancel is requested, the job attempts a clean abort and will report status `cancelled` and a progress value less than `100.0`.
 - Short or instantaneous jobs may return `progress: null` or omit it entirely.
 - Clients should poll `get_job_status` to observe progress and detect completion/cancellation.
+
+Frame hooks (optional, experimental)
+- For more accurate progress, the addon can optionally use Blender's `frame_change_post` handler to update job progress based on the scene's `frame_current`.
+- This feature is opt-in via the addon preference **Use Blender Frame Hooks (experimental)** or via the environment variable `XARVIS_BLENDER_FRAME_HOOKS=1` (tests/deploy convenience).
+- The hook is best-effort and will register only when there are active jobs that requested frame hooks (e.g., `render_animation`) and will deregister automatically when no longer needed.
+- The hook acts as a sensor: it reads `frame_current` and updates job `progress` but does not perform control actions, cancellation, or side effects.
+- If Blender is not available, the system will still operate using per-frame updates from `render_animation` itself.
