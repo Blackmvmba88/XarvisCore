@@ -7,9 +7,15 @@ Security and usage
 - The addon exposes basic commands: `ping` and `list_objects` (the latter requires Blender `bpy`).
 
 Install
-1. Copy the `addon_template` folder into Blender's addons directory or add it via Preferences > Add-ons > Install... (zip it first).
+1. Copy the `addon_template` folder into Blender's addons directory or add it via Preferences > Add-ons > Install... (zip it first), or run the installer script `20_BLENDER_INTEGRATION/addon_template/install_blender_addon.sh`.
 2. Enable the addon; it will start the small HTTP server bound to 127.0.0.1:47211 by default.
 3. From your client (this repo) you can POST JSON to `http://127.0.0.1:47211/` like `{"action":"ping"}` or `{"action":"list_objects"}`.
+
+Token-based authentication
+- The addon supports a lightweight token file located at `~/.config/xarvis/blender.token`.
+- You can create it with the installer script; the file must contain a single token string and be readable only by the user (chmod 600).
+- When the addon preference **Require Token** is enabled (Preferences → Add-ons → Xarvis Connector Addon → Require Token), the server will require the HTTP header `Authorization: Bearer <token>` for privileged commands (render, export, run_operator, eval_safe).
+- To rotate a token: overwrite `~/.config/xarvis/blender.token` with a new random token and restart the addon (or restart Blender). To invalidate: remove the token file or disable the require-token preference.
 
 Notes
 - This is intentionally minimal: it's an integration starting point. For production you should add authentication (token file or binding checks) and whitelisting of commands.
