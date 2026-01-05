@@ -13,6 +13,46 @@ import socketserver
 import http.server
 from typing import Optional, Tuple
 
+# Operator whitelist — only these operators are allowed to be run remotely
+OPERATOR_WHITELIST = {
+    'object.modifier_add',
+    'object.modifier_remove',
+    'object.shade_smooth',
+    'object.shade_flat',
+    'object.origin_set',
+    'object.select_all',
+    'object.delete',
+    'transform.translate',
+    'transform.rotate',
+    'transform.resize',
+}
+
+
+def _is_shallow_jsonable(params):
+    """Return True if params is a shallow JSON-serializable mapping (no nested dicts/functions).
+    Accepts primitives, lists of primitives, and None.
+    """
+    import json
+    if not isinstance(params, dict):
+        return False
+    for k, v in params.items():
+        if not isinstance(k, str):
+            return False
+        if v is None or isinstance(v, (str, int, float, bool)):
+            continue
+        if isinstance(v, list):
+            for item in v:
+                if not isinstance(item, (str, int, float, bool, type(None))):
+                    return False
+            continue
+        return False
+    # final check: try JSON dump to be safe
+    try:
+        json.dumps(params)
+        return True
+    except Exception:
+        return False
+
 
 class JSONHandler(http.server.BaseHTTPRequestHandler):
     server_version = "XarvisBlenderServer/0.1"
@@ -397,6 +437,69 @@ class JSONHandler(http.server.BaseHTTPRequestHandler):
                 return
             self._send_ok({"job_id": job_id, "cancelled": True})
             return
+
+        if action == "run_operator":
+            # privileged action: token is required
+            if not self._check_token():
+                self._send_error("unauthorized", "Missing or invalid token", None, 403)
+                return
+            op = obj.get("operator")
+            params = obj.get("params", {}) or {}
+            as_job = bool(obj.get("as_job", True))
+            # validation
+            if not op or not isinstance(op, str):
+                self._send_error("invalid_input", "operator must be a dotted operator string")
+                return
+            if op not in OPERATOR_WHITELIST:
+                self._send_error("forbidden_operator", "Operator not allowed", {"operator": op})
+                return
+            if not isinstance(params, dict) or not _is_shallow_jsonable(params):
+                self._send_error("invalid_params", "Params must be a shallow JSON mapping with primitive values" )
+                return
+
+            def operator_runner(jobmgr, job, op, params):
+                try:
+                    import bpy
+                    # resolve operator callable
+                    target = bpy.ops
+                    parts = op.split('.')
+                    for p in parts:
+                        target = getattr(target, p)
+                    # minimal progress semantics
+                    with jobmgr._lock:
+                        job['progress'] = 0.0
+                    # call operator
+                    res = target(**params)
+                    with jobmgr._lock:
+                        job['progress'] = 100.0
+                    return {"operator": op, "result": str(res)}
+                except Exception as e:
+                    # surface as operator_failed
+                    raise
+
+            st = _server_thread
+            if as_job:
+                job_id = st.jobs.create_job(operator_runner, args=(op, params), meta={'operator': op})
+                self._send_ok({"job_id": job_id, "status": "scheduled"})
+                return
+            else:
+                # sync execution: attempt to run and return result/error
+                try:
+                    import bpy
+                except Exception as e:
+                    self._send_error("bpy_unavailable", "Blender (bpy) unavailable", {"msg": str(e)}, 200)
+                    return
+                try:
+                    # resolve and call
+                    target = bpy.ops
+                    for p in op.split('.'):
+                        target = getattr(target, p)
+                    res = target(**params)
+                    self._send_ok({"result": str(res)})
+                    return
+                except Exception as e:
+                    self._send_error("operator_failed", "Operator raised an exception", {"msg": str(e)}, 500)
+                    return
 
         self._send_error("unknown_action", "Unknown action requested", {"action": action}, 400)
 

@@ -51,3 +51,20 @@ Export mesh
   - `bpy_unavailable`: Blender (`bpy`) is not available
   - `export_failed`: exporter raised an error
 - Security: this is a privileged operation and requires the addon token if token enforcement is enabled (see Token-based authentication above).
+
+Run operator
+- Command: `run_operator`
+- Inputs:
+  - `operator` (required): dotted operator name like `object.modifier_add` (must be whitelisted)
+  - `params` (optional): shallow JSON mapping of primitive values
+  - `as_job` (optional, default: true): run as async job or synchronously
+- Behavior:
+  - Operator execution is whitelist-first. Operators not on the whitelist return `forbidden_operator`.
+  - By default `as_job` is true; the operator will be scheduled as a job and you can poll `get_job_status`.
+  - Progress semantics: coarse (0.0 at start, 100.0 on success).
+- Errors:
+  - `forbidden_operator`: operator not allowed
+  - `invalid_params`: params were not a shallow JSON serializable mapping
+  - `operator_failed`: operator raised an error
+  - `bpy_unavailable`: Blender (`bpy`) not available
+- Security: this is a privileged operation and **always** requires the addon token (see Token-based authentication above).
