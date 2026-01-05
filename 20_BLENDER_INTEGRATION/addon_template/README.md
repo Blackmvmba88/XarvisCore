@@ -20,3 +20,10 @@ Token-based authentication
 Notes
 - This is intentionally minimal: it's an integration starting point. For production you should add authentication (token file or binding checks) and whitelisting of commands.
 - Use this only on trusted machines or in development environments.
+
+Progress semantics
+- Long-running jobs (e.g., `render_animation`) will report a `progress` value in the job status response. The value is a float in the range 0.0..100.0 and represents the fraction of work completed (clamped).
+- Progress is updated monotonically during the job and will reach `100.0` when the job completes successfully.
+- If a cancel is requested, the job attempts a clean abort and will report status `cancelled` and a progress value less than `100.0`.
+- Short or instantaneous jobs may return `progress: null` or omit it entirely.
+- Clients should poll `get_job_status` to observe progress and detect completion/cancellation.

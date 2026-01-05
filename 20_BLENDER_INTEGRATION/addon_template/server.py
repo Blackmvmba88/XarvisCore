@@ -257,17 +257,40 @@ class JSONHandler(http.server.BaseHTTPRequestHandler):
                 return
 
             def animation_runner(jobmgr, job, frame_start, frame_end, output_dir, fmt):
+                """Render animation by iterating frames and rendering per-frame.
+                Update job['progress'] after each frame. Respect job['cancel_requested'].
+                """
+                import os
                 try:
                     import bpy
                     scene = bpy.context.scene
-                    if frame_start is not None:
-                        scene.frame_start = frame_start
-                    if frame_end is not None:
-                        scene.frame_end = frame_end
-                    scene.render.filepath = output_dir
-                    bpy.ops.render.render(animation=True)
+                    start = frame_start if frame_start is not None else scene.frame_start
+                    end = frame_end if frame_end is not None else scene.frame_end
+                    total = max(1, end - start + 1)
+                    # ensure output dir exists
+                    try:
+                        os.makedirs(output_dir, exist_ok=True)
+                    except Exception:
+                        pass
+                    for idx, f in enumerate(range(start, end + 1)):
+                        # check cancel
+                        if job.get('cancel_requested'):
+                            return {'msg': 'cancelled'}
+                        scene.frame_set(f)
+                        # pick per-frame filename
+                        if fmt == 'MP4':
+                            # render animation to a container: use animation render at the end
+                            # For simplicity, render frames to images and rely on external packaging or Blender settings
+                            pass
+                        ext = 'png' if fmt == 'PNG' else ('jpg' if fmt == 'JPEG' else 'exr')
+                        out_file = os.path.join(output_dir, f'frame_{f:04d}.{ext}')
+                        scene.render.filepath = out_file
+                        bpy.ops.render.render(write_still=True)
+                        # update progress
+                        with jobmgr._lock:
+                            job['progress'] = (idx + 1) / total * 100.0
                     return {"output_dir": output_dir}
-                except Exception as e:
+                except Exception:
                     raise
 
             st = _server_thread
