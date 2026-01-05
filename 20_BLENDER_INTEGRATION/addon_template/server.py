@@ -177,39 +177,128 @@ class JSONHandler(http.server.BaseHTTPRequestHandler):
             if output and not isinstance(output, str):
                 self._send_error("invalid_input", "output must be a filepath string")
                 return
+
+            # Use job manager for both async and sync paths; sync will wait for job completion
+            def render_runner(jobmgr, job, camera=None, frame=None, output=None):
+                # Runner called in a separate thread; should return info dict on success
+                import time
+                try:
+                    import bpy
+                    if frame is not None:
+                        bpy.context.scene.frame_set(int(frame))
+                    if camera is not None:
+                        cam = bpy.data.objects.get(camera)
+                        if cam:
+                            bpy.context.scene.camera = cam
+                    if output:
+                        bpy.context.scene.render.filepath = output
+                    # perform render animation call with write_still
+                    bpy.ops.render.render(write_still=True)
+                    return {"output": bpy.context.scene.render.filepath}
+                except Exception as e:
+                    # raise to be caught by JobManager wrapper
+                    raise
+
             try:
+                # Check bpy availability early
                 import bpy
-                # if Blender is busy rendering
-                if getattr(bpy.context.scene, "rendering", False):
-                    if not async_flag:
-                        self._send_error("busy", "Blender is currently rendering", None, 409)
-                        return
-                # For safety in this template, do not actually perform heavy render in tests
-                # Instead, if running inside Blender, call bpy.ops.render.render()
-                if async_flag:
-                    # schedule job: for now, just respond scheduled
-                    self._send_ok({"job_id": "job-0001", "status": "scheduled"})
-                else:
-                    # perform a blocking render
-                    try:
-                        # set frame if provided
-                        if frame is not None:
-                            bpy.context.scene.frame_set(int(frame))
-                        # set camera
-                        if camera is not None:
-                            cam = bpy.data.objects.get(camera)
-                            if cam:
-                                bpy.context.scene.camera = cam
-                        # set output path if provided
-                        if output:
-                            bpy.context.scene.render.filepath = output
-                        bpy.ops.render.render(write_still=True)
-                        out_path = bpy.context.scene.render.filepath
-                        self._send_ok({"output": out_path, "render_time_seconds": 0.0})
-                    except Exception as e:
-                        self._send_error("render_failed", "Render operation failed", {"msg": str(e)}, 500)
             except Exception as e:
                 self._send_error("bpy_unavailable", "Blender (bpy) unavailable", {"msg": str(e)}, 200)
+                return
+
+            # schedule job
+            st = _server_thread
+            job_id = st.jobs.create_job(render_runner, args=(camera, frame, output))
+            if async_flag:
+                self._send_ok({"job_id": job_id, "status": "scheduled"})
+                return
+            else:
+                # sync path: wait for job to finish with timeout
+                import time
+                t0 = time.time()
+                while time.time() - t0 < timeout:
+                    j = st.jobs.get_job(job_id)
+                    if not j:
+                        break
+                    if j.get('status') in ('done', 'error', 'cancelled'):
+                        if j['status'] == 'done':
+                            self._send_ok({"job_id": job_id, "result": j.get('result')})
+                            return
+                        else:
+                            # propagate job error
+                            self._send_error("render_failed", "Render job failed or cancelled", {"status": j.get('status'), "error": j.get('error')}, 500)
+                            return
+                    time.sleep(0.1)
+                self._send_error("timeout", "Render timed out", None, 504)
+            return
+
+        if action == "render_animation":
+            # privileged action: check token
+            if not self._check_token():
+                self._send_error("unauthorized", "Missing or invalid token", None, 403)
+                return
+            # validate inputs
+            frame_start = obj.get("frame_start")
+            frame_end = obj.get("frame_end")
+            output_dir = obj.get("output_dir")
+            async_flag = bool(obj.get("async", True))
+            fmt = obj.get("format", "PNG")
+            if frame_start is not None and frame_end is not None:
+                try:
+                    frame_start = int(frame_start); frame_end = int(frame_end)
+                except Exception:
+                    self._send_error("invalid_input", "frame_start and frame_end must be integers")
+                    return
+            if not output_dir or not isinstance(output_dir, str):
+                self._send_error("invalid_input", "output_dir is required and must be a string")
+                return
+            if fmt not in ("PNG","JPEG","EXR","MP4"):
+                self._send_error("invalid_input", "unsupported format", {"supported": ["PNG","JPEG","EXR","MP4"]})
+                return
+
+            def animation_runner(jobmgr, job, frame_start, frame_end, output_dir, fmt):
+                try:
+                    import bpy
+                    scene = bpy.context.scene
+                    if frame_start is not None:
+                        scene.frame_start = frame_start
+                    if frame_end is not None:
+                        scene.frame_end = frame_end
+                    scene.render.filepath = output_dir
+                    bpy.ops.render.render(animation=True)
+                    return {"output_dir": output_dir}
+                except Exception as e:
+                    raise
+
+            st = _server_thread
+            job_id = st.jobs.create_job(animation_runner, args=(frame_start, frame_end, output_dir, fmt))
+            self._send_ok({"job_id": job_id, "status": "scheduled"})
+            return
+
+        if action == "get_job_status":
+            job_id = obj.get("job_id")
+            if not job_id:
+                self._send_error("invalid_input", "job_id is required")
+                return
+            st = _server_thread
+            j = st.jobs.get_job(job_id)
+            if not j:
+                self._send_error("not_found", "job not found")
+                return
+            self._send_ok({"job_id": job_id, "status": j.get('status'), "progress": j.get('progress'), "result": j.get('result'), "error": j.get('error')})
+            return
+
+        if action == "cancel_job":
+            job_id = obj.get("job_id")
+            if not job_id:
+                self._send_error("invalid_input", "job_id is required")
+                return
+            st = _server_thread
+            ok = st.jobs.cancel_job(job_id)
+            if not ok:
+                self._send_error("not_found", "job not found")
+                return
+            self._send_ok({"job_id": job_id, "cancelled": True})
             return
 
         self._send_error("unknown_action", "Unknown action requested", {"action": action}, 400)
@@ -223,12 +312,76 @@ class ThreadedHTTPServer(socketserver.ThreadingMixIn, http.server.HTTPServer):
     allow_reuse_address = True
 
 
+class JobManager:
+    """Simple in-memory job manager for asynchronous jobs.
+    Jobs structure:
+    { job_id: { 'status': 'queued'|'running'|'done'|'error'|'cancelled', 'progress': 0.0, 'result': {...}, 'error': {...}, 'thread': Thread, 'cancel_requested': False }}
+    """
+    def __init__(self):
+        self._jobs = {}
+        self._lock = threading.Lock()
+        self._counter = 0
+
+    def create_job(self, target, args=(), kwargs=None):
+        if kwargs is None:
+            kwargs = {}
+        with self._lock:
+            self._counter += 1
+            job_id = f"job-{self._counter:04d}"
+            job = {
+                'status': 'queued',
+                'progress': 0.0,
+                'result': None,
+                'error': None,
+                'thread': None,
+                'cancel_requested': False,
+            }
+            self._jobs[job_id] = job
+
+        def wrapper():
+            with self._lock:
+                job['status'] = 'running'
+                job['progress'] = 0.0
+            try:
+                res = target(self, job, *args, **kwargs)
+                with self._lock:
+                    if job['cancel_requested']:
+                        job['status'] = 'cancelled'
+                    else:
+                        job['status'] = 'done'
+                        job['result'] = res
+                        job['progress'] = 100.0
+            except Exception as e:
+                with self._lock:
+                    job['status'] = 'error'
+                    job['error'] = {'msg': str(e)}
+
+        th = threading.Thread(target=wrapper, daemon=True)
+        with self._lock:
+            job['thread'] = th
+        th.start()
+        return job_id
+
+    def get_job(self, job_id):
+        with self._lock:
+            return dict(self._jobs.get(job_id, {})) if job_id in self._jobs else None
+
+    def cancel_job(self, job_id):
+        with self._lock:
+            job = self._jobs.get(job_id)
+            if not job:
+                return False
+            job['cancel_requested'] = True
+            return True
+
+
 class ServerThread(threading.Thread):
     def __init__(self, host: str = "127.0.0.1", port: int = 47211):
         super().__init__(daemon=True)
         self.host = host
         self.port = port
         self._httpd: Optional[ThreadedHTTPServer] = None
+        self.jobs = JobManager()
 
     def run(self):
         with ThreadedHTTPServer((self.host, self.port), JSONHandler) as httpd:
