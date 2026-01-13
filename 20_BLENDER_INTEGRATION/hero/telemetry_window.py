@@ -14,23 +14,32 @@ class TelemetryWindow:
     def __init__(self):
         self._samples_per_device: Dict[str, deque[TelemetrySample]] = {}
         self._last_accepted_ts: Dict[str, datetime] = {}
+        # store last known health status per device to detect transitions
+        self._last_health_status: Dict[str, str] = {}
+        # lazy import of observability to avoid cycles
+        from .telemetry_observability import metrics as observability_metrics
+        self._metrics = observability_metrics
 
     def ingest(self, sample: TelemetrySample, now: Optional[datetime] = None) -> None:
         now = now or sample.ts
 
         # 1. TTL: if the sample is already too old, drop it
         if now - sample.ts > config.TELEMETRY_TTL:
+            # record rejection reason
+            self._metrics.record_ignore('stale_sample')
             return
 
         # 2. sampling_rate: drop if samples arrive too fast
         last_ts = self._last_accepted_ts.get(sample.device_id)
         if last_ts is not None and (sample.ts - last_ts).total_seconds() < config.TELEMETRY_MIN_SAMPLE_INTERVAL.total_seconds():
+            self._metrics.record_ignore('rate_limited')
             return
 
         # 3. store
         buf = self._samples_per_device.setdefault(sample.device_id, deque())
         buf.append(sample)
         self._last_accepted_ts[sample.device_id] = sample.ts
+        self._metrics.record_accept()
 
         # 4. time-based rolling window
         cutoff_ts = now - config.TELEMETRY_WINDOW
@@ -40,6 +49,17 @@ class TelemetryWindow:
         # 5. size bound
         while len(buf) > config.TELEMETRY_MAX_SAMPLES:
             buf.popleft()
+
+        # 6. health transition detection
+        try:
+            view = self.get_device_view(sample.device_id, now=now)
+            prev = self._last_health_status.get(sample.device_id)
+            cur = view.health.status.value if hasattr(view.health.status, 'value') else view.health.status
+            if prev != cur:
+                self._metrics.record_health_transition(sample.device_id, prev or 'unknown', cur, reason=view.health.reason)
+                self._last_health_status[sample.device_id] = cur
+        except Exception:
+            pass
 
     def get_device_view(self, device_id: str, now: Optional[datetime] = None) -> DeviceView:
         now = now or datetime.utcnow()

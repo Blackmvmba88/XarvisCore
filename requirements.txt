@@ -9,6 +9,10 @@ python-dotenv>=1.0.0
 # === MONITOREO Y SISTEMA ===
 psutil>=5.9.0
 
+# API stack (runtime)
+fastapi>=0.95.0
+pydantic>=2.4.0
+
 # === SEGURIDAD (Opcional - SSL/TLS) ===
 pyOpenSSL>=23.0.0
 

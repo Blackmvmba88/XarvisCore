@@ -62,6 +62,14 @@ def device_status(device_id: str):
     )
 
 
+@app.get('/metrics')
+def metrics():
+    """Return current observability metrics snapshot as JSON."""
+    from .telemetry_observability import metrics as observability_metrics
+
+    return JSONResponse(content=observability_metrics.snapshot())
+
+
 # a small convenience for local dev
 if __name__ == "__main__":
     import uvicorn
