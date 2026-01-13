@@ -1,0 +1,17 @@
+{
+  "marked": [],
+  "actions": [
+    {
+      "time": "2026-01-13T15:55:45.105665",
+      "summary": "Monitor run: free=5.0%, actions=1"
+    },
+    {
+      "time": "2026-01-13T15:55:45.105552",
+      "pid": 12345,
+      "comm": "/Applications/TestApp.app/Contents/MacOS/TestApp",
+      "cmd": "kill -TERM <PID>",
+      "auto_kill": false,
+      "result": "would_close"
+    }
+  ]
+}

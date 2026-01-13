@@ -39,7 +39,7 @@ Motor de fingerprinting acústico usado por:
    Canción MP3/WAV → fpcalc → Fingerprint → Base de datos JSON
 
 2. Detección (en vivo):
-   Audio reproduciendo → Grabar 10s → fpcalc → Comparar → Match!
+   Audio reproduciendo → Grabar 20s → fpcalc → Comparar → Match!
 ```
 
 ---
@@ -66,8 +66,8 @@ pip install numpy
 # Indexar biblioteca (primera vez)
 python3 audio_detector.py --index
 
-# Detectar canción (graba 10 segundos)
-python3 audio_detector.py --detect 10
+# Detectar canción (graba 20 segundos)
+python3 audio_detector.py --detect 20
 ```
 
 ### Opción 2: Integrado con VPA (Recomendado)

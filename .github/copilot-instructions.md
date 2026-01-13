@@ -1,56 +1,114 @@
-# Xarvis Core — Instrucciones resumidas por componente (Orden / Función / README / Roadmap)
+# Copilot Instructions — Xarvis Core (concise)
 
-Propósito: cada componente tiene su Orden (cómo arrancar), su Función (qué hace), README (dónde leer más) y Roadmap (dónde encontrar planificación).
+Purpose: quick, actionable guidance so an AI coding agent can be productive immediately in this repo.
 
-## Orquestador — `xarvis_supervisor.py`
-- Orden: `python3 xarvis_supervisor.py` (desde la raíz del repo; prefiere `venv/bin/python3` si existe)
-- Función: arranca y supervisa procesos; reinicia servicios caídos cada 15s; fija cwd de los procesos.
-- README: ver `xarvis_supervisor.py` y comentarios en el archivo para convenciones de `PROCESSES`.
-- Roadmap: `EpicRoadmap.md` (alineación global); cambios de arranque deben documentarse en PR y `5_INFRA/setup_xarvis.sh` si añaden prerequisitos.
+## Quick setup ✅
+- Create a venv at the repo root and activate it:
+  ```bash
+  python3 -m venv venv && source venv/bin/activate
+  pip install -r requirements.txt && pip install -r dev-requirements.txt
+  ```
+- Target Python version: **3.11** (CI/dev target).
 
-## Core — `1_CORE/xarvis_core.py`
-- Orden: `venv/bin/python3 1_CORE/xarvis_core.py` o `python3 1_CORE/xarvis_core.py` desde `1_CORE/`.
-- Función: dashboard/servicio principal (Flask) que consume `*_protocol.py` y expone endpoints (p. ej. puerto 5050).
-- README: revisar `1_CORE/` y el archivo fuente `1_CORE/xarvis_core.py` para endpoints y dependencias.
-- Roadmap: `EpicRoadmap.md` + issues/notes en el directorio `1_CORE/` cuando existan cambios de API.
+## Run & debug 🔧
+- Run the whole stack (orchestrator uses `venv/bin/python3`):
+  ```bash
+  python3 xarvis_supervisor.py
+  ```
+- Run a single service (preferred from the service directory):
+  ```bash
+  cd <domain_dir>
+  venv/bin/python3 <service>.py
+  ```
+- Logs are under `5_INFRA/logs/` (e.g., `master.log`, `core.log`, `full_power.log`). Supervisor restarts domains every ~15s when they exit.
 
-## Power — `3_POWER/` (p. ej. `xarvis_full_power.py`)
-- Orden: `venv/bin/python3 3_POWER/xarvis_full_power.py`.
-- Función: servicios de potencia/full stack (p. ej. puerto 8080), utilidades como `ram_guardian.py`.
-- README: inspeccionar `3_POWER/` y comentarios en cada script.
-- Roadmap: documentar cambios de recursos/pools en `EpicRoadmap.md` y notas de PR.
+## High-level architecture & patterns 🧭
+- Domains: the repo is organized into domain folders (0..19); `xarvis_supervisor.py` orchestrates a subset via `PROCESSES` / `EXTENDED_PROCESSES`.
+- Process pattern: each entry is {"path": <abs>, "log": <abs>, "proc": None, "priority": N, "enabled": Bool}. See `xarvis_supervisor.py` for exact usage (preexec, cwd, VENV_PYTHON).
+- Long-running services:
+  - `*_engine.py` — compute/worker engines.
+  - `*_detector.py` — detectors with native deps and `start_*.sh` scripts to install/check native deps.
+  - `*_protocol.py` — protocol modules typically expose a singleton (e.g., `gaia = GaiaProtocol()`, import `from gaia_protocol import gaia`).
+- Optional local integrations often use `sys.path.insert` to import sibling domains (see `1_CORE/xarvis_core.py` for the quantum core guard).
 
-## Audio / Cultural — `10_CULTURAL_RENAISSANCE/`
-- Orden: usar scripts provistos; ejemplo: `bash 10_CULTURAL_RENAISSANCE/start_vpa_detector.sh` o `venv/bin/python3 10_CULTURAL_RENAISSANCE/audio_detector.py` desde ese directorio.
-- Función: detector de audio, pipelines VPA, generación/análisis de playlists y utilidades de música.
-- README: `10_CULTURAL_RENAISSANCE/BLACKMAMBA_AUDIO_DETECTOR.md`, `MUSIC_WEBUI_README.md` y `PERFORMANCE_SUITE_README.md` dentro del directorio.
-- Roadmap: `10_CULTURAL_RENAISSANCE/INTEGRATION_COMPLETE.md` y notas en `EpicRoadmap.md` para features mayores.
+## Domain-specific quickstarts & docs 📚
+- Many domains include their own docs and GitHub instructions (e.g., `14_CREATIVE_TOOLS/ytdlp-web/.github/copilot-instructions.md`). Look for `.github/copilot-instructions.md` inside the domain before making changes.
+- If a domain needs native packages, update `5_INFRA/setup_xarvis.sh` and add `start_*.sh` scripts that verify/install dependencies.
 
-## Infra — `5_INFRA/`
-- Orden: scripts de bootstrap (macOS): `bash 5_INFRA/setup_xarvis.sh`.
-- Función: instalación de dependencias del sistema (Homebrew, Docker) y utilidades para desarrollar y desplegar.
-- README: revisar `5_INFRA/setup_xarvis.sh` y `5_INFRA/` para instrucciones de entorno.
-- Roadmap: cambios de infra deben ir con instrucciones de instalación en `5_INFRA/` y documentarse en PR.
+## Tests & running them 🧪
+- Tests live under `tests/` and per-domain `*/tests/`.
+- Quick run (skip slow): `pytest -q -m "not slow"`.
+- To run a specific domain's tests: `pytest path/to/domain/tests -q` or use domain helper scripts (e.g., `10_CULTURAL_RENAISSANCE/run_all_tests.sh`).
 
-## Dependencias nativas y herramientas del sistema
-- Orden (instalación breve): si trabajas con audio, instala `fpcalc`/chromaprint y `sox` según `5_INFRA/setup_xarvis.sh`.
-- Función: proveen huellas de audio y manipulación de audio necesarias por `10_CULTURAL_RENAISSANCE/audio_detector.py`.
-- README: ver notas en `10_CULTURAL_RENAISSANCE/BLACKMAMBA_AUDIO_DETECTOR.md`.
-- Roadmap: anotar herramientas nativas en `5_INFRA/setup_xarvis.sh` cuando se añadan nuevas dependencias.
+## Platform & native deps 🖥️
+- Primary dev target: **macOS**. Use Homebrew for native packages.
+- Example native deps: `brew install chromaprint sox ffmpeg` (used by audio domains).
+- Many services expect `venv/bin/python3` and relative `BASE_DIR` values—run code from the service folder for correct CWD behavior.
 
-## Convenciones rápidas (útiles al editar)
-- Protocolos: `*_protocol.py` → clase + instancia singleton exportada al final.
-- Engines: `*_engine.py` → procesos largos o intensivos.
-- Detectores: `*_detector.py` → dependen de herramientas externas; usar `start_*.sh` para arrancar.
-- Logs: centralizados en `5_INFRA/logs/` — consultar `master, core, full_power, ram_guardian`.
+## Security & repo conventions 🔒
+- Many files use a **hardcoded `BASE_DIR`** for local dev; prefer `.env` overrides or update `BASE_DIR` when testing in new environments (`xarvis_supervisor.py`, `xarvis_core.py`).
+- Placeholder credentials appear in the code (e.g., `BlackSekhmet`/`Admin123`) — **never commit real secrets**. Use `.env` and `dotenv` in code.
 
-## Dónde encontrar el Roadmap y documentación global
-- Roadmap principal: `EpicRoadmap.md`.
-- Documentación adicional: `README.md`, `BLACKMAMBA_AUDIO_DETECTOR.md` (audio), `MUSIC_WEBUI_README.md`.
+## PR checklist (actionable) ✅
+- Provide exact reproduction steps and commands (how to run the failing domain).
+- Add or update tests (mark slow tests with `@pytest.mark.slow`).
+- Update `5_INFRA/setup_xarvis.sh` if new native deps are required.
+- Update `xarvis_supervisor.py` `PROCESSES` and create log files for new services.
+- Document new environment variables, ports, and any special runtime steps in the domain README.
 
-## Cómo proponer cambios (checklist breve)
-1. Añade PR con: descripción, comando para arrancar localmente, archivos modificados y tests (si aplica).
-2. Si añades dependencias nativas, actualiza `5_INFRA/setup_xarvis.sh` y documenta pasos en el PR.
-3. Verifica arrancar con `python3 xarvis_supervisor.py` y revisa `5_INFRA/logs/master.log`.
+## Where to look (key files) 📂
+- `xarvis_supervisor.py` — orchestration & process map
+- `ARCHITECTURE.md` — high-level design
+- `5_INFRA/setup_xarvis.sh` — native packages and install guidance
+- `1_CORE/*` — core server, protocol singletons
+- `10_CULTURAL_RENAISSANCE/*` — representative domain with detectors, audio tooling, test helpers
 
--- Fin: cada componente ahora tiene Orden / Función / README / Roadmap — dime si quieres más componentes listados o una tabla de puertos.
+---
+
+## 60s domain quickstarts (copy-pasteable) ⚡
+
+### Hermes — the message/event gateway (60s)
+- Purpose: single throat for messages, events, commands, telemetry.
+- Run (full): cd 1_CORE/hermes && bash scripts/bootstrap_macos.sh && bash scripts/run_local.sh
+- Run (api only): python services/api/app.py --host 0.0.0.0 --port 8788
+- WebUI / API: WebUI -> http://localhost:8787, API -> http://localhost:8788
+- Send a chat: curl -s -X POST http://localhost:8788/chat -H 'Content-Type: application/json' -d '{"message":"ping"}'
+- Stream SSE: curl -N 'http://localhost:8788/chat/stream?q=hello'
+- Telemetry: curl -s -X POST http://localhost:8788/telemetry -H 'Content-Type: application/json' -d '{"event":"ping","source":"test"}'
+- Config: edit `configs/hermes.yaml` and `.env.example` (runtime.llm, rag.qdrant_url, QDRANT_URL)
+- Notes: `/chat` returns a fallback string when LLMs are not installed; ingest with `python services/rag/ingest.py` to build `data/vectors/`.
+
+### VPA — performance & actions (60s)
+- Purpose: analyze vocal performances and persist actions (safe by design).
+- Run: cd 10_CULTURAL_RENAISSANCE && python3 vocal_performance_analyzer.py (server port 9000)
+- Dashboard/API: open `vpa_dashboard.html` or check `http://localhost:9000/status`
+- Quick checks: curl -X POST http://localhost:9000/detect ; curl http://localhost:9000/performance
+- Register/commit action: from REPL `from vocal_performance_analyzer import vpa; vpa.save_performance('test.json')`
+- Dry-run: set `vpa.current_song = {...}` and call GET `/performance` without calling `save_performance()` to avoid persisting
+- Permissions/limits: needs Shazam Desktop (or ShazamKit) + microphone permissions; install `afinador_suno` for pitch analysis
+- Tests: see `10_CULTURAL_RENAISSANCE/test_audio_detector.py` and `start_vpa_detector.sh` for integration patterns.
+
+### Suno Suite — music generation & pipeline (60s)
+- Purpose: generate, manage, and serve Suno-produced music; data anchor = `~/Music/Suno` (do not move)
+- Setup: export `SUNO_HOME=~/Music/Suno`; cd `10_CULTURAL_RENAISSANCE/suno-suite` and install relevant reqs (e.g. `apps/suno-headless/requirements.txt`)
+- Headless test: `python3 apps/suno-headless/main.py` → connectivity & Chrome driver checks; add SUNO credentials per prompts
+- Generate example: run `python3 apps/suno-headless/main.py` -> `generate_alejandro_song()` (or use `generate_song_headless(email,password,data)` programmatically)
+- Web app: `make app-run` (see `apps/suno-suite-app/README.md`) — configure `.env.example` (SUNO_APP_PORT/SUNO_WS_TOKEN)
+- Common failures: missing Chrome/driver, missing credentials, not logged-in session, missing `SUNO_HOME`, or rate-limits from Suno (respect delays)
+- Tests: use `apps/suno-headless/test_connection.py` and `apps/suno-headless` pytest tests to validate environment.
+
+## Quick tips for AI coding agents 🤖
+- Check for per-domain `.github/copilot-instructions.md` before changing a domain — many have domain-specific commands and native-dep steps (example: `14_CREATIVE_TOOLS/ytdlp-web`).
+- When adding new domains, follow the numeric folder pattern, add the process to `xarvis_supervisor.py` `PROCESSES`, and create a `5_INFRA/logs/<domain>.log` entry.
+- Prefer small, well-scoped PRs: include reproduction steps, commands used, and focused tests. Mark long tests with `@pytest.mark.slow`.
+- Look for protocol singletons (e.g., `gaia` in `gaia_protocol.py`) and reuse them where appropriate rather than creating new global state.
+
+If any part of this is unclear or you'd like a per-domain quickstart added (Hermes, VPA, Suno, ytdlp_web, etc.), tell me which domain and I will add a short, copy-pasteable section that includes setup, native deps, run commands, and tests. 🎯
+
+## Preview renders & CI (cybercam-blender) ⚡
+- There is a manual workflow: **Actions → Preview Render (manual dispatch)** that runs quick tests and creates a preview artifact (`cybercam-preview-render`). It does not require Blender or GPU.
+- The workflow is fail-fast: tests run first; if they fail the preview step is skipped. The preview job performs a **dry-run** of `scripts/dev/render_headless.sh` using `BLENDER_BIN=echo` to validate the shell glue, then creates a small PNG placeholder and uploads it as an artifact.
+- To trigger it: go to the GitHub Actions UI, select “Preview Render (manual)”, click **Run workflow**. The artifact can be downloaded from the workflow run page (Artifacts section).
+- Purpose: allow collaborators to preview pipeline outputs without Blender/GPU and ensure the rendering glue (flags, paths, env) is validated before adding any heavy GPU-based “Hero” workflows.
+
+If you want, I can add a short README entry in `cybercam-blender/README.md` that references the workflow and the `render_headless.sh` dry-run. Let me know which you'd prefer.
