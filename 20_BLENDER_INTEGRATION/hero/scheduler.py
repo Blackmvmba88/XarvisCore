@@ -140,6 +140,38 @@ class Scheduler:
         self.queue.append(job)
         return job.job_id
 
+    def update_from_window(self, telemetry_window, now=None):
+        """Update devices from a TelemetryWindow view.
+
+        For each known device, fetch DeviceView and apply health, score and memory estimates.
+        """
+        for d in self.devices:
+            try:
+                view = telemetry_window.get_device_view(d.id, now=now)
+            except Exception:
+                continue
+            # health
+            hv = view.health
+            d.health = hv.status.value if hasattr(hv, 'status') else getattr(hv, 'status', 'healthy')
+            d.health_reason = hv.reason if hasattr(hv, 'reason') else None
+            # apply score from health (demote or update)
+            try:
+                d.compute_score = float(hv.score)
+            except Exception:
+                pass
+            # try to estimate free memory from mem_pressure when available
+            if view.mem_pressure is not None and d.total_memory_mb > 0:
+                try:
+                    used_ratio = float(view.mem_pressure)
+                    used = int(round(used_ratio * float(d.total_memory_mb)))
+                    d.free_memory_mb = max(0, d.total_memory_mb - used)
+                except Exception:
+                    pass
+            # last seen
+            if view.last_ts:
+                d.last_seen = view.last_ts
+
+
     def _find_best_device(self, task: Task, devices: List[Device]) -> Optional[Device]:
         # Filter candidate devices
         candidates = []
