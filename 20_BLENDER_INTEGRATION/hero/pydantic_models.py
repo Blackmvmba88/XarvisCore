@@ -29,3 +29,8 @@ class TelemetrySampleModel(BaseModel):
     gpu_memory_total_gb: float
     is_throttling: Optional[bool] = False
     power_watts: Optional[float] = None
+
+
+class DeviceViewWithHistory(DeviceViewModel):
+    history: List[TelemetrySampleModel] = []
+

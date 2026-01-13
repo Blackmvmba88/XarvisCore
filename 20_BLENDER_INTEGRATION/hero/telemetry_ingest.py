@@ -42,3 +42,27 @@ def get_all_device_views(now: Optional=None):
 
 def get_device_view(device_id: str, now: Optional=None):
     return telemetry_window.get_device_view(device_id, now=now)
+
+
+def get_device_history(device_id: str, limit: Optional[int] = 100, since: Optional=None):
+    """Return list of TelemetrySample objects (most recent first) for device_id.
+    `since` can be a datetime; if provided, only samples with ts >= since are returned.
+    """
+    buf = telemetry_window._samples_per_device.get(device_id)
+    if not buf:
+        return []
+    samples = list(buf)
+    # apply since filter
+    if since is not None:
+        try:
+            from datetime import datetime
+
+            samples = [s for s in samples if s.ts >= since]
+        except Exception:
+            pass
+    # most recent first
+    samples = list(reversed(samples))
+    if limit is not None:
+        samples = samples[:int(limit)]
+    return samples
+
