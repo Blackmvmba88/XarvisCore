@@ -50,6 +50,38 @@ def test_recorder_initialization():
     print("✅ Test 3 PASSED")
     return True
 
+
+def test_recorder_duration():
+    """Test 3b: Recorder default and custom duration are used in the recording command."""
+    print("\n🧪 Test 3b: Recorder duration parameter...")
+
+    recorder = AudioRecorder()
+    calls = {}
+
+    def fake_run(*args, **kwargs):
+        # args[0] is the command list
+        calls['args'] = args[0]
+        class FakeRes:
+            returncode = 0
+        return FakeRes()
+
+    import audio_detector as ad
+    old_run = ad.subprocess.run
+    try:
+        ad.subprocess.run = fake_run
+        # Default call (should use default duration 20)
+        recorder.record_system_audio_macos()
+        assert 'trim' in calls['args'] and calls['args'][-1] == '20', f"❌ Default duration should be 20 (got: {calls['args']})"
+
+        # Custom duration
+        recorder.record_system_audio_macos(duration=25)
+        assert calls['args'][-1] == '25', f"❌ Custom duration not passed (got: {calls['args']})"
+
+        print("✅ Test 3b PASSED")
+        return True
+    finally:
+        ad.subprocess.run = old_run
+
 def test_fingerprint_comparison():
     """Test 4: Comparación de fingerprints."""
     print("\n🧪 Test 4: Comparación de fingerprints...")

@@ -1,8 +1,9 @@
 # 🦅 Arquitectura Soberana de XarvisCore
-## Mapa Completo de Dominios (0-18)
+## Mapa de Dominios (implementados y planificados)
 
 ### 📊 Resumen Ejecutivo
-- **Total de Dominios**: 19 (0-18)
+- **Dominios en repo**: 23 carpetas de dominio (incluye `15_ESCRIBA`, `15_TRANSCRIPTION_ENGINE` y dos `20_*`)
+- **Dominios planificados**: ver seccion "Dominios Planificados"
 - **Líneas de Código**: 40,000+ 
 - **Proyectos Integrados**: 25+
 - **Arquitecto**: Iyari Cancino Gomez
@@ -106,6 +107,10 @@
 - **Metacraft**: Herramienta de metacreación
 - **YTDLP-Web**: Interfaz web para descargas con pitch shifting
 
+### **15_ESCRIBA** - Protocolo ESCRIBA
+- Definiciones base y protocolo inicial
+- Complementa el motor en `15_TRANSCRIPTION_ENGINE`
+
 ### **15_TRANSCRIPTION_ENGINE** - Motor de Transcripción
 - **ESCRIBA**: Sistema completo de transcripción
   - Base de datos SQLite
@@ -145,6 +150,16 @@
 - Procesamiento neuronal y predictivo
 - Integración con Ollama y RAG
 - Entrenamiento de redes neuronales soberanas
+
+### **20_BLENDER_INTEGRATION** - Integracion con Blender
+- Flujos headless, addon template y ejemplos de ejecucion
+- Puente entre scripts del repo y Blender
+
+### **20_CREATIVE_FORGE** - Creative Forge
+- Arquitectura enterprise para pipelines creativos
+- Asset manager, render pipeline, automation e integraciones
+
+## Dominios Planificados (no implementados como carpeta)
 
 ### **20_ENERGY** - Soberanía Energética
 - Micro-generación y gestión de energía renovable

@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>mem_manager — EVA UI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+      :root{
+        --bg: #0b0710;
+        --panel: linear-gradient(135deg,#2b0b3b 0%, #1a0830 100%);
+        --accent: #7b5cff;
+        --accent-2: #00ff99;
+        --muted: #9aa4b2;
+        --text: #e6eef8;
+        --danger: #ff6b6b;
+        --glass: rgba(255,255,255,0.04);
+        --card-radius: 12px;
+      }
+      .eva-light{ --bg: #f7f9fc; --panel: linear-gradient(135deg,#ffffff,#f2f6ff); --accent:#7b5cff; --accent-2:#00a88f; --text:#0b1320; --glass: rgba(10,10,10,0.03) }
+      html,body{height:100%}
+      body { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; background: linear-gradient(180deg,var(--bg), #12061a); color: var(--text); }
+      .app { max-width:1200px; margin:28px auto; padding:20px; }
+      header { display:flex; align-items:center; gap:16px; margin-bottom:18px }
+      .logo { display:flex; align-items:center; gap:12px }
+      .logo svg{ width:44px; height:44px; filter: drop-shadow(0 8px 24px rgba(0,0,0,0.6)) }
+      h1 { margin:0; font-weight:800; font-size:20px; color:var(--accent); letter-spacing:0.6px }
+      .subtitle { color:var(--muted); font-size:13px }
+      .controls { margin-left:auto; display:flex; gap:10px; align-items:center }
+
+      .panel { background: var(--glass); border-radius: var(--card-radius); padding:12px; box-shadow: 0 8px 32px rgba(0,0,0,0.55); }
+      .grid { display:grid; grid-template-columns: 360px 1fr; gap:16px }
+      .left { display:flex; flex-direction:column; gap:12px }
+      .search input{ width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.03); background:transparent; color:var(--text) }
+      .small { font-size:13px; color:var(--muted) }
+
+      .group-card { padding:12px; border-radius:10px; margin-bottom:10px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); }
+      .proc-list{ display:grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap:12px }
+      .proc { background: rgba(255,255,255,0.02); padding:12px; border-radius:10px; display:flex; justify-content:space-between; gap:10px; align-items:center; transition: transform .18s ease, box-shadow .18s ease }
+      .proc:hover{ transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,0.6) }
+      .proc .meta{ display:flex; gap:10px; align-items:center }
+      .proc .meta .badge{ font-weight:600 }
+      .proc .actions { display:flex; gap:6px; align-items:center }
+      .proc .name{ font-weight:700 }
+
+      .monitor-panel{ display:flex; gap:8px; align-items:center }
+      .monitor-status.running{ color:var(--accent-2); font-weight:800 }
+      .actions-log{ max-height:320px; overflow:auto; margin-top:8px }
+      .action-item{ padding:8px; border-bottom:1px solid rgba(255,255,255,0.02); font-family: monospace; font-size:12px; color:var(--muted) }
+
+      .theme-toggle{ padding:8px 12px; border-radius:8px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:#081018; font-weight:700; cursor:pointer }
+
+      .tooltip{ position:relative }
+      .tooltip:hover::after{ content:attr(data-tip); position:absolute; left:0; bottom:calc(100% + 8px); background:rgba(0,0,0,0.75); color:#fff; padding:6px 8px; border-radius:6px; font-size:12px; white-space:nowrap }
+
+      /* responsive */
+      @media (max-width:900px){ .grid{ grid-template-columns: 1fr } .left{ order:2 } }
+    </style>
+  </head>
+  <body>
+    <h1>mem_manager — procesos</h1>
+    <header>
+      <h1><span class="icon">⚡</span> mem_manager — procesos</h1>
+      <div style="margin-left:auto; display:flex; gap:8px; align-items:center">
+        <button class="theme-toggle" onclick="toggleTheme()">Tema: EVA</button>
+      </div>
+    </header>
+
+    <div class="panel grid">
+      <div class="left">
+        <div class="panel search">
+          <div style="display:flex;gap:8px;align-items:center">
+            <input id="search" oninput="refresh()" placeholder="Buscar comando o PID" />
+            <button onclick="refresh()">Buscar</button>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px;align-items:center">
+            <label class="small">Auto-refresh <input id="autorefresh" type="checkbox" onchange="toggleAutoRefresh(this.checked)" /></label>
+            <div style="margin-left:auto" class="monitor-panel small">Estado: <span id="monitorStatus" class="badge">STANDBY</span></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+            <div class="small">Umbral (%) <input id="m_threshold" value="15" style="width:60px;margin-left:6px" /></div>
+            <div class="small">Intervalo (s) <input id="m_interval" value="5" style="width:60px;margin-left:6px" /></div>
+            <label class="small">Auto-kill <input id="m_autokill" type="checkbox" style="margin-left:6px" /></label>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button onclick="startMonitor()">Iniciar monitor</button>
+            <button onclick="stopMonitor()">Detener monitor</button>
+            <button onclick="showMarked()">Mostrar marcados</button>
+            <button onclick="killMarked()">Cerrar marcados</button>
+          </div>
+        </div>
+
+        <div class="panel actions-log">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <div class="small">Registro de acciones</div>
+            <button onclick="refreshActions()">Actualizar</button>
+          </div>
+          <div id="actions" style="max-height:280px;overflow:auto"></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="panel" id="processesPanel">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div>
+              <div class="small">Procesos (agrupados)</div>
+              <h3 style="margin:4px 0 0 0">Visión general</h3>
+            </div>
+            <div class="small"> <button class="theme-toggle" onclick="toggleTheme()">Tema: EVA</button></div>
+          </div>
+
+          <div id="procGroups" style="margin-top:12px"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let autoRefreshTimer = null
+      async function refresh(){
+        const q = document.getElementById('search').value.trim().toLowerCase()
+        const r = await fetch('/processes')
+        const j = await r.json()
+        let procs = j.processes
+        if(q){
+          procs = procs.filter(p => (p.comm||p.cmd||'').toLowerCase().includes(q) || String(p.pid).includes(q))
+        }
+        const groups = { high: [], medium: [], low: [], critical: [] }
+        for(const p of procs){ groups[p.priority].push(p) }
+        const container = document.getElementById('content')
+        container.innerHTML = ''
+        for(const g of ['high','medium','low','critical']){
+          if(groups[g].length===0) continue
+          const container = document.getElementById('procGroups')
+          const card = document.createElement('div'); card.className = 'group-card'
+          const header = document.createElement('div'); header.style.display='flex'; header.style.justifyContent='space-between'; header.style.alignItems='center'
+          const left = document.createElement('div'); left.innerHTML = `<div style="font-weight:700">${iconFor(g)} ${g.toUpperCase()} <span class="badge">${groups[g].length}</span></div><div class='small'>Procesos con prioridad ${g}</div>`
+          header.appendChild(left)
+          const right = document.createElement('div'); right.innerHTML = `<button onclick="Array.from(document.querySelectorAll('.group-card')).forEach(c=>c.style.display='none');" title="ocultar">Cerrar sección</button>`
+          header.appendChild(right)
+          card.appendChild(header)
+
+          const list = document.createElement('div'); list.className='proc-list'
+          for(const p of groups[g]){
+            const el = document.createElement('div'); el.className='proc tooltip'; el.dataset.tip = p.comm
+            const meta = document.createElement('div'); meta.className='meta'
+            meta.innerHTML = `<div style="width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:800">${g==='critical'? '⛔' : g==='high'? '🔥' : g==='medium'? '⚠️' : '✅'}</div>`
+            const info = document.createElement('div'); info.innerHTML = `<div class='name'>${p.comm.split('/').pop()||p.comm}</div><div class='small'>PID: ${p.pid} · ${p.rss_mb} MB · ${p.pcpu.toFixed(1)}%</div>`
+            meta.appendChild(info)
+            el.appendChild(meta)
+            const actions = document.createElement('div'); actions.className='actions'
+            const explainBtn = document.createElement('button'); explainBtn.innerText='Explicar'; explainBtn.onclick = async ()=>{ const r = await fetch('/describe?pid='+p.pid); if(r.ok){ const j=await r.json(); showToast(`${j.name}: ${j.description}`); } else { showToast('No se pudo describir proceso','error') } }
+            const markBtn = document.createElement('button'); markBtn.innerText = p.marked? 'Desmarcar' : 'Marcar'; markBtn.onclick = async ()=>{ const url = p.marked? '/unmark' : '/mark'; await fetch(url,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({pid:p.pid})}); refresh() }
+            const closeBtn = document.createElement('button'); closeBtn.innerText='Cerrar'; closeBtn.onclick = async ()=>{ if(confirm('Cerrar PID '+p.pid+'?')){ setRowBusy(el,true); const r = await fetch('/kill_single',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({pid:p.pid})}); if(!r.ok){ const text = await r.text(); showToast('Error: '+text,'error') } setRowBusy(el,false); refresh() } }
+            const suggestBtn = document.createElement('button'); suggestBtn.innerText='Sugerir'; suggestBtn.onclick=()=>showToast('Sugerido: '+suggest(p.cmd||p.comm))
+            actions.appendChild(explainBtn); actions.appendChild(markBtn); actions.appendChild(closeBtn); actions.appendChild(suggestBtn)
+            el.appendChild(actions)
+            list.appendChild(el)
+          }
+          card.appendChild(list)
+          container.appendChild(card)
+        }
+      }
+
+      function iconFor(g){
+        return g==='critical'?'⛔': g==='high'?'🔥': g==='medium'?'⚠️':'✅'
+      }
+
+      function setRowBusy(tr, busy){
+        if(busy){
+          tr.style.transition='opacity 0.3s'; tr.style.opacity = 0.5
+          // add spinner
+          if(!tr.querySelector('.spinner')){
+            const s = document.createElement('span'); s.className='spinner'; s.title='working';
+            tr.querySelector('td:last-child').appendChild(s)
+          }
+        } else {
+          tr.style.opacity = 1
+          const s = tr.querySelector('.spinner'); if(s) s.remove()
+        }
+      }
+      function suggest(cmd){
+        cmd = (cmd||'').toLowerCase()
+        if(cmd.includes('spotify')) return `osascript -e 'tell application "Spotify" to quit'`
+        if(cmd.includes('docker')) return `osascript -e 'tell application "Docker" to quit'`
+        if(cmd.includes('obs')) return `osascript -e 'tell application "OBS" to quit'`
+        if(cmd.includes('code')) return `osascript -e 'tell application "Visual Studio Code" to quit'`
+        return 'kill -TERM <PID>'
+      }
+
+      async function showMarked(){
+        const r = await fetch('/show_marked'); const j = await r.json(); showToast(JSON.stringify(j,null,2));
+      }
+      async function killMarked(){
+        if(!confirm('Enviar SIGTERM a todos los procesos marcados?')) return
+        await fetch('/kill',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({force:false})})
+        refresh()
+      }
+      function toggleAutoRefresh(enabled){
+        if(enabled){ autoRefreshTimer = setInterval(refresh, 3000) } else { clearInterval(autoRefreshTimer); autoRefreshTimer = null }
+      }
+
+      // monitor UI
+      async function refreshMonitor(){
+        const r = await fetch('/monitor/status'); const j = await r.json();
+        const ms = document.getElementById('monitorStatus');
+        if(j.running){ ms.innerText = `RUNNING (free ${j.last_run? j.last_run.free_pct : 'n/a'}%)`; ms.classList.add('monitor-running') } else { ms.innerText='STOPPED'; ms.classList.remove('monitor-running') }
+      }
+      async function startMonitor(){
+        const threshold = Number(document.getElementById('m_threshold').value)
+        const interval = Number(document.getElementById('m_interval').value)
+        const auto_kill = document.getElementById('m_autokill').checked
+        await fetch('/monitor/start',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({threshold,interval,auto_kill})})
+        refreshMonitor();
+        refreshActions();
+      }
+      async function stopMonitor(){
+        await fetch('/monitor/stop',{method:'POST'}); refreshMonitor();
+      }
+      async function refreshActions(){
+        const r = await fetch('/actions'); const j = await r.json();
+        const c = document.getElementById('actions');
+        c.innerHTML = '';
+        for(const a of j.actions.slice(0,100)){
+          const d = document.createElement('div'); d.className='action-item';
+          d.innerHTML = `<div style="font-size:11px;color:var(--muted)">${a.time || ''}</div><div><code>${a.cmd || a.summary || JSON.stringify(a)}</code></div>`
+          c.appendChild(d)
+        }
+      }
+      setInterval(()=>{ refreshMonitor(); refreshActions() }, 4000)
+      refresh(); refreshMonitor(); refreshActions()
+
+      // toast
+      function showToast(msg, level='info'){
+        const t = document.createElement('div'); t.style.position='fixed'; t.style.right='18px'; t.style.bottom='18px'; t.style.background='linear-gradient(90deg,var(--accent),var(--accent-2))'; t.style.color='#081018'; t.style.padding='10px 14px'; t.style.borderRadius='10px'; t.style.boxShadow='0 12px 36px rgba(0,0,0,0.6)'; t.innerText = msg; document.body.appendChild(t); setTimeout(()=>t.remove(),4000)
+      }
+
+      // theme toggle
+      function toggleTheme(){ document.documentElement.classList.toggle('eva-light'); showToast('Tema alternado') }
+
+      // helper to mark busy
+      function setRowBusy(el, busy){ if(busy){ el.style.opacity=0.6 } else { el.style.opacity=1 } }
+
+    </script>
+
+      // theme toggle
+      function toggleTheme(){
+        document.documentElement.classList.toggle('eva-light')
+      }
+    </script>
+  </body>
+</html>

@@ -311,7 +311,7 @@ class AudioRecorder:
         self.recordings_dir = Path(__file__).parent / "audio_recordings"
         self.recordings_dir.mkdir(exist_ok=True)
     
-    def record_system_audio_macos(self, duration=10):
+    def record_system_audio_macos(self, duration=20):
         """
         Graba audio del sistema en macOS usando ffmpeg + BlackHole/ScreenCapture.
         """
