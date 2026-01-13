@@ -1,0 +1,19 @@
+[
+  {
+    "type": "telemetry",
+    "ts": "2025-02-01T00:00:00",
+    "sample": { "ts": "2025-02-01T00:00:00", "device_id": "gpu0", "gpu_temp": 60.0, "gpu_memory_used_gb": 1.0, "gpu_memory_total_gb": 16.0, "is_throttling": false }
+  },
+  {
+    "type": "job",
+    "ts": "2025-02-01T00:00:01",
+    "job": { "job_id": "job-starve-1", "priority": 1, "tasks": [{ "task_id": "t1", "required_memory_mb": 14000, "requires_gpu": true, "frames": 100, "priority": 1, "allow_cpu_fallback": false }] },
+    "deadline": "2025-02-01T00:10:00"
+  },
+  {
+    "type": "job",
+    "ts": "2025-02-01T00:00:02",
+    "job": { "job_id": "job-starve-2", "priority": 2, "tasks": [{ "task_id": "t1", "required_memory_mb": 500, "requires_gpu": true, "frames": 10, "priority": 2, "allow_cpu_fallback": true }] },
+    "deadline": "2025-02-01T00:05:00"
+  }
+]
