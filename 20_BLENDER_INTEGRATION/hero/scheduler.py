@@ -11,6 +11,9 @@ class Device:
         self.total_memory_mb = int(total_memory_mb)
         self.free_memory_mb = int(free_memory_mb)
         self.compute_score = float(compute_score)
+        self.health: str = 'healthy'  # 'healthy'|'offline'|'throttling'|'memory_pressure'|'high_occupancy'
+        self.health_reason: Optional[str] = None
+        self.last_seen: Optional[str] = None
 
     def allocate(self, mb: int) -> bool:
         if self.free_memory_mb >= mb:
@@ -25,6 +28,9 @@ class Device:
             'total_memory_mb': self.total_memory_mb,
             'free_memory_mb': self.free_memory_mb,
             'compute_score': self.compute_score,
+            'health': self.health,
+            'health_reason': self.health_reason,
+            'last_seen': self.last_seen,
         }
 
 
@@ -74,6 +80,61 @@ class Scheduler:
 
     def register_devices(self, devices: List[Dict[str, Any]]):
         self.devices = [Device(**d) for d in devices]
+
+    def update_from_telemetry(self, telemetry_snapshot_or_obj, ttl_seconds: int = 5):
+        """Update internal device states based on telemetry snapshot or DeviceTelemetry object.
+
+        Accepts either:
+          - a dict mapping device_id -> metrics (as returned by DeviceTelemetry.snapshot() or snapshot_with_health())
+          - a DeviceTelemetry instance (will call snapshot_with_health using ttl_seconds)
+
+        The method will set device.free_memory_mb, device.compute_score, device.last_seen and will set
+        device.health + health_reason when available. Unhealthy devices (offline/throttling/memory_pressure)
+        will be demoted by setting compute_score to 0.0.
+        """
+        # normalize to snapshot dict
+        if hasattr(telemetry_snapshot_or_obj, 'snapshot_with_health'):
+            snap = telemetry_snapshot_or_obj.snapshot_with_health(ttl_seconds=ttl_seconds)
+        elif hasattr(telemetry_snapshot_or_obj, 'snapshot') and not isinstance(telemetry_snapshot_or_obj, dict):
+            snap = telemetry_snapshot_or_obj.snapshot()
+        else:
+            snap = telemetry_snapshot_or_obj or {}
+
+        id_map = {d.id: d for d in self.devices}
+        for dev_id, metrics in snap.items():
+            d = id_map.get(dev_id)
+            if not d:
+                # ignore unknown devices (could add dynamic device registration later)
+                continue
+            # last seen
+            latest_ts = metrics.get('_latest_ts')
+            if latest_ts:
+                d.last_seen = latest_ts
+            # health
+            health = metrics.get('_health') or metrics.get('health')
+            health_reason = metrics.get('_health_reason') or metrics.get('health_reason')
+            if health:
+                d.health = health
+                d.health_reason = health_reason
+                if health in ('offline', 'throttling', 'memory_pressure', 'high_occupancy'):
+                    # demote compute capability
+                    d.compute_score = 0.0
+            # free memory
+            free = metrics.get('free_memory_mb')
+            if free is not None:
+                try:
+                    d.free_memory_mb = int(round(float(free)))
+                except Exception:
+                    pass
+            # compute score
+            comp = metrics.get('compute_score')
+            if comp is not None:
+                try:
+                    # only overwrite compute score if device healthy
+                    if d.health == 'healthy':
+                        d.compute_score = float(comp)
+                except Exception:
+                    pass
 
     def submit(self, job: RenderJob):
         self.queue.append(job)

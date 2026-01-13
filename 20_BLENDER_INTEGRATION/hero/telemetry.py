@@ -4,12 +4,13 @@ from datetime import datetime, timezone
 
 
 class DeviceTelemetry:
-    """Simple telemetry ingestion with rolling window aggregation for devices.
+    """Telemetry ingestion with rolling window aggregation and health assessment.
 
     Usage:
       t = DeviceTelemetry(window=5)
       t.ingest('gpu0', {'free_memory_mb': 7000, 'compute_score': 0.9, 'temperature_c': 65})
       snap = t.snapshot()  # latest aggregated values per device
+      health = t.assess_health('gpu0', ttl_seconds=5)
     """
 
     def __init__(self, window: int = 5):
@@ -63,3 +64,54 @@ class DeviceTelemetry:
 
     def clear(self):
         self._queues.clear()
+
+    def assess_health(self, device_id: str, ttl_seconds: int = 5, temp_threshold: float = 95.0, mem_pressure_ratio: float = 0.1, occupancy_threshold: float = 0.95) -> Dict[str, str]:
+        """Assess device health and return dict: {'health': 'healthy'|'offline'|'throttling'|'memory_pressure'|'high_occupancy', 'reason': <str>}"""
+        import time
+        q = self._queues.get(device_id)
+        if not q or len(q) == 0:
+            return {'health': 'offline', 'reason': 'no_samples'}
+        latest = q[-1]
+        ts = latest.get('_ts')
+        try:
+            # parse timestamp
+            t_latest = datetime.fromisoformat(ts)
+            age_seconds = (datetime.now(timezone.utc) - t_latest).total_seconds()
+        except Exception:
+            age_seconds = float('inf')
+        if age_seconds > ttl_seconds:
+            return {'health': 'offline', 'reason': f'stale_data_{age_seconds:.1f}s'}
+        # check temperature
+        temp = latest.get('temperature_c')
+        if temp is not None:
+            try:
+                if float(temp) >= float(temp_threshold):
+                    return {'health': 'throttling', 'reason': f'temp_{temp}C'}
+            except Exception:
+                pass
+        # check memory pressure (needs total_memory or we check absolute free)
+        free = latest.get('free_memory_mb')
+        total = latest.get('total_memory_mb')
+        if free is not None and total is not None:
+            try:
+                if float(total) > 0 and (float(free) / float(total)) <= float(mem_pressure_ratio):
+                    return {'health': 'memory_pressure', 'reason': f'free={free} total={total}'}
+            except Exception:
+                pass
+        # check occupancy
+        occ = latest.get('occupancy')
+        if occ is not None:
+            try:
+                if float(occ) >= float(occupancy_threshold):
+                    return {'health': 'high_occupancy', 'reason': f'occ={occ}'}
+            except Exception:
+                pass
+        return {'health': 'healthy', 'reason': 'ok'}
+
+    def snapshot_with_health(self, ttl_seconds: int = 5, temp_threshold: float = 95.0, mem_pressure_ratio: float = 0.1, occupancy_threshold: float = 0.95) -> Dict[str, Dict[str, Any]]:
+        out = self.snapshot()
+        for dev in list(out.keys()):
+            h = self.assess_health(dev, ttl_seconds=ttl_seconds, temp_threshold=temp_threshold, mem_pressure_ratio=mem_pressure_ratio, occupancy_threshold=occupancy_threshold)
+            out[dev]['_health'] = h['health']
+            out[dev]['_health_reason'] = h['reason']
+        return out
