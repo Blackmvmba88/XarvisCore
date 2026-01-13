@@ -21,6 +21,20 @@ class SimulationResult:
     assignments: List[Assignment]
     deadline_misses: int
 
+    def to_dict(self):
+        return {
+            'assignments': [
+                {
+                    'ts': a.ts.isoformat(),
+                    'job_id': a.job_id,
+                    'task_id': a.task_id,
+                    'assigned_device_id': a.assigned_device_id,
+                    'reason': a.reason,
+                }
+                for a in self.assignments
+            ],
+            'deadline_misses': self.deadline_misses,
+        }
 
 class Policy:
     """Base policy interface for simulation."""
@@ -103,6 +117,8 @@ class Simulator:
 
     The Simulator feeds telemetry into a TelemetryWindow, updates Scheduler from the window, and calls
     the policy at job submission times to compute assignments. The simulation is deterministic (events sorted by ts).
+
+    This class also provides trace load/save helpers for JSON files so traces are easy to persist and share.
     """
 
     def __init__(self, devices: Optional[List[Dict[str, Any]]] = None):
@@ -146,3 +162,79 @@ class Simulator:
                 pending_jobs = []
 
         return SimulationResult(assignments=assignments, deadline_misses=deadline_misses)
+
+    # Trace IO helpers -----------------------------------------------------
+    @staticmethod
+    def _serialize_event(ev: Dict[str, Any]) -> Dict[str, Any]:
+        # ts -> ISO
+        out = {'type': ev['type'], 'ts': ev['ts'].isoformat()}
+        if ev['type'] == 'telemetry':
+            s = ev['sample']
+            out['sample'] = {
+                'ts': s.ts.isoformat(),
+                'device_id': s.device_id,
+                'gpu_temp': s.gpu_temp,
+                'gpu_memory_used_gb': s.gpu_memory_used_gb,
+                'gpu_memory_total_gb': s.gpu_memory_total_gb,
+                'is_throttling': s.is_throttling,
+                'power_watts': s.power_watts,
+            }
+        elif ev['type'] == 'job':
+            job = ev['job']
+            job_dict = {
+                'job_id': job.job_id,
+                'priority': job.priority,
+                'tasks': [
+                    {
+                        'task_id': t.task_id,
+                        'required_memory_mb': t.required_memory_mb,
+                        'requires_gpu': t.requires_gpu,
+                        'frames': t.frames,
+                        'priority': t.priority,
+                        'allow_cpu_fallback': t.allow_cpu_fallback,
+                    }
+                    for t in job.tasks
+                ],
+            }
+            out['job'] = job_dict
+            if getattr(job, 'deadline', None) is not None:
+                out['deadline'] = job.deadline.isoformat()
+        return out
+
+    @staticmethod
+    def _deserialize_event(ev: Dict[str, Any]):
+        from datetime import datetime
+        from .telemetry_model import TelemetrySample
+        from .scheduler import Task, RenderJob
+
+        t = datetime.fromisoformat(ev['ts'])
+        if ev['type'] == 'telemetry':
+            s = ev['sample']
+            sample = TelemetrySample(ts=datetime.fromisoformat(s['ts']), device_id=s['device_id'], gpu_temp=s['gpu_temp'], gpu_memory_used_gb=s['gpu_memory_used_gb'], gpu_memory_total_gb=s['gpu_memory_total_gb'], is_throttling=s.get('is_throttling', False), power_watts=s.get('power_watts'))
+            return {'type': 'telemetry', 'ts': t, 'sample': sample}
+        elif ev['type'] == 'job':
+            j = ev['job']
+            tasks = [Task(task_id=td['task_id'], required_memory_mb=td.get('required_memory_mb', 0), requires_gpu=td.get('requires_gpu', False), frames=td.get('frames', 1), priority=td.get('priority', 0), allow_cpu_fallback=td.get('allow_cpu_fallback', False)) for td in j.get('tasks', [])]
+            job = RenderJob(j['job_id'], tasks, priority=j.get('priority', 0))
+            if 'deadline' in ev:
+                job.deadline = datetime.fromisoformat(ev['deadline'])
+            return {'type': 'job', 'ts': t, 'job': job, 'deadline': getattr(job, 'deadline', None)}
+        else:
+            raise ValueError('unknown event type')
+
+    @staticmethod
+    def save_trace_to_file(trace: List[Dict[str, Any]], path: str) -> None:
+        import json
+
+        serial = [Simulator._serialize_event(e) for e in trace]
+        with open(path, 'w', encoding='utf-8') as f:
+            json.dump(serial, f, indent=2)
+
+    @staticmethod
+    def load_trace_from_file(path: str) -> List[Dict[str, Any]]:
+        import json
+        from datetime import datetime
+
+        with open(path, 'r', encoding='utf-8') as f:
+            raw = json.load(f)
+        return [Simulator._deserialize_event(e) for e in raw]
