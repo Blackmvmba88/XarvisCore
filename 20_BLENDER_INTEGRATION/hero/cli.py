@@ -115,14 +115,31 @@ def generate_timeline_plot(trace: list, report: dict, out_path: str):
     plt.close(fig)
 
 
+def list_traces(traces_dir: str = 'traces'):
+    p = Path(traces_dir)
+    if not p.exists():
+        return []
+    return sorted([str(x.name) for x in p.iterdir() if x.is_file() and x.suffix == '.json'])
+
+
 def main():
     p = argparse.ArgumentParser(prog='hero-sim')
-    p.add_argument('--trace', required=True, help='Path to trace JSON file')
+    p.add_argument('--trace', help='Path to trace JSON file')
     p.add_argument('--policy', default='greedy', choices=POLICIES.keys())
     p.add_argument('--report', help='Optional path to write report JSON')
+    p.add_argument('--plot', help='Optional path to write timeline PNG')
+    p.add_argument('--list-traces', action='store_true', help='List available sample traces and exit')
     args = p.parse_args()
 
-    report = run_simulate(args.trace, args.policy, args.report)
+    if args.list_traces:
+        for t in list_traces():
+            print(t)
+        return
+
+    if not args.trace:
+        raise SystemExit('missing --trace (or use --list-traces)')
+
+    report = run_simulate(args.trace, args.policy, args.report, plot_out=args.plot)
     print(json.dumps(report, indent=2))
 
 

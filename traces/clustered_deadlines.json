@@ -1,0 +1,6 @@
+[
+  { "type": "telemetry", "ts": "2025-04-01T00:00:00", "sample": { "ts": "2025-04-01T00:00:00", "device_id": "gpu0", "gpu_temp": 60.0, "gpu_memory_used_gb": 2.0, "gpu_memory_total_gb": 16.0, "is_throttling": false } },
+  { "type": "job", "ts": "2025-04-01T00:00:01", "job": { "job_id": "cd-1", "priority": 10, "tasks": [{ "task_id": "t1", "required_memory_mb": 2000, "requires_gpu": true, "frames": 20, "priority": 10, "allow_cpu_fallback": false }] }, "deadline": "2025-04-01T00:00:30" },
+  { "type": "job", "ts": "2025-04-01T00:00:01", "job": { "job_id": "cd-2", "priority": 8, "tasks": [{ "task_id": "t1", "required_memory_mb": 2000, "requires_gpu": true, "frames": 20, "priority": 8, "allow_cpu_fallback": true }] }, "deadline": "2025-04-01T00:00:28" },
+  { "type": "job", "ts": "2025-04-01T00:00:02", "job": { "job_id": "cd-3", "priority": 5, "tasks": [{ "task_id": "t1", "required_memory_mb": 1000, "requires_gpu": true, "frames": 10, "priority": 5, "allow_cpu_fallback": true }] }, "deadline": "2025-04-01T00:00:25" }
+]
