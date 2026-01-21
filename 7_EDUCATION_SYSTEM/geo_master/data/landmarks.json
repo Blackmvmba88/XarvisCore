@@ -1,0 +1,130 @@
+{
+  "landmarks": [
+    {
+      "name": "Machu Picchu",
+      "country": "peru",
+      "type": "archaeological",
+      "coordinates": {"lat": -13.1631, "lng": -72.5450},
+      "description": "Ciudad inca del siglo XV, una de las 7 maravillas del mundo moderno"
+    },
+    {
+      "name": "Cristo Redentor",
+      "country": "brazil",
+      "type": "monument",
+      "coordinates": {"lat": -22.9519, "lng": -43.2105},
+      "description": "Estatua icónica de Jesús en Rio de Janeiro"
+    },
+    {
+      "name": "Chichén Itzá",
+      "country": "mexico",
+      "type": "archaeological",
+      "coordinates": {"lat": 20.6843, "lng": -88.5678},
+      "description": "Ciudad maya y una de las 7 maravillas del mundo moderno"
+    },
+    {
+      "name": "Cataratas del Iguazú",
+      "country": "argentina",
+      "type": "natural",
+      "coordinates": {"lat": -25.6953, "lng": -54.4367},
+      "description": "Sistema de cataratas en la frontera Argentina-Brasil"
+    },
+    {
+      "name": "Canal de Panamá",
+      "country": "panama",
+      "type": "engineering",
+      "coordinates": {"lat": 9.0800, "lng": -79.6800},
+      "description": "Vía marítima que conecta el Atlántico y el Pacífico"
+    },
+    {
+      "name": "Galápagos",
+      "country": "ecuador",
+      "type": "natural",
+      "coordinates": {"lat": -0.9538, "lng": -90.9656},
+      "description": "Archipiélago volcánico famoso por su biodiversidad única"
+    },
+    {
+      "name": "Salar de Uyuni",
+      "country": "bolivia",
+      "type": "natural",
+      "coordinates": {"lat": -20.3078, "lng": -66.8251},
+      "description": "El mayor desierto de sal del mundo"
+    },
+    {
+      "name": "Torre Eiffel",
+      "country": "france",
+      "type": "monument",
+      "coordinates": {"lat": 48.8584, "lng": 2.2945},
+      "description": "Torre de hierro icónica de París"
+    },
+    {
+      "name": "Coliseo",
+      "country": "italy",
+      "type": "archaeological",
+      "coordinates": {"lat": 41.8902, "lng": 12.4922},
+      "description": "Anfiteatro romano antiguo en Roma"
+    },
+    {
+      "name": "Gran Muralla China",
+      "country": "china",
+      "type": "archaeological",
+      "coordinates": {"lat": 40.4319, "lng": 116.5704},
+      "description": "Antigua fortificación china de más de 21,000 km"
+    },
+    {
+      "name": "Taj Mahal",
+      "country": "india",
+      "type": "monument",
+      "coordinates": {"lat": 27.1751, "lng": 78.0421},
+      "description": "Mausoleo de mármol blanco en Agra"
+    },
+    {
+      "name": "Pirámides de Giza",
+      "country": "egypt",
+      "type": "archaeological",
+      "coordinates": {"lat": 29.9792, "lng": 31.1342},
+      "description": "Única maravilla antigua del mundo que permanece"
+    },
+    {
+      "name": "Gran Barrera de Coral",
+      "country": "australia",
+      "type": "natural",
+      "coordinates": {"lat": -18.2871, "lng": 147.6992},
+      "description": "El mayor sistema de arrecifes de coral del mundo"
+    },
+    {
+      "name": "Monte Fuji",
+      "country": "japan",
+      "type": "natural",
+      "coordinates": {"lat": 35.3606, "lng": 138.7274},
+      "description": "Volcán sagrado y la montaña más alta de Japón"
+    },
+    {
+      "name": "Estatua de la Libertad",
+      "country": "united_states",
+      "type": "monument",
+      "coordinates": {"lat": 40.6892, "lng": -74.0445},
+      "description": "Símbolo de libertad en Nueva York"
+    },
+    {
+      "name": "Table Mountain",
+      "country": "south_africa",
+      "type": "natural",
+      "coordinates": {"lat": -33.9628, "lng": 18.4098},
+      "description": "Montaña icónica de Ciudad del Cabo"
+    },
+    {
+      "name": "Alhambra",
+      "country": "spain",
+      "type": "archaeological",
+      "coordinates": {"lat": 37.1773, "lng": -3.5881},
+      "description": "Palacio y fortaleza morisca en Granada"
+    },
+    {
+      "name": "Sagrada Familia",
+      "country": "spain",
+      "type": "monument",
+      "coordinates": {"lat": 41.4036, "lng": 2.1744},
+      "description": "Basílica diseñada por Gaudí en Barcelona"
+    }
+  ]
+}
