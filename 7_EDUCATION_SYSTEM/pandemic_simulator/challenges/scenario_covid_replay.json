@@ -1,0 +1,57 @@
+{
+  "scenario_id": "covid19_replay",
+  "name": "Reescribe la Historia del COVID-19",
+  "description": "Eres el líder mundial en diciembre 2019. Un nuevo coronavirus ha sido detectado en Wuhan, China. ¿Puedes evitar 7 millones de muertes con las decisiones correctas?",
+  "difficulty": "expert",
+  "virus": "covid19",
+  "start_date": "2019-12-01",
+  "initial_infected": 100,
+  "budget_usd": 1000000000000,
+  "duration_days": 365,
+  "success_criteria": {
+    "deaths_less_than": 1000000,
+    "economic_damage_less_than": 5000000000000,
+    "r_effective_below": 1.0,
+    "days_to_control": 180,
+    "vaccine_deployed": true
+  },
+  "available_interventions": [
+    "lockdown",
+    "social_distancing",
+    "masks",
+    "vaccine",
+    "border_closure",
+    "testing",
+    "contact_tracing"
+  ],
+  "learning_objectives": [
+    "Entender trade-offs entre economía y salud",
+    "Importancia del timing en intervenciones",
+    "Rol de las vacunas en control de pandemias",
+    "Valor de la detección temprana"
+  ],
+  "historical_context": {
+    "what_actually_happened": {
+      "total_deaths": 7000000,
+      "peak_day": 120,
+      "interventions_timeline": [
+        {"day": 75, "type": "lockdown", "countries": 50},
+        {"day": 90, "type": "masks", "countries": 120},
+        {"day": 365, "type": "vaccine", "coverage": 0.20}
+      ]
+    }
+  },
+  "scoring": {
+    "deaths_weight": 0.40,
+    "economic_weight": 0.30,
+    "time_to_control_weight": 0.20,
+    "intervention_efficiency_weight": 0.10
+  },
+  "hints": [
+    "Actúa rápido: cada día cuenta",
+    "Las mascarillas son efectivas y económicas",
+    "Los tests permiten aislar casos tempranamente",
+    "El cierre de fronteras retrasa la propagación inicial",
+    "La vacuna tarda ~365 días en desarrollarse"
+  ]
+}

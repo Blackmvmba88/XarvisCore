@@ -1,0 +1,77 @@
+{
+  "scenario_id": "custom_virus_creator",
+  "name": "Crea tu Propio Virus",
+  "description": "Diseña un virus personalizado ajustando parámetros epidemiológicos. Luego, intenta controlarlo. ¿Puedes crear el virus perfecto que sea contenible?",
+  "difficulty": "intermediate",
+  "virus": "custom",
+  "start_date": "2024-01-01",
+  "initial_infected": 100,
+  "budget_usd": 500000000000,
+  "duration_days": 200,
+  "custom_virus_parameters": {
+    "name": "Custom Pathogen",
+    "r0_min": 0.5,
+    "r0_max": 5.0,
+    "mortality_rate_min": 0.001,
+    "mortality_rate_max": 0.80,
+    "transmission_types": ["airborne", "contact", "vector", "water"],
+    "incubation_days_range": [1, 14],
+    "infectious_days_range": [3, 21]
+  },
+  "success_criteria": {
+    "deaths_less_than": 500000,
+    "r_effective_below": 1.0,
+    "days_to_control": 120,
+    "economic_balance": true
+  },
+  "available_interventions": [
+    "lockdown",
+    "social_distancing",
+    "masks",
+    "vaccine",
+    "border_closure",
+    "testing",
+    "contact_tracing",
+    "emergency_healthcare"
+  ],
+  "learning_objectives": [
+    "Comprender cómo R0 afecta la velocidad de propagación",
+    "Entender la relación entre mortalidad y transmisibilidad",
+    "Analizar efectividad de intervenciones según tipo de transmisión",
+    "Balancear parámetros virales con capacidad de respuesta"
+  ],
+  "challenge_modes": {
+    "easy": {
+      "r0": 1.5,
+      "mortality": 0.01,
+      "transmission": "contact"
+    },
+    "medium": {
+      "r0": 2.5,
+      "mortality": 0.05,
+      "transmission": "airborne"
+    },
+    "hard": {
+      "r0": 3.5,
+      "mortality": 0.15,
+      "transmission": "airborne"
+    },
+    "nightmare": {
+      "r0": 4.5,
+      "mortality": 0.30,
+      "transmission": "airborne"
+    }
+  },
+  "scoring": {
+    "creativity_weight": 0.20,
+    "control_efficiency_weight": 0.40,
+    "economic_management_weight": 0.20,
+    "lives_saved_weight": 0.20
+  },
+  "hints": [
+    "R0 alto + mortalidad alta = muy difícil de controlar",
+    "Transmisión por contacto es más fácil de contener",
+    "Período de incubación largo dificulta detección",
+    "Días infecciosos largos aumentan ventana de transmisión"
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "lockdown": {
+    "name": "Cuarentena General",
+    "r0_reduction": 0.60,
+    "cost_daily_billions": 10.0,
+    "economic_impact": "high",
+    "effectiveness": "high",
+    "duration_recommended_days": 30,
+    "description": "Cierre total de actividades no esenciales y restricción de movimiento"
+  },
+  "social_distancing": {
+    "name": "Distanciamiento Social",
+    "r0_reduction": 0.30,
+    "cost_daily_billions": 2.0,
+    "economic_impact": "medium",
+    "effectiveness": "medium",
+    "duration_recommended_days": 90,
+    "description": "Mantener 2 metros de distancia entre personas"
+  },
+  "masks": {
+    "name": "Mascarillas Obligatorias",
+    "r0_reduction": 0.50,
+    "cost_daily_billions": 0.5,
+    "economic_impact": "low",
+    "effectiveness": "medium",
+    "duration_recommended_days": 180,
+    "description": "Uso obligatorio de mascarillas en espacios públicos"
+  },
+  "vaccine": {
+    "name": "Vacunación Masiva",
+    "r0_reduction": 0.90,
+    "cost_total_billions": 50.0,
+    "economic_impact": "low",
+    "effectiveness": "very_high",
+    "time_to_develop_days": 365,
+    "coverage_target": 0.70,
+    "description": "Desarrollo y distribución de vacunas a nivel mundial"
+  },
+  "border_closure": {
+    "name": "Cierre de Fronteras",
+    "r0_reduction": 0.40,
+    "cost_daily_billions": 5.0,
+    "economic_impact": "very_high",
+    "effectiveness": "medium",
+    "duration_recommended_days": 60,
+    "description": "Cierre total de fronteras internacionales"
+  },
+  "testing": {
+    "name": "Tests Masivos",
+    "r0_reduction": 0.25,
+    "cost_daily_billions": 1.0,
+    "economic_impact": "low",
+    "effectiveness": "medium",
+    "duration_recommended_days": 365,
+    "description": "Pruebas masivas para detección temprana y aislamiento"
+  },
+  "emergency_healthcare": {
+    "name": "Sistema de Salud de Emergencia",
+    "r0_reduction": 0.10,
+    "cost_daily_billions": 3.0,
+    "economic_impact": "medium",
+    "effectiveness": "low",
+    "duration_recommended_days": 180,
+    "description": "Expansión de capacidad hospitalaria y UCIs"
+  },
+  "contact_tracing": {
+    "name": "Rastreo de Contactos",
+    "r0_reduction": 0.20,
+    "cost_daily_billions": 0.8,
+    "economic_impact": "low",
+    "effectiveness": "medium",
+    "duration_recommended_days": 365,
+    "description": "Identificación y aislamiento de contactos de casos positivos"
+  }
+}

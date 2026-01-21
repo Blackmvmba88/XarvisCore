@@ -1,0 +1,109 @@
+{
+  "black_death": {
+    "name": "Peste Negra",
+    "year_start": 1347,
+    "year_end": 1353,
+    "pathogen": "Yersinia pestis (bacteria)",
+    "r0": 3.0,
+    "mortality_rate": 0.60,
+    "transmission": "vector (pulgas de ratas)",
+    "deaths_estimated": 75000000,
+    "population_affected": 0.30,
+    "origin": {
+      "region": "Asia Central",
+      "coordinates": {"lat": 43.0, "lng": 76.0}
+    },
+    "spread_routes": ["Silk Road", "Mediterranean Sea"],
+    "interventions_historical": [
+      "Quarantine (40 days - 'quarantena')",
+      "Burning infected materials",
+      "Isolation of sick"
+    ],
+    "lessons": [
+      "Importancia de la cuarentena",
+      "Rol de vectores en transmisión",
+      "Impacto social masivo (caída feudalismo)"
+    ]
+  },
+  
+  "spanish_flu": {
+    "name": "Gripe Española",
+    "year_start": 1918,
+    "year_end": 1920,
+    "pathogen": "Influenza A H1N1",
+    "r0": 2.0,
+    "mortality_rate": 0.10,
+    "transmission": "airborne (gotas respiratorias)",
+    "deaths_estimated": 50000000,
+    "population_affected": 0.33,
+    "origin": {
+      "region": "Kansas, USA (teoría más aceptada)",
+      "coordinates": {"lat": 37.0, "lng": -95.0}
+    },
+    "spread_routes": ["WWI troop movements", "Trade ships"],
+    "interventions_historical": [
+      "Quarantine of infected",
+      "Masks mandatory in cities",
+      "Closure of public spaces",
+      "Staggered work hours"
+    ],
+    "lessons": [
+      "Mascarillas reducen transmisión",
+      "Oleadas múltiples posibles",
+      "Jóvenes adultos más vulnerables (tormenta citoquinas)"
+    ]
+  },
+  
+  "covid19": {
+    "name": "COVID-19",
+    "year_start": 2019,
+    "year_end": 2023,
+    "pathogen": "SARS-CoV-2 (coronavirus)",
+    "r0": 2.5,
+    "mortality_rate": 0.02,
+    "transmission": "airborne (aerosoles)",
+    "deaths_confirmed": 7000000,
+    "population_affected": 0.70,
+    "origin": {
+      "city": "Wuhan, China",
+      "coordinates": {"lat": 30.5928, "lng": 114.3055}
+    },
+    "spread_routes": ["International flights", "Global trade"],
+    "interventions_actual": [
+      {
+        "type": "lockdown",
+        "start": "2020-03-15",
+        "effectiveness": 0.60,
+        "countries": 180
+      },
+      {
+        "type": "masks",
+        "start": "2020-04-01",
+        "effectiveness": 0.50,
+        "adoption_rate": 0.80
+      },
+      {
+        "type": "vaccine",
+        "start": "2020-12-01",
+        "effectiveness": 0.90,
+        "coverage_2023": 0.70
+      },
+      {
+        "type": "social_distancing",
+        "start": "2020-03-20",
+        "effectiveness": 0.30
+      }
+    ],
+    "timeline_data": {
+      "daily_cases": "Historical data available from WHO",
+      "daily_deaths": "Historical data available from Johns Hopkins",
+      "by_country": "Country-level data available"
+    },
+    "lessons": [
+      "Respuesta rápida salva vidas",
+      "Vacunas funcionan (histórico)",
+      "Cooperación global esencial",
+      "Economía vs salud: falso dilema"
+    ]
+  }
+}

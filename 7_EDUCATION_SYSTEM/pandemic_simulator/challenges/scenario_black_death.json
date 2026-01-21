@@ -1,0 +1,104 @@
+{
+  "scenario_id": "black_death_1347",
+  "name": "La Peste Negra: Europa 1347",
+  "description": "Es el año 1347. La peste ha llegado a Europa por barcos desde Crimea. Sin antibióticos, sin conocimiento de bacterias, sin medicina moderna. ¿Puedes salvar el continente usando solo medidas medievales?",
+  "difficulty": "hard",
+  "virus": "black_death",
+  "start_date": "1347-10-01",
+  "initial_infected": 50,
+  "budget_usd": 0,
+  "duration_days": 730,
+  "historical_context": {
+    "year": 1347,
+    "location": "Europe",
+    "technology_level": "medieval",
+    "medical_knowledge": "none",
+    "actual_deaths": 75000000,
+    "population_before": 200000000,
+    "population_after": 125000000
+  },
+  "success_criteria": {
+    "deaths_less_than": 30000000,
+    "mortality_rate_below": 0.30,
+    "cities_saved": 10,
+    "knowledge_preserved": true
+  },
+  "available_interventions_medieval": [
+    {
+      "type": "quarantine_40_days",
+      "name": "Cuarentena (40 días)",
+      "effectiveness": 0.50,
+      "cost": "low",
+      "description": "Aislar ciudades y barcos durante 40 días (quarantena)"
+    },
+    {
+      "type": "isolation_sick",
+      "name": "Aislamiento de Enfermos",
+      "effectiveness": 0.30,
+      "cost": "medium",
+      "description": "Separar enfermos en lazaretos fuera de la ciudad"
+    },
+    {
+      "type": "burning_materials",
+      "name": "Quemar Materiales Infectados",
+      "effectiveness": 0.20,
+      "cost": "low",
+      "description": "Quemar ropa y pertenencias de fallecidos"
+    },
+    {
+      "type": "close_ports",
+      "name": "Cerrar Puertos",
+      "effectiveness": 0.40,
+      "cost": "high",
+      "description": "Prohibir entrada de barcos comerciales"
+    },
+    {
+      "type": "flee_cities",
+      "name": "Evacuar Ciudades",
+      "effectiveness": 0.35,
+      "cost": "very_high",
+      "description": "Población huye al campo (dispersa contagio)"
+    },
+    {
+      "type": "prayer_processions",
+      "name": "Procesiones Religiosas",
+      "effectiveness": -0.10,
+      "cost": "none",
+      "description": "Aglomeraciones que empeoran la situación"
+    }
+  ],
+  "learning_objectives": [
+    "Entender limitaciones de respuestas pre-científicas",
+    "Apreciar el valor del conocimiento médico moderno",
+    "Comprender el origen histórico de la cuarentena",
+    "Analizar decisiones difíciles con información limitada",
+    "Reflexionar sobre el impacto social de pandemias históricas"
+  ],
+  "historical_facts": [
+    "La palabra 'cuarentena' viene de 40 días de aislamiento",
+    "Se mató gatos pensando que causaban la peste (empeorando ratas)",
+    "La nobleza huyó a castillos rurales (salvando muchos nobles)",
+    "Médicos usaban máscaras con pico llenas de hierbas",
+    "La peste contribuyó a la caída del feudalismo"
+  ],
+  "scoring": {
+    "lives_saved_weight": 0.50,
+    "economic_preservation_weight": 0.20,
+    "social_stability_weight": 0.15,
+    "knowledge_transmission_weight": 0.15
+  },
+  "special_mechanics": {
+    "vector_control": false,
+    "antibiotics": false,
+    "vaccines": false,
+    "medical_understanding": false,
+    "only_quarantine_and_isolation": true
+  },
+  "hints": [
+    "La cuarentena de 40 días fue la medida más efectiva histórica",
+    "Cerrar puertos ralentiza entrada de peste a nuevas regiones",
+    "Evita las procesiones religiosas (aumentan contagios)",
+    "Aislar enfermos reduce R0 significativamente",
+    "No tenías control sobre ratas: enfócate en humanos"
+  ]
+}
