@@ -29,6 +29,33 @@ interface Answer {
   timestamp: string;
 }
 
+interface CountryData {
+  name: string;
+  capital: string;
+  continent: string;
+  population: number;
+  area_km2: number;
+  coordinates: { lat: number; lng: number };
+  capital_coordinates: { lat: number; lng: number };
+  languages: string[];
+  currency: string;
+  flag_emoji: string;
+  fun_facts: string[];
+  major_cities?: Array<{
+    name: string;
+    coordinates: { lat: number; lng: number };
+  }>;
+}
+
+interface LeaderboardEntry {
+  rank: number;
+  user_id: string;
+  username: string;
+  score: number;
+  level: string;
+  completed_at: string;
+}
+
 /**
  * useGeoQuiz Hook
  * 
@@ -189,7 +216,7 @@ export function useGeoQuiz(level: string) {
  * @param countryCode - Country code to fetch
  */
 export function useCountryData(countryCode: string | null) {
-  const [country, setCountry] = useState<any>(null);
+  const [country, setCountry] = useState<CountryData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -234,7 +261,7 @@ export function useCountryData(countryCode: string | null) {
  * @param level - Leaderboard level
  */
 export function useLeaderboard(level: string = 'global') {
-  const [leaderboard, setLeaderboard] = useState<any[]>([]);
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

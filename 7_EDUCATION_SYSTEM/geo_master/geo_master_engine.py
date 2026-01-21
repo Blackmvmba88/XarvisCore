@@ -299,6 +299,9 @@ class GeoMasterEngine:
             "description": "Has completado un desafío"
         }
         
+        passing_score = 80
+        earned = False
+        
         if challenge_file.exists():
             with open(challenge_file, 'r', encoding='utf-8') as f:
                 challenge_config = json.load(f)
@@ -306,6 +309,7 @@ class GeoMasterEngine:
                 
                 if score >= passing_score:
                     badge_info = challenge_config.get("badge", badge_info)
+                    earned = True
         
         return {
             "user_id": user_id,
@@ -313,7 +317,7 @@ class GeoMasterEngine:
             "score": score,
             "badge": badge_info,
             "awarded_at": datetime.now().isoformat(),
-            "earned": score >= challenge_config.get("passing_score", 80) if challenge_file.exists() else False
+            "earned": earned
         }
     
     def get_country_info(self, country_name: str) -> Optional[Dict[str, Any]]:
