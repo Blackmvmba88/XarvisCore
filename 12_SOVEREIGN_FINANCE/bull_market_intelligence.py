@@ -40,17 +40,112 @@ try:
 except ImportError:
     PANDAS_AVAILABLE = False
     logger.warning("pandas/numpy no instalado. Ejecutar: pip install pandas numpy")
-    # Crear mocks básicos
+# Mocks robustos para cuando no hay pandas/numpy (Soberanía Tecnológica)
+if not PANDAS_AVAILABLE:
+    class SeriesMock(list):
+        def pct_change(self):
+            changes = [0]
+            for i in range(1, len(self)):
+                changes.append((self[i] - self[i-1]) / self[i-1] if self[i-1] != 0 else 0)
+            return SeriesMock(changes)
+        
+        def dropna(self):
+            return SeriesMock([x for x in self if x is not None])
+        
+        def std(self):
+            if len(self) < 2: return 0
+            mu = sum(self) / len(self)
+            return (sum((x - mu)**2 for x in self) / (len(self) - 1))**0.5
+        
+        def mean(self):
+            return sum(self) / len(self) if self else 0
+        
+        def tail(self, n):
+            return SeriesMock(self[-n:])
+        
+        def rolling(self, window):
+            class RollingMock:
+                def __init__(self, data, w):
+                    self.data = data
+                    self.w = w
+                def mean(self):
+                    res = []
+                    for i in range(len(self.data)):
+                        if i < self.w - 1: res.append(None)
+                        else:
+                            window_sum = sum(self.data[i-self.w+1 : i+1])
+                            res.append(window_sum / self.w)
+                    return SeriesMock(res)
+                def std(self):
+                    res = []
+                    for i in range(len(self.data)):
+                        if i < self.w - 1: res.append(None)
+                        else:
+                            window_data = self.data[i-self.w+1 : i+1]
+                            mu = sum(window_data) / self.w
+                            res.append((sum((x - mu)**2 for x in window_data) / (self.w - 1))**0.5)
+                    return SeriesMock(res)
+            return RollingMock(self, window)
+
+        def diff(self):
+            diffs = [0]
+            for i in range(1, len(self)):
+                diffs.append(self[i] - self[i-1])
+            return SeriesMock(diffs)
+
+        def where(self, cond, other):
+            return SeriesMock([self[i] if cond[i] else other for i in range(len(self))])
+
+        def __gt__(self, other):
+            return SeriesMock([x > other if x is not None else False for x in self])
+        
+        def __lt__(self, other):
+            return SeriesMock([x < other if x is not None else False for x in self])
+
+        def __ge__(self, other):
+            return SeriesMock([x >= other if x is not None else False for x in self])
+
+        def __le__(self, other):
+            return SeriesMock([x <= other if x is not None else False for x in self])
+
+        def __and__(self, other):
+            return SeriesMock([self[i] and other[i] for i in range(len(self))])
+
+        def __or__(self, other):
+            return SeriesMock([self[i] or other[i] for i in range(len(self))])
+            
+        def __getitem__(self, key):
+            if isinstance(key, (list, SeriesMock)) and len(key) == len(self):
+                # Filtrado por máscara booleana
+                return SeriesMock([self[i] for i in range(len(self)) if key[i]])
+            return super().__getitem__(key)
+
+        def corr(self, other):
+            if len(self) != len(other) or len(self) < 2: return 0
+            # Asegurar que ambos son listas de números
+            s1 = [x for x in self if x is not None]
+            s2 = [x for x in other if x is not None]
+            if not s1 or not s2: return 0
+            mu1, mu2 = sum(s1)/len(s1), sum(s2)/len(s2)
+            num = sum((self[i]-mu1)*(other[i]-mu2) for i in range(len(self)) if self[i] is not None and other[i] is not None)
+            den = (sum((x-mu1)**2 for x in s1) * sum((y-mu2)**2 for y in s2))**0.5
+            return num / den if den != 0 else 0
+
     class pd:
         @staticmethod
         def Series(data):
-            return data
+            return SeriesMock(data)
+        @staticmethod
+        def isna(x):
+            return x is None
+
     class np:
         @staticmethod
         def sqrt(x):
             return x ** 0.5
         @staticmethod
         def mean(arr):
+            arr = [x for x in arr if x is not None]
             return sum(arr) / len(arr) if arr else 0
 
 # Intentar importar librerías financieras
@@ -113,24 +208,24 @@ class NashEquilibriumAnalyzer:
         # Estados del mercado: ALCISTA, LATERAL, BAJISTA
         market_probs = self.estimate_market_state_probabilities(asset_data)
         
-        # Estrategias del inversor y sus payoffs esperados
+        # Estrategias del inversor y sus payoffs esperados (Optimizado para Micromovimientos)
         strategies = {
             'COMPRAR': {
-                'payoff_alcista': 0.15,    # 15% ganancia esperada
-                'payoff_lateral': 0.02,     # 2% ganancia
-                'payoff_bajista': -0.10,    # -10% pérdida
+                'payoff_alcista': 0.15,    # 15% ganancia
+                'payoff_lateral': -0.02,    # Penalización por estancamiento (costo de oportunidad)
+                'payoff_bajista': -0.15,    # Pérdida real
                 'expected_return': None
             },
             'MANTENER': {
-                'payoff_alcista': 0.08,     # 8% ganancia
-                'payoff_lateral': 0.01,     # 1% ganancia
-                'payoff_bajista': -0.05,    # -5% pérdida
+                'payoff_alcista': 0.05,     # Ganancia pasiva menor
+                'payoff_lateral': 0.01,     # Ganancia mínima
+                'payoff_bajista': -0.03,    # Pérdida protegida
                 'expected_return': None
             },
             'VENDER': {
-                'payoff_alcista': 0.00,     # 0% (costo de oportunidad)
-                'payoff_lateral': 0.00,     # 0%
-                'payoff_bajista': 0.00,     # 0% (evita pérdida)
+                'payoff_alcista': -0.05,    # Costo de oportunidad alto
+                'payoff_lateral': 0.00,     # Neutral
+                'payoff_bajista': 0.05,     # "Ganancia" por evitar caída
                 'expected_return': None
             }
         }
@@ -170,14 +265,14 @@ class NashEquilibriumAnalyzer:
         closes = pd.Series([d['Close'] for d in asset_data])
         returns = closes.pct_change().dropna()
         
-        # Clasificar días recientes
+        # Clasificar días recientes con umbrales más sensibles (0.5%)
         recent_returns = returns.tail(20)
         
-        bullish_days = len(recent_returns[recent_returns > 0.01])
-        neutral_days = len(recent_returns[(recent_returns >= -0.01) & (recent_returns <= 0.01)])
-        bearish_days = len(recent_returns[recent_returns < -0.01])
+        bullish_days = len(recent_returns[recent_returns > 0.005])
+        neutral_days = len(recent_returns[(recent_returns >= -0.005) & (recent_returns <= 0.005)])
+        bearish_days = len(recent_returns[recent_returns < -0.005])
         
-        total = bullish_days + neutral_days + bearish_days
+        total = max(bullish_days + neutral_days + bearish_days, 1)
         
         return {
             'alcista': round(bullish_days / total, 2),
@@ -274,6 +369,32 @@ class BullMarketIntelligence:
         
         # Nash Equilibrium Engine
         self.nash_analyzer = NashEquilibriumAnalyzer()
+    
+    def deposit_capital(self, amount):
+        """Depositar capital virtual en el sistema"""
+        self.capital_mxn += amount
+        self.history.append({
+            'timestamp': datetime.now().isoformat(),
+            'action': 'DEPOSIT',
+            'amount': amount,
+            'new_balance': self.capital_mxn
+        })
+        self.save_history() # Verificamos si existe un método para esto abajo
+        return self.capital_mxn
+
+    def withdraw_capital(self, amount):
+        """Retirar capital virtual del sistema"""
+        if amount > self.capital_mxn:
+            return None
+        self.capital_mxn -= amount
+        self.history.append({
+            'timestamp': datetime.now().isoformat(),
+            'action': 'WITHDRAW',
+            'amount': amount,
+            'new_balance': self.capital_mxn
+        })
+        self.save_history()
+        return self.capital_mxn
     
     def load_portfolio(self):
         """Cargar portafolio guardado"""
@@ -632,7 +753,11 @@ def analyze_symbol(symbol):
         return signals[0] if signals else "ESPERAR - Sin señales claras"
     
     def add_to_portfolio(self, symbol, shares, purchase_price):
-        """Agregar activo al portafolio"""
+        """Ejecutar una COMPRA de activo"""
+        total_cost = shares * purchase_price
+        if total_cost > self.capital_mxn:
+            return {'success': False, 'message': 'Saldo insuficiente para esta operación'}
+
         if symbol not in self.portfolio:
             self.portfolio[symbol] = {
                 'shares': 0,
@@ -642,13 +767,16 @@ def analyze_symbol(symbol):
         
         current = self.portfolio[symbol]
         total_shares = current['shares'] + shares
-        total_invested = current['total_invested'] + (shares * purchase_price)
+        total_invested = current['total_invested'] + total_cost
         
         self.portfolio[symbol] = {
             'shares': total_shares,
             'avg_price': total_invested / total_shares,
             'total_invested': total_invested
         }
+        
+        # Descontar del capital
+        self.capital_mxn -= total_cost
         
         # Registrar en historial
         self.history.append({
@@ -657,13 +785,51 @@ def analyze_symbol(symbol):
             'symbol': symbol,
             'shares': shares,
             'price': purchase_price,
-            'total': shares * purchase_price
+            'total': total_cost,
+            'remaining_balance': self.capital_mxn
         })
         
         self.save_portfolio()
         self.save_history()
         
-        return {'success': True, 'portfolio': self.portfolio[symbol]}
+        return {'success': True, 'portfolio': self.portfolio[symbol], 'balance': self.capital_mxn}
+
+    def sell_from_portfolio(self, symbol, shares, sell_price):
+        """Ejecutar una VENTA de activo"""
+        if symbol not in self.portfolio or self.portfolio[symbol]['shares'] < shares:
+            return {'success': False, 'message': 'No tienes suficientes acciones para vender'}
+
+        current = self.portfolio[symbol]
+        total_revenue = shares * sell_price
+        
+        # Actualizar portafolio
+        current['shares'] -= shares
+        # El precio promedio no cambia al vender, pero el total invertido se ajusta proporcionalmente
+        current['total_invested'] = current['shares'] * current['avg_price']
+        
+        if current['shares'] == 0:
+            del self.portfolio[symbol]
+        else:
+            self.portfolio[symbol] = current
+
+        # Aumentar capital
+        self.capital_mxn += total_revenue
+
+        # Registrar en historial
+        self.history.append({
+            'timestamp': datetime.now().isoformat(),
+            'action': 'SELL',
+            'symbol': symbol,
+            'shares': shares,
+            'price': sell_price,
+            'total': total_revenue,
+            'remaining_balance': self.capital_mxn
+        })
+
+        self.save_portfolio()
+        self.save_history()
+
+        return {'success': True, 'balance': self.capital_mxn}
     
     def get_portfolio_value(self):
         """Calcular valor actual del portafolio"""
@@ -758,15 +924,41 @@ def get_portfolio():
 
 @app.route('/api/portfolio/add', methods=['POST'])
 def add_to_portfolio():
-    """Agregar activo al portafolio"""
+    """Agregar activo al portafolio (COMPRA)"""
     data = request.json
     symbol = data.get('symbol')
     shares = float(data.get('shares', 0))
     price = float(data.get('price', 0))
     
     result = bull_market.add_to_portfolio(symbol, shares, price)
-    
     return jsonify(result)
+
+@app.route('/api/portfolio/sell', methods=['POST'])
+def sell_from_portfolio():
+    """Vender activo del portafolio (VENTA)"""
+    data = request.json
+    symbol = data.get('symbol')
+    shares = float(data.get('shares', 0))
+    price = float(data.get('price', 0))
+    
+    result = bull_market.sell_from_portfolio(symbol, shares, price)
+    return jsonify(result)
+
+@app.route('/api/balance/deposit', methods=['POST'])
+def deposit_balance():
+    """Depositar capital virtual"""
+    amount = float(request.json.get('amount', 0))
+    new_balance = bull_market.deposit_capital(amount)
+    return jsonify({'success': True, 'balance': new_balance})
+
+@app.route('/api/balance/withdraw', methods=['POST'])
+def withdraw_balance():
+    """Retirar capital virtual"""
+    amount = float(request.json.get('amount', 0))
+    new_balance = bull_market.withdraw_capital(amount)
+    if new_balance is not None:
+        return jsonify({'success': True, 'balance': new_balance})
+    return jsonify({'success': False, 'message': 'Saldo insuficiente'}), 400
 
 @app.route('/api/market/summary', methods=['GET'])
 def market_summary():
@@ -818,752 +1010,556 @@ HTML_TEMPLATE = '''
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🐂 Bull Market Intelligence</title>
+    <title>🐂 Xarvis Finance | Bull Market Intelligence</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --bull-green: #00ff88;
             --bear-red: #ff3366;
             --gold: #ffd700;
-            --bg: #0a0a14;
-            --glass: rgba(15, 15, 30, 0.85);
-            --border: rgba(0, 255, 136, 0.3);
-            --text: #e0e0e0;
+            --bg: #05050a;
+            --glass: rgba(15, 15, 30, 0.75);
+            --glass-bright: rgba(30, 30, 50, 0.9);
+            --border: rgba(0, 255, 136, 0.2);
+            --text: #ffffff;
+            --text-dim: #b0b0b0;
+            --font-main: 'Outfit', 'Inter', -apple-system, sans-serif;
+            --accent-gradient: linear-gradient(135deg, #00ff88 0%, #00bcff 100%);
         }
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+            font-family: var(--font-main);
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
+            overflow-x: hidden;
             background-image: 
-                linear-gradient(rgba(0, 255, 136, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 136, 0.02) 1px, transparent 1px);
-            background-size: 50px 50px;
+                radial-gradient(circle at 20% 20%, rgba(0, 255, 136, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(0, 188, 255, 0.05) 0%, transparent 40%);
         }
-        
-        .header {
+
+        /* --- UI COMPONENTS --- */
+        .glass-panel {
             background: var(--glass);
             backdrop-filter: blur(20px);
-            border-bottom: 3px solid var(--bull-green);
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
-        }
-        
-        .header h1 {
-            color: var(--bull-green);
-            text-shadow: 0 0 30px var(--bull-green);
-            font-size: 3rem;
-            margin-bottom: 10px;
-            animation: pulse 3s ease-in-out infinite;
-        }
-        
-        .header .tagline {
-            color: var(--gold);
-            font-size: 1.2rem;
-            text-shadow: 0 0 10px var(--gold);
-        }
-        
-        .container {
-            max-width: 1800px;
-            margin: 0 auto;
-            padding: 30px;
-        }
-        
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .stat-card {
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border: 2px solid var(--border);
-            border-radius: 15px;
-            padding: 25px;
-            text-align: center;
-            transition: all 0.3s;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.3);
-            border-color: var(--bull-green);
-        }
-        
-        .stat-card .value {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin: 10px 0;
-        }
-        
-        .stat-card .value.positive {
-            color: var(--bull-green);
-            text-shadow: 0 0 20px var(--bull-green);
-        }
-        
-        .stat-card .value.negative {
-            color: var(--bear-red);
-            text-shadow: 0 0 20px var(--bear-red);
-        }
-        
-        .stat-card .label {
-            color: var(--text);
-            opacity: 0.7;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-        }
-        
-        .watchlist-container {
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border: 2px solid var(--border);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-        }
-        
-        .watchlist-container h2 {
-            color: var(--bull-green);
-            text-shadow: 0 0 15px var(--bull-green);
-            margin-bottom: 25px;
-            font-size: 1.8rem;
-        }
-        
-        .watchlist-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
-        }
-        
-        .stock-card {
-            background: rgba(0, 0, 0, 0.4);
             border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 15px;
-            transition: all 0.3s;
-            cursor: pointer;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
         }
-        
-        .stock-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 25px rgba(0, 255, 136, 0.4);
-        }
-        
-        .stock-card .symbol {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--gold);
-            margin-bottom: 5px;
-        }
-        
-        .stock-card .patterns {
-            margin-top: 10px;
-            font-size: 0.75rem;
-        }
-        
-        .stock-card .pattern-tag {
-            display: inline-block;
-            padding: 3px 8px;
-            margin: 2px;
-            border-radius: 4px;
-            font-weight: bold;
-            background: rgba(0, 255, 136, 0.2);
-            border: 1px solid var(--bull-green);
-        }
-        
-        .stock-card .prediction {
-            margin-top: 8px;
-            padding: 8px;
-            border-radius: 5px;
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid var(--gold);
-            font-size: 0.8rem;
-        }
-        
-        .stock-card .prediction .direction {
-            font-weight: bold;
-            font-size: 1rem;
-        }
-        
-        .stock-card .prediction.bullish {
-            background: rgba(0, 255, 136, 0.15);
-            border-color: var(--bull-green);
-            color: var(--bull-green);
-        }
-        
-        .stock-card .prediction.bearish {
-            background: rgba(255, 51, 102, 0.15);
-            border-color: var(--bear-red);
-            color: var(--bear-red);
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 50px;
-            color: var(--bull-green);
-            font-size: 1.5rem;
-            animation: pulse 2s infinite;
-        }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 1000;
-            overflow-y: auto;
-        }
-        
-        .modal.active {
-            display: flex;
-          
-    
-    <!-- Modal de Análisis Profundo -->
-    <div class="modal" id="analysisModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalTitle">📊 ANÁLISIS PROFUNDO</h2>
-                <button class="close-btn" onclick="closeModal()">✕ CERRAR</button>
-            </div>
-            
-            <div class="analysis-section">
-                <h3>🎯 PREDICCIÓN</h3>
-                <div id="predictionContent"></div>
-            </div>
-            
-            <div class="analysis-section">
-                <h3>📈 PATRONES DETECTADOS</h3>
-                <div class="pattern-list" id="patternsList"></div>
-            </div>
-            
-            <div class="analysis-section">
-                <h3>🎮 EQUILIBRIO DE NASH - TEORÍA DE JUEGOS</h3>
-                <div id="nashContent"></div>
-            </div>
-            
-            <div class="analysis-section">
-                <h3>📊 RENDIMIENTO HISTÓRICO</h3>
-                <div id="performanceContent"></div>
-            </div>
-            
-            <div class="analysis-section">
-                <h3>📉 GRÁFICO HISTÓRICO (1 AÑO)</h3>
-                <div class="chart-container">
-                    <canvas id="historicalChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>  align-items: center;
-            justify-content: center;
-        }
-        
-        .modal-content {
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border: 2px solid var(--bull-green);
-            border-radius: 15px;
-            padding: 30px;
-            max-width: 1200px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        
-        .modal-header {
+
+        /* --- HEADER & NAVIGATION --- */
+        header {
+            padding: 20px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(0, 0, 0, 0.4);
         }
-        
-        .modal-header h2 {
-            color: var(--bull-green);
-            text-shadow: 0 0 15px var(--bull-green);
+
+        .logo-area h1 {
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
         }
-        
-        .close-btn {
-            background: var(--bear-red);
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        
-        .close-btn:hover {
-            background: #ff0033;
-        }
-        
-        .analysis
-                
-                // Generar HTML de Nash
-                let nashHTML = '';
-                if (stock.nash_analysis && stock.nash_analysis.equilibrium_strategy) {
-                    nashHTML = `
-                        <div style="margin-top: 8px; padding: 6px; background: rgba(255, 215, 0, 0.1); border: 1px solid var(--gold); border-radius: 5px; font-size: 0.75rem;">
-                            <strong>🎮 Nash:</strong> ${stock.nash_analysis.equilibrium_strategy}
-                        </div>
-                    `;
-                }-section {
-            margin: 20px 0;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-        }
-        // Generar HTML de patrones
-                let patternsHTML = '';
-                if (stock.patterns && stock.patterns.length > 0) {
-                    patternsHTML = '<div class="patterns">';
-                    stock.patterns.slice(0, 2).forEach(pattern => {
-                        patternsHTML += `<span class="pattern-tag">${pattern.name}</span>`;
-                    });
-                    patternsHTML += '</div>';
-                }
-                
-                // Generar HTML de predicción
-                let predictionHTML = '';
-                if (stock.prediction) {
-                    const predClass = stock.prediction.direction === 'ALCISTA' ? 'bullish' : 
-                                     stock.prediction.direction === 'BAJISTA' ? 'bearish' : '';
-                    predictionHTML = `
-                        <div class="prediction ${predClass}">
-                            <div class="direction">${stock.prediction.direction}</div>
-                            <div>Confianza: ${stock.prediction.confidence}%</div>
-                            <div>Objetivo: $${stock.prediction.target_price}</div>
-                        </div>
-                    `;
-                }
-                
-                card.innerHTML = `
-                    <div class="symbol">${stock.symbol}</div>
-                    <div class="price ${changeClass}">$${stock.current_price}</div>
-                    <div class="change ${changeClass}">
-                        ${stock.change >= 0 ? '+' : ''}${stock.change_percent.toFixed(2)}%
-                    </div>
-                    <div class="recommendation ${recommendationClass}">
-                        ${stock.recommendation}
-                    </div>
-                    ${patternsHTML}
-                    ${predictionHTML}columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
-        }
-        
-        .pattern-item {
-            padding: 15px;
+
+        .balance-pill {
             background: rgba(0, 255, 136, 0.1);
             border: 1px solid var(--bull-green);
-            border-radius: 8px;
-        }
-        
-        .pattern-item.bearish {
-            background: rgba(255, 51, 102, 0.1);
-            border-color: var(--bear-red);
-        }
-        
-        .chart-container {
-            position: relative;
-            height: 400px;
-            margin: 20px 0;
-        .stock-card .change {
-            font-size: 1rem;
-            font-weight: bold;
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
-        
-        .stock-card .change.positive {
-            background: rgba(0, 255, 136, 0.2);
-            color: var(--bull-green);
-        }
-        
-        .stock-card .change.negative {
-            background: rgba(255, 51, 102, 0.2);
-            color: var(--bear-red);
-        }
-        
-        .stock-card .recommendation {
-            margin-top: 10px;
-            padding: 8px;
-            border-radius: 5px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        
-        .recommendation.buy {
-            background: rgba(0, 255, 136, 0.2);
-            color: var(--bull-green);
-            border: 1px solid var(--bull-green);
-        }
-        
-        .recommendation.sell {
-            background: rgba(255, 51, 102, 0.2);
-            color: var(--bear-red);
-            border: 1px solid var(--bear-red);
-        }
-        
-        .recommendation.hold {
-            background: rgba(255, 215, 0, 0.2);
-            color: var(--gold);
-            border: 1px solid var(--gold);
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 50px;
-            color: var(--bull-green);
-            font-size: 1.5rem;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
-        }
-        
-        .btn {
-            background: linear-gradient(135deg, var(--bull-green), var(--gold));
-            border: none;
-            color: var(--bg);
-            padding: 12px 30px;
-            border-radius: 8px;
-            font-weight: bold;
+            padding: 8px 20px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
             cursor: pointer;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            font-size: 1rem;
+            transition: 0.3s;
         }
-        
-        .btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 5px 30px rgba(0, 255, 136, 0.6);
+
+        .balance-pill:hover { background: rgba(0, 255, 136, 0.2); scale: 1.05; }
+
+        /* --- LAYOUT --- */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 350px 1fr 350px;
+            gap: 20px;
+            padding: 20px;
+            height: calc(100vh - 80px);
+        }
+
+        /* --- LISTS --- */
+        .scrollable { overflow-y: auto; height: 100%; padding-right: 5px; }
+        .scrollable::-webkit-scrollbar { width: 5px; }
+        .scrollable::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+        .instrument-item {
+            padding: 15px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .instrument-item:hover {
+            background: rgba(0, 255, 136, 0.05);
+            border-color: var(--border);
+        }
+
+        .status-up { color: var(--bull-green); }
+        .status-down { color: var(--bear-red); }
+
+        /* --- TRADING TERMINAL --- */
+        .terminal-viewport {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .chart-box { height: 60%; position: relative; }
+
+        .trade-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: auto;
+        }
+
+        .btn-trade {
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn-buy { background: var(--bull-green); color: #000; box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); }
+        .btn-sell { background: var(--bear-red); color: #fff; box-shadow: 0 0 20px rgba(255, 51, 102, 0.3); }
+
+        /* --- MODALS --- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            place-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            width: 500px;
+            background: var(--glass-bright);
+            border: 1px solid var(--bull-green);
+            padding: 40px;
+            border-radius: 30px;
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            padding: 15px;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1.2rem;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .nash-tip {
+            background: rgba(255, 215, 0, 0.1);
+            color: var(--gold);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            border: 1px dashed var(--gold);
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-btn.active {
+            color: var(--bull-green);
+            border-bottom-color: var(--bull-green);
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>🐂 BULL MARKET INTELLIGENCE</h1>
-        <div class="tagline">Sistema de Inversión Inteligente • Creando Activos Reales</div>
-    </div>
-    
-    <div class="container">
-        <div class="dashboard-grid" id="dashboardGrid">
-            <div class="stat-card">
-                <div class="label">Capital Total</div>
-                <div class="value positive" id="totalCapital">$0</div>
-            </div>
-            <div class="stat-card">
-                <div class="label">Valor Portafolio</div>
-                <div class="value" id="portfolioValue">$0</div>
-            </div>
-            <div class="stat-card">
-                <div class="label">Ganancia/Pérdida</div>
-                <div class="value" id="gainLoss">$0</div>
-            </div>
-            <div class="stat-card">
-                <div class="label">% Retorno</div>
-                <div class="value" id="returnPercent">0%</div>
-            </div>
+    <header>
+        <div class="logo-area">
+            <h1>🐂 XARVIS <span style="font-weight: 200;">FINANCE</span></h1>
         </div>
         
-        <div class="watchlist-container">
-            <h2>📊 MERCADO EN TIEMPO REAL</h2>
-            <div class="loading" id="loading">⚡ CARGANDO DATOS DEL MERCADO...</div>
-            <div class="watchlist-grid" id="watchlistGrid" style="display:none;"></div>
+        <div style="display: flex; gap: 20px;">
+            <div class="balance-pill" onclick="openBalanceModal()">
+                <div style="font-size: 0.8rem; color: var(--text-dim);">EFECTIVO DISPONIBLE</div>
+                <div id="topBalance" style="font-weight: 800; font-size: 1.1rem;">$0.00</div>
+                <div style="background: var(--bull-green); color: #000; padding: 2px 8px; border-radius: 4px; font-weight: 800;">+</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-grid">
+        <!-- Explorador de Mercado -->
+        <aside class="glass-panel viewport">
+            <h3 style="margin-bottom: 20px; opacity: 0.6; font-size: 0.8rem; letter-spacing: 1px;">MERCADO EN VIVO</h3>
+            <div class="scrollable" id="watchlistArea">
+                <div style="text-align: center; opacity: 0.5; margin-top: 50px;">Sincronizando con Wall Street...</div>
+            </div>
+        </aside>
+
+        <!-- Terminal Principal -->
+        <main class="terminal-viewport">
+            <div class="glass-panel chart-box">
+                <div id="chartHeader" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                    <h2 id="currentSymbol">SELECCIONA ACTIVO</h2>
+                    <div id="currentPrice" style="font-size: 1.5rem; font-weight: 800;">$0.00</div>
+                </div>
+                <div style="height: calc(100% - 60px);">
+                    <canvas id="mainChart"></canvas>
+                </div>
+            </div>
+
+            <div class="glass-panel" style="flex: 1; display: flex; flex-direction: column;">
+                <div style="margin-bottom: 15px; border-bottom: 1px solid var(--border); display: flex; gap: 20px;">
+                    <button class="tab-btn active">ANÁLISIS DE NASH</button>
+                    <button class="tab-btn">INDICADORES</button>
+                    <button class="tab-btn">NOTICIAS</button>
+                </div>
+                
+                <div id="nashAdvisor" style="flex: 1;">
+                    <div style="text-align: center; margin-top: 30px; opacity: 0.3;">Selecciona un activo para recibir asesoría soberana</div>
+                </div>
+
+                <div class="trade-controls">
+                    <button class="btn-trade btn-buy" onclick="openTradeModal('BUY')">EJECUTAR COMPRA</button>
+                    <button class="btn-trade btn-sell" onclick="openTradeModal('SELL')">EJECUTAR VENTA</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Portafolio y Actividad -->
+        <aside class="glass-panel viewport">
+            <h3 style="margin-bottom: 20px; opacity: 0.6; font-size: 0.8rem; letter-spacing: 1px;">MI PORTAFOLIO</h3>
+            <div id="portfolioSummary" style="margin-bottom: 20px; padding: 15px; border-radius: 12px; background: rgba(0,0,0,0.3);">
+                <div style="font-size: 0.8rem; opacity: 0.6;">VALOR TOTAL</div>
+                <div id="portfolioTotalValue" style="font-size: 1.8rem; font-weight: 800;">$0.00</div>
+                <div id="portfolioPNL" style="font-size: 0.9rem; font-weight: 600;">$0.00 (0.00%)</div>
+            </div>
+            <div class="scrollable" id="portfolioList">
+                <!-- Se llena dinámicamente -->
+            </div>
+        </aside>
+    </div>
+
+    <!-- MODALES -->
+    <div class="modal-overlay" id="tradeModal">
+        <div class="modal-content">
+            <h2 id="tradeActionTitle">COMPRAR TSLA</h2>
+            <div id="tradeNashAdvice" class="nash-tip">Cargando Inteligencia Competitiva...</div>
+            <div style="font-size: 0.9rem; opacity: 0.6;">CANTIDAD DE ACCIONES</div>
+            <input type="number" id="tradeQuantity" value="1" min="1" oninput="updateTradeTotal()">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 30px;">
+                <span>TOTAL A PAGAR:</span>
+                <span id="tradeTotalVal" style="font-weight: 800; color: var(--bull-green);">$0.00</span>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn-trade" style="background: #333; color: #fff; flex: 1;" onclick="closeTradeModal()">CANCELAR</button>
+                <button id="confirmTradeBtn" class="btn-trade" style="flex: 2; background: var(--accent-gradient); color: #000;">CONFIRMAR ORDEN</button>
+            </div>
         </div>
     </div>
-    
+
+    <div class="modal-overlay" id="balanceModal">
+        <div class="modal-content" style="border-color: var(--gold);">
+            <h2 style="color: var(--gold);">GESTIÓN DE CAPITAL SOBERANO</h2>
+            <p style="margin: 15px 0; opacity: 0.7;">Agrega fondos virtuales para experimentar operaciones en tiempo real.</p>
+            <div style="font-size: 0.9rem; opacity: 0.6;">MONTO A DEPOSITAR (MXN)</div>
+            <input type="number" id="depositAmount" value="10000" step="1000">
+            <button class="btn-trade" style="width: 100%; background: var(--gold); color: #000;" onclick="executeDeposit()">RECARGAR SALDO VIRTUAL</button>
+            <button style="background: none; border: none; color: #666; margin-top: 20px; cursor: pointer;" onclick="closeBalanceModal()">VOLVER</button>
+        </div>
+    </div>
+
     <script>
-        async function loadMarketData() {
+        let currentSymbol = null;
+        let currentPrice = 0;
+        let currentChart = null;
+        let marketData = {};
+        let portfolio = {};
+        let userBalance = 0;
+
+        // Initialize
+        window.onload = async () => {
+            await refreshData();
+            setInterval(refreshData, 30000); // 30s auto-refresh
+        };
+
+        async function refreshData() {
+            await loadMarket();
+            await loadPortfolio();
+        }
+
+        async function loadMarket() {
             try {
-                const response = await fetch('/api/watchlist');
-                const data = await response.json();
-                
+                const res = await fetch('/api/watchlist');
+                const data = await res.json();
                 if (data.success) {
                     renderWatchlist(data.watchlist);
                 }
-                
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('watchlistGrid').style.display = 'grid';
-            } catch (error) {
-                console.error('Error cargando datos:', error);
-        let currentChart = null;
-        
-        async function showDetails(symbol) {
+            } catch (e) { console.error(e); }
+        }
+
+        function renderWatchlist(stocks) {
+            const area = document.getElementById('watchlistArea');
+            area.innerHTML = '';
+            stocks.forEach(s => {
+                marketData[s.symbol] = s;
+                const div = document.createElement('div');
+                div.className = 'instrument-item';
+                div.onclick = () => selectSymbol(s.symbol);
+                const color = s.change >= 0 ? 'var(--bull-green)' : 'var(--bear-red)';
+                div.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                        <span style="font-weight:800;">${s.symbol}</span>
+                        <span style="font-weight:800;">$${s.current_price.toLocaleString()}</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.8rem; opacity:0.7;">
+                        <span>Vol: ${(s.volume/1000000).toFixed(1)}M</span>
+                        <span style="color:${color}">${s.change_percent.toFixed(2)}%</span>
+                    </div>
+                `;
+                area.appendChild(div);
+            });
+            if (!currentSymbol && stocks.length > 0) selectSymbol(stocks[0].symbol);
+        }
+
+        async function selectSymbol(symbol) {
+            currentSymbol = symbol;
+            const stock = marketData[symbol];
+            currentPrice = stock.current_price;
+            
+            document.getElementById('currentSymbol').innerText = symbol;
+            document.getElementById('currentPrice').innerText = `$${currentPrice.toLocaleString()}`;
+            document.getElementById('currentPrice').className = stock.change >= 0 ? 'status-up' : 'status-down';
+
+            // Load analysis
             try {
-                const response = await fetch(`/api/analyze/${symbol}`);
-                const data = await response.json();
-                
-                if (!data.success) {
-                    alert('No se pudo cargar el análisis');
-                    return;
-                }
-                
-                document.getElementById('modalTitle').textContent = `📊 ANÁLISIS PROFUNDO: ${symbol}`;
-                
-                // Renderizar predicción
-                const pred = data.prediction;
-                const predClass = pred.direction === 'ALCISTA' ? 'bullish' : 
-                                 pred.direction === 'BAJISTA' ? 'bearish' : '';
-                document.getElementById('predictionContent').innerHTML = `
-                    <div class="prediction ${predClass}" style="font-size: 1.2rem;">
-                        <div class="direction" style="font-size: 2rem; margin-bottom: 10px;">
-                            ${pred.direction === 'ALCISTA' ? '📈' : pred.direction === 'BAJISTA' ? '📉' : '➡️'} 
-                            ${pred.direction}
+                const res = await fetch(`/api/analyze/${symbol}`);
+                const data = await res.json();
+                renderAnalysis(data);
+                renderMainChart(data.historical_data, symbol);
+            } catch (e) { console.log(e); }
+        }
+
+        function renderAnalysis(data) {
+            const nash = data.nash_analysis;
+            const advisor = document.getElementById('nashAdvisor');
+            if (nash) {
+                const strategyColor = nash.equilibrium_strategy === 'COMPRAR' ? 'var(--bull-green)' : 
+                                     nash.equilibrium_strategy === 'VENDER' ? 'var(--bear-red)' : 'var(--gold)';
+                advisor.innerHTML = `
+                    <div style="padding: 20px;">
+                        <div style="font-size: 3rem; font-weight: 900; color: ${strategyColor}; margin-bottom: 15px;">
+                            ${nash.equilibrium_strategy}
                         </div>
-                  
-                
-                // Renderizar análisis de Nash
-                const nash = data.nash_analysis;
-                if (nash) {
-                    const nashClass = nash.equilibrium_strategy === 'COMPRAR' ? 'bullish' : 
-                                     nash.equilibrium_strategy === 'VENDER' ? 'bearish' : '';
-                    document.getElementById('nashContent').innerHTML = `
-                        <div class="prediction ${nashClass}" style="font-size: 1.1rem;">
-                            <div style="font-size: 1.8rem; margin-bottom: 15px;">
-                                🎮 Estrategia de Equilibrio: <strong>${nash.equilibrium_strategy}</strong>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px;">
+                            <div class="glass-panel" style="padding:10px; text-align:center;">
+                                <div style="font-size:0.7rem; opacity:0.6;">CONFIANZA</div>
+                                <div style="font-weight:800;">${nash.confidence}%</div>
                             </div>
-                            <div style="margin-bottom: 10px;">
-                                Retorno Esperado: <strong>${nash.expected_return}%</strong>
+                            <div class="glass-panel" style="padding:10px; text-align:center;">
+                                <div style="font-size:0.7rem; opacity:0.6;">RETORNO ESP.</div>
+                                <div style="font-weight:800; color:var(--bull-green);">${nash.expected_return}%</div>
                             </div>
-                            <div style="margin-bottom: 10px;">
-                                Confianza Nash: <strong>${nash.confidence}%</strong>
-                            </div>
-                            <div style="margin-bottom: 10px;">
-                                Sharpe Ratio: <strong>${nash.sharpe_ratio}</strong>
-                            </div>
-                            <div style="margin: 15px 0; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 8px;">
-                                <strong>Estado del Mercado (Probabilidades):</strong><br>
-                                📈 Alcista: ${(nash.market_state.alcista * 100).toFixed(0)}%<br>
-                                ➡️ Lateral: ${(nash.market_state.lateral * 100).toFixed(0)}%<br>
-                                📉 Bajista: ${(nash.market_state.bajista * 100).toFixed(0)}%
-                            </div>
-                            <div style="font-style: italic; padding: 10px; background: rgba(255, 215, 0, 0.1); border-left: 3px solid var(--gold); border-radius: 5px;">
-                                ${nash.nash_insight}
+                            <div class="glass-panel" style="padding:10px; text-align:center;">
+                                <div style="font-size:0.7rem; opacity:0.6;">SHARPE</div>
+                                <div style="font-weight:800;">${nash.sharpe_ratio}</div>
                             </div>
                         </div>
-                    `;
-                } else {
-                    document.getElementById('nashContent').innerHTML = '<p>Análisis de Nash no disponible</p>';
-                }      <div>Confianza: <strong>${pred.confidence}%</strong></div>
-                        <div>Precio Objetivo: <strong>$${pred.target_price}</strong></div>
-                        <div>Plazo: <strong>${pred.timeframe}</strong></div>
-                        <div>Volatilidad: <strong>${pred.volatility}%</strong></div>
+                        <p style="opacity:0.8; line-height:1.6; font-style:italic;">"${nash.nash_insight}"</p>
                     </div>
                 `;
-                
-                // Renderizar patrones
-                const patternsList = document.getElementById('patternsList');
-                patternsList.innerHTML = '';
-                if (data.patterns.length > 0) {
-                    data.patterns.forEach(pattern => {
-                        const patternClass = pattern.signal === 'BAJISTA' ? 'bearish' : '';
-                        patternsList.innerHTML += `
-                            <div class="pattern-item ${patternClass}">
-                                <strong>${pattern.name}</strong><br>
-                                Señal: ${pattern.signal}<br>
-                                Confianza: ${pattern.confidence}
-                            </div>
-                        `;
-                    });
-                } else {
-                    patternsList.innerHTML = '<p>No se detectaron patrones significativos</p>';
-                }
-                
-                // Renderizar rendimiento
-                const perf = data.performance;
-                document.getElementById('performanceContent').innerHTML = `
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
-                        <div style="text-align: center;">
-                            <div style="font-size: 0.9rem; opacity: 0.7;">1 Mes</div>
-                            <div style="font-size: 1.5rem; font-weight: bold; color: ${perf['1_month'] >= 0 ? 'var(--bull-green)' : 'var(--bear-red)'};">
-                                ${perf['1_month'] >= 0 ? '+' : ''}${perf['1_month']}%
-                            </div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 0.9rem; opacity: 0.7;">3 Meses</div>
-                            <div style="font-size: 1.5rem; font-weight: bold; color: ${perf['3_months'] >= 0 ? 'var(--bull-green)' : 'var(--bear-red)'};">
-                                ${perf['3_months'] >= 0 ? '+' : ''}${perf['3_months']}%
-                            </div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 0.9rem; opacity: 0.7;">6 Meses</div>
-                            <div style="font-size: 1.5rem; font-weight: bold; color: ${perf['6_months'] >= 0 ? 'var(--bull-green)' : 'var(--bear-red)'};">
-                                ${perf['6_months'] >= 0 ? '+' : ''}${perf['6_months']}%
-                            </div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 0.9rem; opacity: 0.7;">1 Año</div>
-                            <div style="font-size: 1.5rem; font-weight: bold; color: ${perf['1_year'] >= 0 ? 'var(--bull-green)' : 'var(--bear-red)'};">
-                                ${perf['1_year'] >= 0 ? '+' : ''}${perf['1_year']}%
-                            </div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 0.9rem; opacity: 0.7;">Volatilidad 30d</div>
-                            <div style="font-size: 1.5rem; font-weight: bold; color: var(--gold);">
-                                ${perf.volatility_30d}%
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                // Renderizar gráfico
-                renderHistoricalChart(data.historical_data, symbol);
-                
-                // Mostrar modal
-                document.getElementById('analysisModal').classList.add('active');
-            } catch (error) {
-                console.error('Error en análisis:', error);
-                alert('Error al cargar el análisis completo');
+                document.getElementById('tradeNashAdvice').innerText = `💡 NASH RECOMIENDA: ${nash.equilibrium_strategy} (${nash.confidence}% confianza)`;
             }
         }
-        
-        function renderHistoricalChart(historicalData, symbol) {
-            const ctx = document.getElementById('historicalChart').getContext('2d');
+
+        function renderMainChart(histData, symbol) {
+            const ctx = document.getElementById('mainChart').getContext('2d');
+            if (currentChart) currentChart.destroy();
             
-            // Destruir gráfico anterior si existe
-            if (currentChart) {
-                currentChart.destroy();
-            }
-            
-            const dates = historicalData.map(d => {
-                const date = new Date(d.Date);
-                return date.toLocaleDateString('es-MX', { month: 'short', day: 'numeric' });
-            });
-            const prices = historicalData.map(d => d.Close);
-            
+            const labels = histData.map(d => new Date(d.Date).toLocaleDateString('es-MX', {month:'short', day:'numeric'}));
+            const prices = histData.map(d => d.Close);
+
             currentChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: dates,
+                    labels: labels,
                     datasets: [{
-                        label: `${symbol} - Precio de Cierre`,
+                        label: symbol,
                         data: prices,
                         borderColor: '#00ff88',
-                        backgroundColor: 'rgba(0, 255, 136, 0.1)',
-                        tension: 0.3,
-                        fill: true
+                        backgroundColor: 'rgba(0, 255, 136, 0.05)',
+                        fill: true,
+                        tension: 0.1,
+                        pointRadius: 0
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: '#e0e0e0',
-                                font: { size: 14 }
-                            }
-                        }
-                    },
+                    plugins: { legend: { display: false } },
                     scales: {
-                        x: {
-                            ticks: { 
-                                color: '#e0e0e0',
-                                maxRotation: 45,
-                                minRotation: 45
-                            },
-                            grid: { color: 'rgba(0, 255, 136, 0.1)' }
-                        },
-                        y: {
-                            ticks: { color: '#e0e0e0' },
-                            grid: { color: 'rgba(0, 255, 136, 0.1)' }
+                        x: { display: false },
+                        y: { 
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: 'rgba(255,255,255,0.3)' }
                         }
                     }
                 }
             });
         }
-        
-        function closeModal() {
-            document.getElementById('analysisModal').classList.remove('active'
-        
-        function renderWatchlist(stocks) {
-            const grid = document.getElementById('watchlistGrid');
-            grid.innerHTML = '';
-            
-            stocks.forEach(stock => {
-                const card = document.createElement('div');
-                card.className = 'stock-card';
-                
-                const changeClass = stock.change_percent >= 0 ? 'positive' : 'negative';
-                const recommendationClass = stock.recommendation.includes('COMPRAR') ? 'buy' : 
-                                           stock.recommendation.includes('VENDER') ? 'sell' : 'hold';
-                
-                card.innerHTML = `
-                    <div class="symbol">${stock.symbol}</div>
-                    <div class="price ${changeClass}">$${stock.current_price}</div>
-                    <div class="change ${changeClass}">
-                        ${stock.change >= 0 ? '+' : ''}${stock.change_percent.toFixed(2)}%
-                    </div>
-                    <div class="recommendation ${recommendationClass}">
-                        ${stock.recommendation}
-                    </div>
-                `;
-                
-                card.onclick = () => showDetails(stock.symbol);
-                
-                grid.appendChild(card);
-            });
-        }
-        
+
         async function loadPortfolio() {
             try {
-                const response = await fetch('/api/portfolio');
-                const data = await response.json();
-                
+                const res = await fetch('/api/portfolio');
+                const data = await res.json();
                 if (data.success) {
-                    const value = data.value;
+                    userBalance = data.capital_mxn;
+                    portfolio = data.portfolio;
                     
-                    document.getElementById('totalCapital').textContent = 
-                        `$${data.capital_mxn.toLocaleString()} MXN`;
-                    document.getElementById('portfolioValue').textContent = 
-                        `$${value.current_value.toLocaleString()}`;
+                    document.getElementById('topBalance').innerText = `$${userBalance.toLocaleString(undefined, {minimumFractionDigits:2})}`;
                     
-                    const gainLossEl = document.getElementById('gainLoss');
-                    gainLossEl.textContent = `$${value.gain_loss.toLocaleString()}`;
-                    gainLossEl.className = `value ${value.gain_loss >= 0 ? 'positive' : 'negative'}`;
-                    
-                    const returnEl = document.getElementById('returnPercent');
-                    returnEl.textContent = `${value.gain_loss_percent >= 0 ? '+' : ''}${value.gain_loss_percent.toFixed(2)}%`;
-                    returnEl.className = `value ${value.gain_loss_percent >= 0 ? 'positive' : 'negative'}`;
+                    const val = data.value;
+                    document.getElementById('portfolioTotalValue').innerText = `$${val.current_value.toLocaleString()}`;
+                    const pnlColor = val.gain_loss >= 0 ? 'var(--bull-green)' : 'var(--bear-red)';
+                    document.getElementById('portfolioPNL').innerText = `${val.gain_loss >= 0 ? '+' : ''}$${val.gain_loss.toLocaleString()} (${val.gain_loss_percent.toFixed(2)}%)`;
+                    document.getElementById('portfolioPNL').style.color = pnlColor;
+
+                    renderPortfolio(data.portfolio);
                 }
-            } catch (error) {
-                console.error('Error cargando portafolio:', error);
-            }
+            } catch (e) { console.error(e); }
         }
-        
-        function showDetails(symbol) {
-            alert(`Detalles de ${symbol} - Funcionalidad en desarrollo`);
+
+        function renderPortfolio(assets) {
+            const list = document.getElementById('portfolioList');
+            list.innerHTML = '';
+            
+            Object.entries(assets).forEach(([sym, data]) => {
+                const mData = marketData[sym] || { current_price: data.avg_price };
+                const currentVal = data.shares * mData.current_price;
+                const pnl = currentVal - data.total_invested;
+                const pnlPct = (pnl / data.total_invested) * 100;
+
+                const div = document.createElement('div');
+                div.className = 'instrument-item';
+                div.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                        <span style="font-weight:800;">${sym}</span>
+                        <span style="font-weight:800;">$${currentVal.toLocaleString()}</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; opacity:0.7;">
+                        <span>${data.shares} acciones @ $${data.avg_price.toFixed(2)}</span>
+                        <span style="color:${pnl >= 0 ? 'var(--bull-green)' : 'var(--bear-red)'}">${pnl >= 0 ? '+' : ''}${pnlPct.toFixed(2)}%</span>
+                    </div>
+                `;
+                list.appendChild(div);
+            });
         }
-        
-        // Auto-refresh cada 30 segundos
-        setInterval(loadMarketData, 30000);
-        
-        // Cargar datos iniciales
-        window.addEventListener('load', () => {
-            loadMarketData();
-            loadPortfolio();
-        });
+
+        // --- TRADING LOGIC ---
+        function openTradeModal(action) {
+            if (!currentSymbol) return;
+            const modal = document.getElementById('tradeModal');
+            document.getElementById('tradeActionTitle').innerText = `${action === 'BUY' ? '⚡ COMPRAR' : '🔥 VENDER'} ${currentSymbol}`;
+            document.getElementById('tradeActionTitle').style.color = action === 'BUY' ? 'var(--bull-green)' : 'var(--bear-red)';
+            
+            const btn = document.getElementById('confirmTradeBtn');
+            btn.style.background = action === 'BUY' ? 'var(--accent-gradient)' : 'var(--bear-red)';
+            btn.onclick = () => executeTrade(action);
+            
+            modal.style.display = 'grid';
+            updateTradeTotal();
+        }
+
+        function closeTradeModal() {
+            document.getElementById('tradeModal').style.display = 'none';
+        }
+
+        function updateTradeTotal() {
+            const qty = document.getElementById('tradeQuantity').value;
+            const total = qty * currentPrice;
+            document.getElementById('tradeTotalVal').innerText = `$${total.toLocaleString(undefined, {minimumFractionDigits:2})}`;
+        }
+
+        async function executeTrade(action) {
+            const qty = parseFloat(document.getElementById('tradeQuantity').value);
+            const endpoint = action === 'BUY' ? '/api/portfolio/add' : '/api/portfolio/sell';
+            
+            try {
+                const res = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        symbol: currentSymbol,
+                        shares: qty,
+                        price: currentPrice
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert(`Operación Exitosa: ${action} ${qty} ${currentSymbol}`);
+                    closeTradeModal();
+                    await refreshData();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (e) { alert('Excepción en la red: ' + e); }
+        }
+
+        // --- BALANCE LOGIC ---
+        function openBalanceModal() { document.getElementById('balanceModal').style.display = 'grid'; }
+        function closeBalanceModal() { document.getElementById('balanceModal').style.display = 'none'; }
+
+        async function executeDeposit() {
+            const amount = parseFloat(document.getElementById('depositAmount').value);
+            try {
+                const res = await fetch('/api/balance/deposit', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ amount: amount })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert(`Capital Añadido: $${amount.toLocaleString()} MXN`);
+                    closeBalanceModal();
+                    await refreshData();
+                }
+            } catch (e) { console.error(e); }
+        }
     </script>
 </body>
 </html>
 '''
-
 if __name__ == "__main__":
     print("🐂 BULL MARKET INTELLIGENCE SYSTEM")
     print("="*60)

@@ -1,0 +1,19 @@
+{
+  "assignments": [
+    {
+      "ts": "2025-01-01T00:00:01",
+      "job_id": "job-burst-1",
+      "task_id": "t1",
+      "assigned_device_id": null,
+      "reason": "rejected"
+    },
+    {
+      "ts": "2025-01-01T00:00:01",
+      "job_id": "job-burst-2",
+      "task_id": "t1",
+      "assigned_device_id": null,
+      "reason": "rejected"
+    }
+  ],
+  "deadline_misses": 2
+}

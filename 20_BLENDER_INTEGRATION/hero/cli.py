@@ -50,19 +50,37 @@ def generate_timeline_plot(trace: list, report: dict, out_path: str):
     # extract telemetry per device
     device_temps = {}
     times = []
+    def _to_dt(x):
+        if isinstance(x, str):
+            return datetime.fromisoformat(x)
+        return x
+
     for ev in trace:
         if ev['type'] == 'telemetry':
-            ts = datetime.fromisoformat(ev['ts'])
-            d = ev['sample']['device_id']
+            ts = _to_dt(ev['ts'])
+            # sample timestamp may also be str/datetime
+            sample = ev['sample']
+            # support both dicts (from JSON) and dataclass objects (TelemetrySample)
+            if hasattr(sample, 'ts'):
+                sample_ts = sample.ts
+                d = sample.device_id
+                temp_val = sample.gpu_temp
+            else:
+                if isinstance(sample.get('ts'), str):
+                    sample_ts = datetime.fromisoformat(sample['ts'])
+                else:
+                    sample_ts = sample.get('ts')
+                d = sample['device_id']
+                temp_val = sample.get('gpu_temp')
             device_temps.setdefault(d, {'ts': [], 'temp': []})
-            device_temps[d]['ts'].append(ts)
-            device_temps[d]['temp'].append(ev['sample']['gpu_temp'])
-            times.append(ts)
+            device_temps[d]['ts'].append(sample_ts or ts)
+            device_temps[d]['temp'].append(temp_val)
+            times.append(sample_ts or ts)
 
     # assignments
     assign_by_device = {}
     for a in report.get('assignments', []):
-        ts = datetime.fromisoformat(a['ts'])
+        ts = _to_dt(a['ts'])
         d = a.get('assigned_device_id') or 'rejected'
         assign_by_device.setdefault(d, []).append((ts, a['job_id']))
         times.append(ts)

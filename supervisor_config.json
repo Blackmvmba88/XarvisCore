@@ -1,0 +1,27 @@
+{
+    "core_processes": {
+        "CORE_SOVEREIGN": {
+            "path": "1_CORE/xarvis_core.py",
+            "log": "5_INFRA/logs/core.log",
+            "priority": 1
+        },
+        "POWER_EXECUTION": {
+            "path": "3_POWER/xarvis_full_power.py",
+            "log": "5_INFRA/logs/full_power.log",
+            "priority": 2
+        },
+        "RAM_GUARDIAN": {
+            "path": "3_POWER/ram_guardian.py",
+            "log": "5_INFRA/logs/ram_guardian.log",
+            "priority": 2
+        }
+    },
+    "extended_processes": {
+        "STATION_COMMAND": {
+            "path": "18_BLACKMAMBA_STATION/core/simple_server.py",
+            "log": "5_INFRA/logs/station.log",
+            "priority": 3,
+            "enabled": false
+        }
+    }
+}
