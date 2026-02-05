@@ -183,8 +183,8 @@ def main(argv: Optional[List[str]] = None) -> int:  # pragma: no cover (exercise
             scene.render.filepath = str(frame_path)
             try:
                 scene.frame_set(i)
-            except Exception:
-                pass
+            except Exception as e:
+                print(f"Warning: failed to set scene frame to {i}:", e)
             print("Rendering ->", frame_path)
             bpy.ops.render.render(write_still=True)
 
