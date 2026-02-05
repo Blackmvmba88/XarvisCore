@@ -99,3 +99,49 @@ def test_scheduler_fallback_to_cpu_when_allowed():
     plan = s.dry_run()
     assert plan["plans"][0]["reason"] == "cpu_fallback"
     assert plan["plans"][0]["assigned_device_id"] == "cpu0"
+
+
+def test_scheduler_best_fit_prefers_smaller_gpu_for_small_task():
+    m = _load_scheduler()
+    Scheduler = m.Scheduler
+    Task = m.Task
+    RenderJob = m.RenderJob
+
+    s = Scheduler()
+    s.register_devices(
+        [
+            {"id": "gpu_small", "backend": "CUDA", "total_memory_mb": 8000, "free_memory_mb": 8000, "compute_score": 0.5},
+            {"id": "gpu_big", "backend": "CUDA", "total_memory_mb": 16000, "free_memory_mb": 16000, "compute_score": 0.5},
+        ]
+    )
+
+    t = Task("t1", required_memory_mb=1000, requires_gpu=True, frames=1, priority=0)
+    j = RenderJob("job1", tasks=[t], priority=0)
+    s.submit(j)
+
+    plan = s.dry_run()
+    assert plan["plans"][0]["assigned_device_id"] == "gpu_small"
+
+
+def test_scheduler_deadline_orders_tasks_when_priorities_equal():
+    m = _load_scheduler()
+    Scheduler = m.Scheduler
+    Task = m.Task
+    RenderJob = m.RenderJob
+
+    s = Scheduler()
+    s.register_devices(
+        [
+            {"id": "gpu0", "backend": "CUDA", "total_memory_mb": 16000, "free_memory_mb": 16000, "compute_score": 1.0},
+        ]
+    )
+
+    # Same priority: earlier deadline should be planned first.
+    t_late = Task("late", required_memory_mb=100, requires_gpu=True, frames=1, priority=0, deadline_ts=200.0)
+    t_early = Task("early", required_memory_mb=100, requires_gpu=True, frames=1, priority=0, deadline_ts=100.0)
+    j = RenderJob("job1", tasks=[t_late, t_early], priority=0)
+    s.submit(j)
+
+    plan = s.dry_run()
+    ids = [p["task_id"] for p in plan["plans"]]
+    assert ids[0] == "early"
