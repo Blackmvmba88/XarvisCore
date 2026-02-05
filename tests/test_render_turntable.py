@@ -63,7 +63,7 @@ def test_render_invokes_bpy_and_writes_files(monkeypatch, tmp_path):
 
     # inject into sys.modules
     import sys
-    sys.modules['bpy'] = bpy
+    monkeypatch.setitem(sys.modules, 'bpy', bpy)
 
     out = rt.render_turntable(tmp_path, frames=2, width=64, height=64, image_format='PNG', camera_name='CAM_TURNTABLE')
     assert len(out) == 2
@@ -78,7 +78,7 @@ def test_missing_camera_raises(monkeypatch, tmp_path):
     bpy.data = types.SimpleNamespace()
     bpy.data.objects = {}  # no camera
     import sys
-    sys.modules['bpy'] = bpy
+    monkeypatch.setitem(sys.modules, 'bpy', bpy)
 
     try:
         rt.render_turntable(tmp_path, frames=1, camera_name='CAM_TURNTABLE')

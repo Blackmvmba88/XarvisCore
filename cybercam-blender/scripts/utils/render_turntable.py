@@ -4,7 +4,7 @@ Este script debe ejecutarse dentro de Blender y automatiza renders de giro.
 """
 import sys
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, Union
 
 def _frame_filenames(output_dir: Path, frames: int, image_format: str) -> List[Path]:
     ext = image_format.lower()
@@ -14,7 +14,7 @@ def _frame_filenames(output_dir: Path, frames: int, image_format: str) -> List[P
     return out
 
 
-def render_turntable(output_dir: str | Path, frames: int = 36, width: int = 1024, height: int = 1024,
+def render_turntable(output_dir: Union[str, Path], frames: int = 36, width: int = 1024, height: int = 1024,
                      image_format: str = 'PNG', camera_name: Optional[str] = 'CAM_TURNTABLE',
                      collection_name: Optional[str] = None, start_frame: int = 0, axis: str = 'Z',
                      preset: Optional[str] = None, hdri_path: Optional[str] = None) -> List[Path]:

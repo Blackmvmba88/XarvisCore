@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 import subprocess
 import sys
+from typing import Optional
 
 app = Flask(__name__)
 app.secret_key = 'replace-me-in-prod'
@@ -24,7 +25,7 @@ COMMANDS = {
     # Puedes añadir más mapeos aquí: 'render': 'blender_render.py'
 }
 
-def run_script(script_name: str, blender_bin: str | None = None):
+def run_script(script_name: str, blender_bin: Optional[str] = None):
     script_path = BLENDER_INTEGRATION_DIR / script_name
     if not script_path.exists():
         return {'error': f'script not found: {script_name}'}

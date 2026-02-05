@@ -9,6 +9,9 @@ python-dotenv>=1.0.0
 # === MONITOREO Y SISTEMA ===
 psutil>=5.9.0
 
+# === HTTP CLIENT ===
+requests>=2.31.0
+
 # === SEGURIDAD (Opcional - SSL/TLS) ===
 pyOpenSSL>=23.0.0
 

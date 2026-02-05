@@ -8,15 +8,15 @@ server = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(server)
 
 
-def test_render_animation_job_creation_and_bpy_missing():
+def test_render_animation_job_creation_and_bpy_missing(monkeypatch):
     host, port = server.start_server(host="127.0.0.1", port=0)
     url = f"http://{host}:{port}/"
 
     # require token via env
     import os, tempfile
     dirpath = tempfile.mkdtemp()
-    os.environ["HOME"] = dirpath
-    os.environ["XARVIS_BLENDER_REQUIRE_TOKEN"] = "1"
+    monkeypatch.setenv("HOME", dirpath)
+    monkeypatch.setenv("XARVIS_BLENDER_REQUIRE_TOKEN", "1")
     tokenfile = f"{dirpath}/.config/xarvis/blender.token"
     import os
     os.makedirs(os.path.dirname(tokenfile), exist_ok=True)
@@ -164,10 +164,9 @@ def test_render_animation_progress_cancel_mid():
     server.stop_server()
 
 
-def test_frame_hook_registers_and_releases():
+def test_frame_hook_registers_and_releases(monkeypatch):
     # env enable frame hooks
-    import os
-    os.environ['XARVIS_BLENDER_FRAME_HOOKS'] = '1'
+    monkeypatch.setenv('XARVIS_BLENDER_FRAME_HOOKS', '1')
     host, port = server.start_server(host="127.0.0.1", port=0)
     url = f"http://{host}:{port}/"
     st = server._server_thread
@@ -203,9 +202,8 @@ def test_frame_hook_registers_and_releases():
     server.stop_server()
 
 
-def test_frame_hook_simulated_updates_progress():
-    import os
-    os.environ['XARVIS_BLENDER_FRAME_HOOKS'] = '1'
+def test_frame_hook_simulated_updates_progress(monkeypatch):
+    monkeypatch.setenv('XARVIS_BLENDER_FRAME_HOOKS', '1')
     host, port = server.start_server(host="127.0.0.1", port=0)
     st = server._server_thread
 
@@ -239,9 +237,8 @@ def test_frame_hook_simulated_updates_progress():
     server.stop_server()
 
 
-def test_frame_hook_disabled_no_effect():
-    import os
-    os.environ.pop('XARVIS_BLENDER_FRAME_HOOKS', None)
+def test_frame_hook_disabled_no_effect(monkeypatch):
+    monkeypatch.delenv('XARVIS_BLENDER_FRAME_HOOKS', raising=False)
     host, port = server.start_server(host="127.0.0.1", port=0)
     st = server._server_thread
 

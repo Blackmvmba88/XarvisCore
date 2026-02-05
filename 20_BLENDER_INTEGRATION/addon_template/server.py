@@ -74,19 +74,24 @@ class JSONHandler(http.server.BaseHTTPRequestHandler):
     def _send_ok(self, data: dict):
         self._send_json(200, {"ok": True, "data": data})
 
-    def _read_json(self):
+    def _read_json(self) -> Tuple[Optional[dict], Optional[str]]:
         try:
             length = int(self.headers.get("Content-Length", "0"))
             raw = self.rfile.read(length) if length else b""
-            return json.loads(raw.decode("utf-8")) if raw else {}
+            obj = json.loads(raw.decode("utf-8")) if raw else {}
+            if not isinstance(obj, dict):
+                return None, "JSON body must be an object"
+            return obj, None
         except Exception as e:
             return None, str(e)
 
-    def _check_token(self):
-        """Validate token using the following precedence:
-        - If running inside Blender and addon prefs require token -> read token_path from prefs
-        - Else if env var XARVIS_BLENDER_REQUIRE_TOKEN is set to "1" -> require token using default path
-        - Else: if token file exists and contains a token, require it; otherwise allow (development convenience)
+    def _check_token(self, require: bool = False) -> bool:
+        """Validate Authorization token.
+
+        Precedence:
+        - If running inside Blender and addon prefs require token -> enforce it.
+        - If env var XARVIS_BLENDER_REQUIRE_TOKEN == "1" OR `require=True` -> enforce it.
+        - Else: allow (development convenience).
         """
         import os
         # try Blender addon prefs first (if available)
@@ -113,50 +118,30 @@ class JSONHandler(http.server.BaseHTTPRequestHandler):
             # not running inside Blender or prefs not available; fallback to env / file
             pass
 
-        # env var override for tests and deployments
-        require_env = os.environ.get('XARVIS_BLENDER_REQUIRE_TOKEN')
-        token_path = os.path.expanduser('~/.config/xarvis/blender.token')
-        if require_env == '1':
-            if not os.path.exists(token_path):
-                return False
-            try:
-                with open(token_path, 'r', encoding='utf-8') as f:
-                    token = f.read().strip()
-            except Exception:
-                return False
-            auth = self.headers.get('Authorization','')
-            if auth.startswith('Bearer '):
-                return auth.split(None,1)[1].strip() == token
-            return False
+        enforce = (os.environ.get("XARVIS_BLENDER_REQUIRE_TOKEN") == "1") or bool(require)
+        if not enforce:
+            return True
 
-        # default: if token file exists, enforce it; else allow
-        if os.path.exists(token_path):
-            try:
-                with open(token_path, 'r', encoding='utf-8') as f:
-                    token = f.read().strip()
-            except Exception:
-                return False
-            auth = self.headers.get('Authorization','')
-            if auth.startswith('Bearer '):
-                return auth.split(None,1)[1].strip() == token
+        token_path = os.path.expanduser("~/.config/xarvis/blender.token")
+        if not os.path.exists(token_path):
             return False
-
-        return True  # no token configured -> allow (development convenience)
+        try:
+            with open(token_path, "r", encoding="utf-8") as f:
+                token = f.read().strip()
+        except Exception:
+            return False
+        auth = self.headers.get("Authorization", "")
+        if auth.startswith("Bearer "):
+            return auth.split(None, 1)[1].strip() == token
+        return False
 
     def do_POST(self):
-        obj, err = self._read_json(), None
+        obj, err = self._read_json()
         if obj is None:
-            # fallback: _read_json returned None if exception occurred
-            try:
-                # try again to capture message
-                length = int(self.headers.get("Content-Length", "0"))
-                raw = self.rfile.read(length) if length else b""
-                _ = json.loads(raw.decode("utf-8"))
-            except Exception as e:
-                self._send_error("invalid_json", "Could not parse JSON", {"msg": str(e)}, 400)
-                return
+            self._send_error("invalid_json", "Could not parse JSON", {"msg": err or ""}, 400)
+            return
 
-        action = obj.get("action") if isinstance(obj, dict) else None
+        action = obj.get("action")
         if not action:
             self._send_error("invalid_input", "Missing 'action' field")
             return
@@ -204,7 +189,7 @@ class JSONHandler(http.server.BaseHTTPRequestHandler):
 
         if action == "render_still":
             # privileged action: check token
-            if not self._check_token():
+            if not self._check_token(require=True):
                 self._send_error("unauthorized", "Missing or invalid token", None, 403)
                 return
             # validate inputs
@@ -274,7 +259,7 @@ class JSONHandler(http.server.BaseHTTPRequestHandler):
 
         if action == "render_animation":
             # privileged action: check token
-            if not self._check_token():
+            if not self._check_token(require=True):
                 self._send_error("unauthorized", "Missing or invalid token", None, 403)
                 return
             # validate inputs
@@ -339,7 +324,7 @@ class JSONHandler(http.server.BaseHTTPRequestHandler):
             return
 
         if action == "export_mesh":
-            # privileged action: check token
+            # export is optionally privileged (env-gated); enforce only if configured
             if not self._check_token():
                 self._send_error("unauthorized", "Missing or invalid token", None, 403)
                 return
@@ -369,6 +354,13 @@ class JSONHandler(http.server.BaseHTTPRequestHandler):
                     continue
             if not ok_root:
                 self._send_error("forbidden_path", "output_path is not allowed")
+                return
+
+            # If Blender isn't available, fail fast instead of scheduling a job.
+            try:
+                import bpy  # type: ignore
+            except Exception as e:
+                self._send_error("bpy_unavailable", "Blender (bpy) unavailable", {"msg": str(e)}, 200)
                 return
 
             def export_runner(jobmgr, job, fmt, output, objects=None, export_selected=False):
@@ -440,7 +432,7 @@ class JSONHandler(http.server.BaseHTTPRequestHandler):
 
         if action == "run_operator":
             # privileged action: token is required
-            if not self._check_token():
+            if not self._check_token(require=True):
                 self._send_error("unauthorized", "Missing or invalid token", None, 403)
                 return
             op = obj.get("operator")
@@ -448,13 +440,13 @@ class JSONHandler(http.server.BaseHTTPRequestHandler):
             as_job = bool(obj.get("as_job", True))
             # validation
             if not op or not isinstance(op, str):
-                self._send_error("invalid_input", "operator must be a dotted operator string")
+                self._send_error("invalid_input", "operator must be a dotted operator string", None, 200)
                 return
             if op not in OPERATOR_WHITELIST:
-                self._send_error("forbidden_operator", "Operator not allowed", {"operator": op})
+                self._send_error("forbidden_operator", "Operator not allowed", {"operator": op}, 200)
                 return
             if not isinstance(params, dict) or not _is_shallow_jsonable(params):
-                self._send_error("invalid_params", "Params must be a shallow JSON mapping with primitive values" )
+                self._send_error("invalid_params", "Params must be a shallow JSON mapping with primitive values", None, 200)
                 return
 
             def operator_runner(jobmgr, job, op, params):

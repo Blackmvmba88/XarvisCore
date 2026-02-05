@@ -5,7 +5,7 @@ from typing import List, Dict, Any, Optional
 
 
 class Device:
-    def __init__(self, id: str, backend: str = 'CPU', total_memory_mb: int = 0, free_memory_mb: int = 0, compute_score: float = 0.0):
+    def __init__(self, id: str, backend: str = "CPU", total_memory_mb: int = 0, free_memory_mb: int = 0, compute_score: float = 0.0):
         self.id = id
         self.backend = backend  # 'CUDA'|'OPTIX'|'METAL'|'CPU'
         self.total_memory_mb = int(total_memory_mb)
@@ -20,16 +20,24 @@ class Device:
 
     def to_dict(self) -> Dict[str, Any]:
         return {
-            'id': self.id,
-            'backend': self.backend,
-            'total_memory_mb': self.total_memory_mb,
-            'free_memory_mb': self.free_memory_mb,
-            'compute_score': self.compute_score,
+            "id": self.id,
+            "backend": self.backend,
+            "total_memory_mb": self.total_memory_mb,
+            "free_memory_mb": self.free_memory_mb,
+            "compute_score": self.compute_score,
         }
 
 
 class Task:
-    def __init__(self, task_id: str, required_memory_mb: int = 0, requires_gpu: bool = False, frames: int = 1, priority: int = 0, allow_cpu_fallback: bool = False):
+    def __init__(
+        self,
+        task_id: str,
+        required_memory_mb: int = 0,
+        requires_gpu: bool = False,
+        frames: int = 1,
+        priority: int = 0,
+        allow_cpu_fallback: bool = False,
+    ):
         self.task_id = task_id
         self.required_memory_mb = int(required_memory_mb)
         self.requires_gpu = bool(requires_gpu)
@@ -39,12 +47,12 @@ class Task:
 
     def to_dict(self) -> Dict[str, Any]:
         return {
-            'task_id': self.task_id,
-            'required_memory_mb': self.required_memory_mb,
-            'requires_gpu': self.requires_gpu,
-            'frames': self.frames,
-            'priority': self.priority,
-            'allow_cpu_fallback': self.allow_cpu_fallback,
+            "task_id": self.task_id,
+            "required_memory_mb": self.required_memory_mb,
+            "requires_gpu": self.requires_gpu,
+            "frames": self.frames,
+            "priority": self.priority,
+            "allow_cpu_fallback": self.allow_cpu_fallback,
         }
 
 
@@ -80,23 +88,19 @@ class Scheduler:
         return job.job_id
 
     def _find_best_device(self, task: Task, devices: List[Device]) -> Optional[Device]:
-        # Filter candidate devices
         candidates = []
         for d in devices:
-            if task.requires_gpu and d.backend == 'CPU' and not task.allow_cpu_fallback:
+            # If GPU is required, never pick CPU here; CPU fallback is handled explicitly below
+            # so we can label it as such in the plan.
+            if task.requires_gpu and d.backend == "CPU":
                 continue
             if d.free_memory_mb < task.required_memory_mb:
                 continue
-            # If task requires GPU, prefer non-CPU backends
-            if task.requires_gpu and d.backend == 'CPU' and task.allow_cpu_fallback:
-                # keep as candidate but lower priority
-                score = d.compute_score * 0.1
-            else:
-                score = d.compute_score
-            candidates.append((score, d))
+            candidates.append((d.compute_score, d))
+
         if not candidates:
             return None
-        # pick highest score
+
         candidates.sort(key=lambda x: x[0], reverse=True)
         return candidates[0][1]
 
@@ -113,29 +117,54 @@ class Scheduler:
         jobs = sorted(self.queue, key=lambda j: j.priority, reverse=True)
 
         plans = []
-
         for job in jobs:
             # tasks sorted by task.priority desc
             tasks = sorted(job.tasks, key=lambda t: t.priority, reverse=True)
             for task in tasks:
                 assigned = self._find_best_device(task, sim_devices)
                 if assigned:
-                    # simulate allocate
                     ok = assigned.allocate(task.required_memory_mb)
                     if ok:
-                        plans.append({'job_id': job.job_id, 'task_id': task.task_id, 'assigned_device_id': assigned.id, 'assigned_backend': assigned.backend, 'frames': task.frames, 'reason': 'assigned'})
+                        plans.append(
+                            {
+                                "job_id": job.job_id,
+                                "task_id": task.task_id,
+                                "assigned_device_id": assigned.id,
+                                "assigned_backend": assigned.backend,
+                                "frames": task.frames,
+                                "reason": "assigned",
+                            }
+                        )
                         continue
-                # If no assigned device, check CPU fallback if allowed
+
                 if task.allow_cpu_fallback:
-                    cpu_devices = [d for d in sim_devices if d.backend == 'CPU' and d.free_memory_mb >= task.required_memory_mb]
+                    cpu_devices = [d for d in sim_devices if d.backend == "CPU" and d.free_memory_mb >= task.required_memory_mb]
                     if cpu_devices:
-                        # pick best CPU by compute_score
                         cpu_devices.sort(key=lambda d: d.compute_score, reverse=True)
                         cpu = cpu_devices[0]
                         cpu.allocate(task.required_memory_mb)
-                        plans.append({'job_id': job.job_id, 'task_id': task.task_id, 'assigned_device_id': cpu.id, 'assigned_backend': cpu.backend, 'frames': task.frames, 'reason': 'cpu_fallback'})
+                        plans.append(
+                            {
+                                "job_id": job.job_id,
+                                "task_id": task.task_id,
+                                "assigned_device_id": cpu.id,
+                                "assigned_backend": cpu.backend,
+                                "frames": task.frames,
+                                "reason": "cpu_fallback",
+                            }
+                        )
                         continue
-                # No assignment possible
-                plans.append({'job_id': job.job_id, 'task_id': task.task_id, 'assigned_device_id': None, 'assigned_backend': None, 'frames': task.frames, 'reason': 'rejected'})
 
-        return {'plans': plans, 'devices': [d.to_dict() for d in sim_devices]}
+                plans.append(
+                    {
+                        "job_id": job.job_id,
+                        "task_id": task.task_id,
+                        "assigned_device_id": None,
+                        "assigned_backend": None,
+                        "frames": task.frames,
+                        "reason": "rejected",
+                    }
+                )
+
+        return {"plans": plans, "devices": [d.to_dict() for d in sim_devices]}
+

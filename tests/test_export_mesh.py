@@ -10,7 +10,8 @@ server = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(server)
 
 
-def test_export_mesh_input_validation():
+def test_export_mesh_input_validation(monkeypatch):
+    monkeypatch.delenv("XARVIS_BLENDER_REQUIRE_TOKEN", raising=False)
     host, port = server.start_server(host="127.0.0.1", port=0)
     url = f"http://{host}:{port}/"
     # missing format
@@ -21,7 +22,8 @@ def test_export_mesh_input_validation():
     server.stop_server()
 
 
-def test_export_mesh_forbidden_path():
+def test_export_mesh_forbidden_path(monkeypatch):
+    monkeypatch.delenv("XARVIS_BLENDER_REQUIRE_TOKEN", raising=False)
     host, port = server.start_server(host="127.0.0.1", port=0)
     url = f"http://{host}:{port}/"
     # attempt to write outside allowed roots
@@ -33,11 +35,11 @@ def test_export_mesh_forbidden_path():
     server.stop_server()
 
 
-def test_export_mesh_bpy_missing():
+def test_export_mesh_bpy_missing(monkeypatch):
     # require token via env (privileged action)
     dirpath = tempfile.mkdtemp()
-    os.environ["HOME"] = dirpath
-    os.environ["XARVIS_BLENDER_REQUIRE_TOKEN"] = "1"
+    monkeypatch.setenv("HOME", dirpath)
+    monkeypatch.setenv("XARVIS_BLENDER_REQUIRE_TOKEN", "1")
     tokenfile = f"{dirpath}/.config/xarvis/blender.token"
     os.makedirs(os.path.dirname(tokenfile), exist_ok=True)
     with open(tokenfile, "w", encoding="utf-8") as f:
@@ -54,7 +56,7 @@ def test_export_mesh_bpy_missing():
     server.stop_server()
 
 
-def test_export_mesh_happy_path_with_mock_bpy():
+def test_export_mesh_happy_path_with_mock_bpy(monkeypatch):
     # Use a fake bpy module to simulate exporter behavior
     import sys
     import types
@@ -83,8 +85,8 @@ def test_export_mesh_happy_path_with_mock_bpy():
 
     # require token
     dirpath = tempfile.mkdtemp()
-    os.environ["HOME"] = dirpath
-    os.environ["XARVIS_BLENDER_REQUIRE_TOKEN"] = "1"
+    monkeypatch.setenv("HOME", dirpath)
+    monkeypatch.setenv("XARVIS_BLENDER_REQUIRE_TOKEN", "1")
     tokenfile = f"{dirpath}/.config/xarvis/blender.token"
     os.makedirs(os.path.dirname(tokenfile), exist_ok=True)
     with open(tokenfile, "w", encoding="utf-8") as f:

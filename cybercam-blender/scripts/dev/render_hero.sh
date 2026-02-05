@@ -4,13 +4,16 @@ set -euo pipefail
 # Hero render (Cycles final preset) — single high-res frame for screenshots
 # Usage: BLENDER_BIN=/opt/homebrew/bin/blender ./scripts/dev/render_hero.sh [preset]
 
-REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+# cybercam-blender root (this folder)
+CYBERCAM_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+# monorepo root (exports/, 20_BLENDER_INTEGRATION/, etc.)
+REPO_ROOT="$(cd "$CYBERCAM_ROOT/.." && pwd)"
 BLENDER_BIN="${BLENDER_BIN:-/opt/homebrew/bin/blender}"
 PRESET="${1:-mk1}"
 
 echo "Using blender: $BLENDER_BIN"
 
-$BLENDER_BIN -b "$REPO_ROOT/blend/cybercam_master.blend" --python "$REPO_ROOT/scripts/build/assemble_cam.py" -- --preset "$PRESET" --screws 12 --cables 3 --render --render-preset final --render-frames 1 --render-width 2048 --render-height 2048
+$BLENDER_BIN -b "$CYBERCAM_ROOT/blend/cybercam_master.blend" --python "$CYBERCAM_ROOT/scripts/build/assemble_cam.py" -- --preset "$PRESET" --screws 12 --cables 3 --render --render-preset final --render-frames 1 --render-width 2048 --render-height 2048
 
 OUT_DIR="$REPO_ROOT/exports/renders/$PRESET"
 if [ -d "$OUT_DIR" ]; then

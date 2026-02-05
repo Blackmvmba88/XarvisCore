@@ -43,14 +43,14 @@ def test_get_scene_state_bpy_missing():
     server.stop_server()
 
 
-def test_render_still_requires_token():
+def test_render_still_requires_token(monkeypatch):
     host, port = server.start_server(host="127.0.0.1", port=0)
     url = f"http://{host}:{port}/"
     # ensure env requires token
     import os, tempfile
     dirpath = tempfile.mkdtemp()
-    os.environ["HOME"] = dirpath
-    os.environ["XARVIS_BLENDER_REQUIRE_TOKEN"] = "1"
+    monkeypatch.setenv("HOME", dirpath)
+    monkeypatch.setenv("XARVIS_BLENDER_REQUIRE_TOKEN", "1")
 
     r = requests.post(url, json={"action": "render_still"}, timeout=2)
     j = r.json()

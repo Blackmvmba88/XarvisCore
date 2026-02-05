@@ -7,7 +7,10 @@ set -euo pipefail
 #   BLENDER_BIN=/opt/homebrew/bin/blender ./scripts/dev/render_headless.sh --preset mk1 --frames 36 --render-preset final --width 2048 --height 2048
 #   To skip rendering (only assemble + export GLB): add --no-render
 
-REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+# cybercam-blender root (this folder)
+CYBERCAM_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+# monorepo root (exports/, 20_BLENDER_INTEGRATION/, etc.)
+REPO_ROOT="$(cd "$CYBERCAM_ROOT/.." && pwd)"
 BLENDER_BIN="${BLENDER_BIN:-/opt/homebrew/bin/blender}"
 
 # Defaults
@@ -47,11 +50,11 @@ done
 echo "Using Blender: $BLENDER_BIN"
 
 # Build command parts; allow optional pre-scripts (GPU enabler)
-ASSEMBLE_CMD=("$BLENDER_BIN" -b "$REPO_ROOT/blend/cybercam_master.blend")
+ASSEMBLE_CMD=("$BLENDER_BIN" -b "$CYBERCAM_ROOT/blend/cybercam_master.blend")
 
 # if requested, add GPU enabler script before the assemble script so it runs first
 if [[ "$USE_GPU" -eq 1 ]]; then
-  ENABLE_GPU_PY="$REPO_ROOT/scripts/dev/enable_cycles_gpu.py"
+  ENABLE_GPU_PY="$CYBERCAM_ROOT/scripts/dev/enable_cycles_gpu.py"
   if [[ -f "$ENABLE_GPU_PY" ]]; then
     ASSEMBLE_CMD+=(--python "$ENABLE_GPU_PY")
   else
@@ -60,7 +63,7 @@ if [[ "$USE_GPU" -eq 1 ]]; then
 fi
 
 # main assemble script
-ASSEMBLE_CMD+=(--python "$REPO_ROOT/scripts/build/assemble_cam.py" -- --preset "$PRESET" --screws "$SCREWS" --cables "$CABLES")
+ASSEMBLE_CMD+=(--python "$CYBERCAM_ROOT/scripts/build/assemble_cam.py" -- --preset "$PRESET" --screws "$SCREWS" --cables "$CABLES")
 
 if [[ "$NO_RENDER" -eq 0 ]]; then
   ASSEMBLE_CMD+=(--render --render-preset "$RENDER_PRESET" --render-frames "$FRAMES" --render-width "$WIDTH" --render-height "$HEIGHT" --render-format "$IMAGE_FORMAT")
@@ -101,7 +104,7 @@ if [[ "$TIMESTAMP_OUTPUT" -eq 1 ]]; then
   if [[ -d "$GLB_DIR" ]]; then
     # move any GLB exports for this preset into a timestamped subdir for traceability
     mkdir -p "$GLB_DIR/timestamped"
-    for f in "$GLB_DIR"/*.glb; do
+    for f in "$GLB_DIR/${PRESET}"*.glb; do
       [[ -e "$f" ]] || break
       mv "$f" "$GLB_DIR/timestamped/$(basename "$f" .glb)-${TS}.glb"
     done

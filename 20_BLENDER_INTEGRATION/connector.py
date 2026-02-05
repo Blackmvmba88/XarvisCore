@@ -11,9 +11,10 @@ import shlex
 import subprocess
 import sys
 from pathlib import Path
+from typing import List, Optional
 
 
-def find_blender(blender_bin: str | None) -> str:
+def find_blender(blender_bin: Optional[str]) -> str:
     if blender_bin:
         return blender_bin
     # confiar en PATH
@@ -36,7 +37,7 @@ def _extract_json_from_text(text: str):
         return None
 
 
-def run_blender_script(blender_bin: str, script_path: Path, extra_args: list[str] | None = None):
+def run_blender_script(blender_bin: str, script_path: Path, extra_args: Optional[List[str]] = None):
     cmd = [blender_bin, '--background', '--python', str(script_path)]
     if extra_args:
         cmd += extra_args
