@@ -159,8 +159,18 @@ class Scheduler:
         Plan format:
           { 'plans': [ { job_id, task_id, assigned_device_id (or null), reason }, ... ], 'devices': [device dicts after simulated allocation] }
         """
-        # copy device state to simulate allocations
-        sim_devices = [Device(d.id, d.backend, d.total_memory_mb, d.free_memory_mb, d.compute_score) for d in self.devices]
+        # copy device state to simulate allocations (preserve extra metadata)
+        sim_devices = [
+            Device(
+                id=d.id,
+                backend=d.backend,
+                total_memory_mb=d.total_memory_mb,
+                free_memory_mb=d.free_memory_mb,
+                compute_score=d.compute_score,
+                **getattr(d, "extra", {}),
+            )
+            for d in self.devices
+        ]
 
         # sort jobs by priority desc (higher first), then earliest deadline, then FIFO
         jobs = sorted(
