@@ -205,7 +205,7 @@ class Scheduler:
                         if est_spf is None:
                             start_est = end_est = None
                         else:
-                            duration = (float(task.frames) * float(est_spf)) / max(float(assigned.compute_score) or 1.0, 0.01)
+                            duration = (float(task.frames) * float(est_spf)) / max(float(assigned.compute_score), 0.01)
                             start_est = device_time.get(assigned.id, 0.0)
                             end_est = start_est + duration
                             device_time[assigned.id] = end_est
