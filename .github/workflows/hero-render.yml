@@ -41,6 +41,13 @@ jobs:
             --timestamped-output \
             --use-gpu \
             --log-file hero-dry-run.log
+      - name: Validate dry-run log
+        run: |
+          # Ensure the dry-run log was created and is not empty
+          test -s hero-dry-run.log
+          # Verify that preset and frames inputs are reflected in the log output
+          grep -F "${{ inputs.preset }}" hero-dry-run.log
+          grep -F "${{ inputs.frames }}" hero-dry-run.log
       - name: Upload dry-run log
         uses: actions/upload-artifact@v4
         with:
