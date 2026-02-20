@@ -78,7 +78,7 @@ jobs:
         with:
           name: hero-render-${{ inputs.preset }}
           path: |
-            exports/renders
-            exports/gltf
+            exports/renders/${{ inputs.preset }}
+            exports/gltf/${{ inputs.preset }}*.glb
             hero-render.log
 
