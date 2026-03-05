@@ -1,9 +1,13 @@
-import { useState } from 'react';
-import { GeoGlobe } from './components/GeoGlobe';
+import { Suspense, lazy, useState } from 'react';
 import { QuizPanel } from './components/QuizPanel';
 import { ScoreBoard } from './components/ScoreBoard';
 import { CountryInfo } from './components/CountryInfo';
 import { useGeoQuiz } from './hooks/useGeoQuiz';
+
+const GeoGlobe = lazy(async () => {
+  const module = await import('./components/GeoGlobe');
+  return { default: module.GeoGlobe };
+});
 
 type AppMode = 'menu' | 'quiz' | 'explore' | 'results';
 
@@ -28,10 +32,6 @@ function App() {
   const handleStartQuiz = (level: string) => {
     setSelectedLevel(level);
     setMode('quiz');
-  };
-
-  const handleQuizComplete = () => {
-    setMode('results');
   };
 
   if (mode === 'menu') {
@@ -216,10 +216,18 @@ function App() {
           <div className="grid lg:grid-cols-2 gap-8">
             {/* Globe */}
             <div className="h-96 lg:h-auto">
-              <GeoGlobe
-                mode="quiz"
-                highlightCountry={currentQuestion?.country_code}
-              />
+              <Suspense
+                fallback={
+                  <div className="h-full w-full rounded-2xl bg-blue-950/60 border border-blue-800/50 animate-pulse flex items-center justify-center text-blue-100">
+                    Cargando globo...
+                  </div>
+                }
+              >
+                <GeoGlobe
+                  mode="quiz"
+                  highlightCountry={currentQuestion?.country_code}
+                />
+              </Suspense>
             </div>
 
             {/* Quiz Panel */}
@@ -250,10 +258,18 @@ function App() {
 
           <div className="grid lg:grid-cols-2 gap-8">
             <div className="h-96 lg:h-auto">
-              <GeoGlobe
-                mode="explore"
-                onCountryClick={(country) => setSelectedCountry(country)}
-              />
+              <Suspense
+                fallback={
+                  <div className="h-full w-full rounded-2xl bg-blue-950/60 border border-blue-800/50 animate-pulse flex items-center justify-center text-blue-100">
+                    Cargando globo...
+                  </div>
+                }
+              >
+                <GeoGlobe
+                  mode="explore"
+                  onCountryClick={(country) => setSelectedCountry(country)}
+                />
+              </Suspense>
             </div>
 
             <div>

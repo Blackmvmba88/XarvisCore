@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 
-interface Question {
+export interface Question {
   id: string;
   type: string;
   question: string;
@@ -9,7 +9,7 @@ interface Question {
   country_code: string;
 }
 
-interface Quiz {
+export interface Quiz {
   quiz_id: string;
   level: string;
   questions: Question[];
@@ -22,12 +22,30 @@ interface Quiz {
   };
 }
 
-interface Answer {
+export interface Answer {
   question_id: string;
   user_answer: string;
   is_correct: boolean;
   timestamp: string;
 }
+
+interface QuizState {
+  quiz: Quiz | null;
+  currentQuestionIndex: number;
+  answers: Answer[];
+  score: number;
+  isLoading: boolean;
+  error: string | null;
+  startTime: number;
+  isComplete: boolean;
+}
+
+type QuizAction =
+  | { type: 'load_start'; startedAt: number }
+  | { type: 'load_success'; quiz: Quiz; startedAt: number }
+  | { type: 'load_error'; message: string }
+  | { type: 'answer_submitted'; answer: Answer }
+  | { type: 'restart'; startedAt: number };
 
 interface CountryData {
   name: string;
@@ -56,102 +74,133 @@ interface LeaderboardEntry {
   completed_at: string;
 }
 
+const createInitialQuizState = (): QuizState => ({
+  quiz: null,
+  currentQuestionIndex: 0,
+  answers: [],
+  score: 0,
+  isLoading: true,
+  error: null,
+  startTime: Date.now(),
+  isComplete: false,
+});
+
+export function quizReducer(state: QuizState, action: QuizAction): QuizState {
+  switch (action.type) {
+    case 'load_start':
+      return {
+        quiz: null,
+        currentQuestionIndex: 0,
+        answers: [],
+        score: 0,
+        isLoading: true,
+        error: null,
+        startTime: action.startedAt,
+        isComplete: false,
+      };
+    case 'load_success':
+      return {
+        quiz: action.quiz,
+        currentQuestionIndex: 0,
+        answers: [],
+        score: 0,
+        isLoading: false,
+        error: null,
+        startTime: action.startedAt,
+        isComplete: false,
+      };
+    case 'load_error':
+      return {
+        ...state,
+        isLoading: false,
+        error: action.message,
+      };
+    case 'answer_submitted': {
+      if (!state.quiz || state.isComplete) {
+        return state;
+      }
+
+      const answers = [...state.answers, action.answer];
+      const score = action.answer.is_correct ? state.score + 1 : state.score;
+      const isLastQuestion = state.currentQuestionIndex + 1 >= state.quiz.questions.length;
+
+      return {
+        ...state,
+        answers,
+        score,
+        currentQuestionIndex: isLastQuestion ? state.currentQuestionIndex : state.currentQuestionIndex + 1,
+        isComplete: isLastQuestion,
+      };
+    }
+    case 'restart':
+      return {
+        ...state,
+        currentQuestionIndex: 0,
+        answers: [],
+        score: 0,
+        startTime: action.startedAt,
+        isComplete: false,
+        error: null,
+      };
+    default:
+      return state;
+  }
+}
+
 /**
  * useGeoQuiz Hook
- * 
- * Custom hook for managing quiz state and API interactions
- * Handles quiz loading, answering, scoring, and persistence
- * 
+ *
+ * Custom hook for managing quiz state and API interactions.
+ * State transitions are handled by a reducer so the quiz flow
+ * remains explicit and deterministic.
+ *
  * @param level - Quiz level (americas, world, expert)
  */
 export function useGeoQuiz(level: string) {
-  const [quiz, setQuiz] = useState<Quiz | null>(null);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<Answer[]>([]);
-  const [score, setScore] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [startTime, setStartTime] = useState<number>(Date.now());
-  const [isComplete, setIsComplete] = useState(false);
+  const [state, dispatch] = useReducer(quizReducer, undefined, createInitialQuizState);
 
   // Load quiz from backend
   useEffect(() => {
     const loadQuiz = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
+      dispatch({ type: 'load_start', startedAt: Date.now() });
 
-        // In production, this would fetch from the API
-        // For now, we'll simulate with a timeout
+      try {
         const response = await fetch(`/api/geo-master/quiz/${level}`);
-        
+
         if (!response.ok) {
           throw new Error('Failed to load quiz');
         }
 
-        const data = await response.json();
-        setQuiz(data);
-        setStartTime(Date.now());
+        const data = (await response.json()) as Quiz;
+        dispatch({ type: 'load_success', quiz: data, startedAt: Date.now() });
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Unknown error');
+        const message = err instanceof Error ? err.message : 'Unknown error';
+        dispatch({ type: 'load_error', message });
+        // Keep the existing logging for runtime diagnostics.
         console.error('Error loading quiz:', err);
-      } finally {
-        setIsLoading(false);
       }
     };
 
     loadQuiz();
   }, [level]);
 
-  // Handle answer submission
-  const handleAnswer = async (userAnswer: string) => {
-    if (!quiz || currentQuestionIndex >= quiz.questions.length) {
-      return;
-    }
-
-    const currentQuestion = quiz.questions[currentQuestionIndex];
-    const isCorrect = userAnswer === currentQuestion.correct_answer;
-
-    const answer: Answer = {
-      question_id: currentQuestion.id,
-      user_answer: userAnswer,
-      is_correct: isCorrect,
-      timestamp: new Date().toISOString(),
-    };
-
-    // Update answers array
-    const newAnswers = [...answers, answer];
-    setAnswers(newAnswers);
-
-    // Update score
-    if (isCorrect) {
-      setScore(score + 1);
-    }
-
-    // Move to next question or complete quiz
-    if (currentQuestionIndex + 1 >= quiz.questions.length) {
-      setIsComplete(true);
-      await saveQuizResults(newAnswers);
-    } else {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    }
-  };
-
-  // Save quiz results to backend
-  const saveQuizResults = async (finalAnswers: Answer[]) => {
+  const saveQuizResults = async (
+    quizData: Quiz,
+    finalAnswers: Answer[],
+    quizStartTime: number
+  ) => {
     try {
-      const timeSpent = Math.floor((Date.now() - startTime) / 1000);
-      
+      const timeSpent = Math.floor((Date.now() - quizStartTime) / 1000);
+
       const results = {
-        quiz_id: quiz?.quiz_id,
-        level: quiz?.level,
+        quiz_id: quizData.quiz_id,
+        level: quizData.level,
         answers: finalAnswers,
-        score: finalAnswers.filter(a => a.is_correct).length,
-        total_questions: quiz?.total_questions,
+        score: finalAnswers.filter((answer) => answer.is_correct).length,
+        total_questions: quizData.total_questions,
         time_spent: timeSpent,
       };
 
-      // In production, save to backend
       const response = await fetch('/api/geo-master/submit-quiz', {
         method: 'POST',
         headers: {
@@ -164,45 +213,66 @@ export function useGeoQuiz(level: string) {
         throw new Error('Failed to save quiz results');
       }
 
-      // Optionally save to local storage for persistence
       localStorage.setItem('last_quiz_results', JSON.stringify(results));
     } catch (err) {
       console.error('Error saving quiz results:', err);
     }
   };
 
-  // Restart quiz
-  const restartQuiz = () => {
-    setCurrentQuestionIndex(0);
-    setAnswers([]);
-    setScore(0);
-    setStartTime(Date.now());
-    setIsComplete(false);
+  // Handle answer submission
+  const handleAnswer = async (userAnswer: string) => {
+    const quiz = state.quiz;
+    if (!quiz || state.currentQuestionIndex >= quiz.questions.length || state.isComplete) {
+      return;
+    }
+
+    const currentQuestion = quiz.questions[state.currentQuestionIndex];
+    if (!currentQuestion) {
+      return;
+    }
+
+    const answer: Answer = {
+      question_id: currentQuestion.id,
+      user_answer: userAnswer,
+      is_correct: userAnswer === currentQuestion.correct_answer,
+      timestamp: new Date().toISOString(),
+    };
+
+    const finalAnswers = [...state.answers, answer];
+    const completesQuiz = state.currentQuestionIndex + 1 >= quiz.questions.length;
+
+    dispatch({ type: 'answer_submitted', answer });
+
+    if (completesQuiz) {
+      await saveQuizResults(quiz, finalAnswers, state.startTime);
+    }
   };
 
-  // Get current question
-  const currentQuestion = quiz?.questions[currentQuestionIndex] || null;
+  // Restart quiz
+  const restartQuiz = () => {
+    dispatch({ type: 'restart', startedAt: Date.now() });
+  };
 
-  // Calculate time elapsed
-  const timeElapsed = Math.floor((Date.now() - startTime) / 1000);
+  const currentQuestion =
+    state.quiz && state.currentQuestionIndex < state.quiz.questions.length
+      ? state.quiz.questions[state.currentQuestionIndex]
+      : null;
 
-  // Calculate percentage
-  const percentage = quiz?.total_questions 
-    ? (score / quiz.total_questions) * 100 
-    : 0;
+  const timeElapsed = Math.floor((Date.now() - state.startTime) / 1000);
+  const percentage = state.quiz?.total_questions ? (state.score / state.quiz.total_questions) * 100 : 0;
 
   return {
-    quiz,
+    quiz: state.quiz,
     currentQuestion,
-    currentQuestionIndex,
-    totalQuestions: quiz?.total_questions || 0,
-    answers,
-    score,
+    currentQuestionIndex: state.currentQuestionIndex,
+    totalQuestions: state.quiz?.total_questions || 0,
+    answers: state.answers,
+    score: state.score,
     percentage,
     timeElapsed,
-    isLoading,
-    error,
-    isComplete,
+    isLoading: state.isLoading,
+    error: state.error,
+    isComplete: state.isComplete,
     handleAnswer,
     restartQuiz,
   };
@@ -210,9 +280,9 @@ export function useGeoQuiz(level: string) {
 
 /**
  * useCountryData Hook
- * 
+ *
  * Hook for fetching and managing country data
- * 
+ *
  * @param countryCode - Country code to fetch
  */
 export function useCountryData(countryCode: string | null) {
@@ -232,7 +302,7 @@ export function useCountryData(countryCode: string | null) {
         setError(null);
 
         const response = await fetch(`/api/geo-master/country/${countryCode}`);
-        
+
         if (!response.ok) {
           throw new Error('Failed to load country data');
         }
@@ -255,9 +325,9 @@ export function useCountryData(countryCode: string | null) {
 
 /**
  * useLeaderboard Hook
- * 
+ *
  * Hook for fetching and managing leaderboard data
- * 
+ *
  * @param level - Leaderboard level
  */
 export function useLeaderboard(level: string = 'global') {
@@ -272,7 +342,7 @@ export function useLeaderboard(level: string = 'global') {
         setError(null);
 
         const response = await fetch(`/api/geo-master/leaderboard/${level}`);
-        
+
         if (!response.ok) {
           throw new Error('Failed to load leaderboard');
         }

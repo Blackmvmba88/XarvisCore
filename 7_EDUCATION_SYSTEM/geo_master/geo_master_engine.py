@@ -10,8 +10,12 @@ Filosofía:
 import json
 import random
 from pathlib import Path
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, Set
 from datetime import datetime
+
+
+class DataValidationError(ValueError):
+    """Raised when GeoMaster data files fail schema or consistency checks."""
 
 
 class GeoMasterEngine:
@@ -38,32 +42,230 @@ class GeoMasterEngine:
     
     def load_geographic_data(self):
         """Carga base de datos de países, capitales, ciudades"""
+        countries = self._load_json_file("countries.json")
+        capitals = self._load_json_file("capitals.json")
+        cities = self._load_json_file("cities.json")
+        landmarks = self._load_json_file("landmarks.json")
+
+        self._validate_countries(countries)
+        self._validate_capitals(capitals, countries)
+        self._validate_cities(cities, countries)
+        self._validate_landmarks(landmarks, countries)
+
+        self.countries = countries
+        self.capitals = capitals
+        self.cities = cities
+        self.landmarks = landmarks
+
+    def _load_json_file(self, filename: str) -> Any:
+        """Loads and parses a required JSON file from the data directory."""
+        file_path = self.data_dir / filename
+        if not file_path.exists():
+            raise DataValidationError(f"Missing required data file: {filename}")
+
         try:
-            # Cargar países
-            countries_file = self.data_dir / "countries.json"
-            if countries_file.exists():
-                with open(countries_file, 'r', encoding='utf-8') as f:
-                    self.countries = json.load(f)
-            
-            # Cargar capitales
-            capitals_file = self.data_dir / "capitals.json"
-            if capitals_file.exists():
-                with open(capitals_file, 'r', encoding='utf-8') as f:
-                    self.capitals = json.load(f)
-            
-            # Cargar ciudades
-            cities_file = self.data_dir / "cities.json"
-            if cities_file.exists():
-                with open(cities_file, 'r', encoding='utf-8') as f:
-                    self.cities = json.load(f)
-            
-            # Cargar landmarks
-            landmarks_file = self.data_dir / "landmarks.json"
-            if landmarks_file.exists():
-                with open(landmarks_file, 'r', encoding='utf-8') as f:
-                    self.landmarks = json.load(f)
-        except Exception as e:
-            print(f"⚠️ Error cargando datos geográficos: {e}")
+            with open(file_path, "r", encoding="utf-8") as file_obj:
+                return json.load(file_obj)
+        except json.JSONDecodeError as exc:
+            raise DataValidationError(f"Invalid JSON in {filename}: {exc}") from exc
+        except OSError as exc:
+            raise DataValidationError(f"Unable to read {filename}: {exc}") from exc
+
+    def _validate_countries(self, countries: Any) -> None:
+        """Validates countries schema and key invariants."""
+        if not isinstance(countries, dict) or not countries:
+            raise DataValidationError("countries.json must be a non-empty object")
+
+        required_fields = {
+            "name",
+            "capital",
+            "continent",
+            "population",
+            "area_km2",
+            "coordinates",
+            "capital_coordinates",
+            "languages",
+            "currency",
+            "flag_emoji",
+            "fun_facts",
+        }
+        seen_names: Set[str] = set()
+        seen_capitals: Set[str] = set()
+
+        for country_code, payload in countries.items():
+            if not isinstance(country_code, str) or not country_code.strip():
+                raise DataValidationError("countries.json contains an invalid country code key")
+            if not isinstance(payload, dict):
+                raise DataValidationError(f"countries.json:{country_code} must be an object")
+
+            missing_fields = required_fields - set(payload.keys())
+            if missing_fields:
+                missing = ", ".join(sorted(missing_fields))
+                raise DataValidationError(
+                    f"countries.json:{country_code} missing required fields: {missing}"
+                )
+
+            self._require_non_empty_string(payload.get("name"), f"countries.json:{country_code}.name")
+            self._require_non_empty_string(payload.get("capital"), f"countries.json:{country_code}.capital")
+            self._require_non_empty_string(payload.get("continent"), f"countries.json:{country_code}.continent")
+            self._require_non_empty_string(payload.get("currency"), f"countries.json:{country_code}.currency")
+            self._require_non_empty_string(payload.get("flag_emoji"), f"countries.json:{country_code}.flag_emoji")
+            self._validate_positive_number(payload.get("population"), f"countries.json:{country_code}.population")
+            self._validate_positive_number(payload.get("area_km2"), f"countries.json:{country_code}.area_km2")
+            self._validate_coordinates(payload.get("coordinates"), f"countries.json:{country_code}.coordinates")
+            self._validate_coordinates(
+                payload.get("capital_coordinates"),
+                f"countries.json:{country_code}.capital_coordinates",
+            )
+
+            self._validate_string_list(payload.get("languages"), f"countries.json:{country_code}.languages")
+            self._validate_string_list(payload.get("fun_facts"), f"countries.json:{country_code}.fun_facts")
+
+            country_name = payload["name"].strip().lower()
+            if country_name in seen_names:
+                raise DataValidationError(f"Duplicate country name in countries.json: {payload['name']}")
+            seen_names.add(country_name)
+
+            country_capital = payload["capital"].strip().lower()
+            if country_capital in seen_capitals:
+                raise DataValidationError(
+                    f"Duplicate capital in countries.json: {payload['capital']}"
+                )
+            seen_capitals.add(country_capital)
+
+            major_cities = payload.get("major_cities")
+            if major_cities is None:
+                continue
+            if not isinstance(major_cities, list):
+                raise DataValidationError(
+                    f"countries.json:{country_code}.major_cities must be an array when present"
+                )
+
+            seen_major_city_names: Set[str] = set()
+            for city_index, city in enumerate(major_cities):
+                path = f"countries.json:{country_code}.major_cities[{city_index}]"
+                if not isinstance(city, dict):
+                    raise DataValidationError(f"{path} must be an object")
+                self._require_non_empty_string(city.get("name"), f"{path}.name")
+                self._validate_coordinates(city.get("coordinates"), f"{path}.coordinates")
+                normalized_city_name = city["name"].strip().lower()
+                if normalized_city_name in seen_major_city_names:
+                    raise DataValidationError(f"Duplicate major city for {country_code}: {city['name']}")
+                seen_major_city_names.add(normalized_city_name)
+
+    def _validate_capitals(self, capitals: Any, countries: Dict[str, Dict[str, Any]]) -> None:
+        """Validates capitals schema and country alignment."""
+        if not isinstance(capitals, dict) or not capitals:
+            raise DataValidationError("capitals.json must be a non-empty object")
+
+        country_codes = set(countries.keys())
+        capital_codes = set(capitals.keys())
+        missing_codes = sorted(country_codes - capital_codes)
+        extra_codes = sorted(capital_codes - country_codes)
+        if missing_codes or extra_codes:
+            details: List[str] = []
+            if missing_codes:
+                details.append(f"missing countries: {', '.join(missing_codes)}")
+            if extra_codes:
+                details.append(f"unknown countries: {', '.join(extra_codes)}")
+            raise DataValidationError(f"capitals.json country coverage mismatch ({'; '.join(details)})")
+
+        for country_code, capital_name in capitals.items():
+            path = f"capitals.json:{country_code}"
+            self._require_non_empty_string(capital_name, path)
+            expected = countries[country_code]["capital"].strip()
+            if capital_name.strip() != expected:
+                raise DataValidationError(
+                    f"{path} value '{capital_name}' does not match countries.json capital '{expected}'"
+                )
+
+    def _validate_cities(self, cities: Any, countries: Dict[str, Dict[str, Any]]) -> None:
+        """Validates city entries and their references to existing countries."""
+        if not isinstance(cities, dict):
+            raise DataValidationError("cities.json must be an object containing 'cities'")
+        city_entries = cities.get("cities")
+        if not isinstance(city_entries, list) or not city_entries:
+            raise DataValidationError("cities.json.cities must be a non-empty array")
+
+        seen_cities: Set[str] = set()
+        for index, city in enumerate(city_entries):
+            path = f"cities.json:cities[{index}]"
+            if not isinstance(city, dict):
+                raise DataValidationError(f"{path} must be an object")
+
+            self._require_non_empty_string(city.get("name"), f"{path}.name")
+            self._require_non_empty_string(city.get("country"), f"{path}.country")
+            self._validate_coordinates(city.get("coordinates"), f"{path}.coordinates")
+            self._validate_positive_number(city.get("population"), f"{path}.population")
+
+            country_code = city["country"].strip().lower()
+            if country_code not in countries:
+                raise DataValidationError(f"{path}.country '{city['country']}' does not exist in countries.json")
+
+            city_key = f"{country_code}:{city['name'].strip().lower()}"
+            if city_key in seen_cities:
+                raise DataValidationError(f"Duplicate city entry detected: {city['name']} ({country_code})")
+            seen_cities.add(city_key)
+
+    def _validate_landmarks(self, landmarks: Any, countries: Dict[str, Dict[str, Any]]) -> None:
+        """Validates landmark entries and basic schema consistency."""
+        if not isinstance(landmarks, dict):
+            raise DataValidationError("landmarks.json must be an object containing 'landmarks'")
+        landmark_entries = landmarks.get("landmarks")
+        if not isinstance(landmark_entries, list) or not landmark_entries:
+            raise DataValidationError("landmarks.json.landmarks must be a non-empty array")
+
+        seen_landmarks: Set[str] = set()
+        for index, landmark in enumerate(landmark_entries):
+            path = f"landmarks.json:landmarks[{index}]"
+            if not isinstance(landmark, dict):
+                raise DataValidationError(f"{path} must be an object")
+            self._require_non_empty_string(landmark.get("name"), f"{path}.name")
+            self._require_non_empty_string(landmark.get("country"), f"{path}.country")
+            self._require_non_empty_string(landmark.get("type"), f"{path}.type")
+            self._require_non_empty_string(landmark.get("description"), f"{path}.description")
+            self._validate_coordinates(landmark.get("coordinates"), f"{path}.coordinates")
+
+            country_code = landmark["country"].strip().lower()
+            if country_code not in countries:
+                raise DataValidationError(
+                    f"{path}.country '{landmark['country']}' does not exist in countries.json"
+                )
+
+            landmark_key = landmark["name"].strip().lower()
+            if landmark_key in seen_landmarks:
+                raise DataValidationError(f"Duplicate landmark entry detected: {landmark['name']}")
+            seen_landmarks.add(landmark_key)
+
+    def _validate_coordinates(self, coordinates: Any, path: str) -> None:
+        """Validates a latitude/longitude object."""
+        if not isinstance(coordinates, dict):
+            raise DataValidationError(f"{path} must be an object with lat/lng")
+        lat = coordinates.get("lat")
+        lng = coordinates.get("lng")
+        if not isinstance(lat, (int, float)) or not isinstance(lng, (int, float)):
+            raise DataValidationError(f"{path} must contain numeric lat/lng values")
+        if lat < -90 or lat > 90:
+            raise DataValidationError(f"{path}.lat must be between -90 and 90")
+        if lng < -180 or lng > 180:
+            raise DataValidationError(f"{path}.lng must be between -180 and 180")
+
+    def _validate_positive_number(self, value: Any, path: str) -> None:
+        """Validates numeric values that must be positive."""
+        if not isinstance(value, (int, float)) or value <= 0:
+            raise DataValidationError(f"{path} must be a positive number")
+
+    def _validate_string_list(self, value: Any, path: str) -> None:
+        """Validates an array of non-empty strings."""
+        if not isinstance(value, list) or not value:
+            raise DataValidationError(f"{path} must be a non-empty array")
+        for index, item in enumerate(value):
+            self._require_non_empty_string(item, f"{path}[{index}]")
+
+    def _require_non_empty_string(self, value: Any, path: str) -> None:
+        """Validates non-empty string values."""
+        if not isinstance(value, str) or not value.strip():
+            raise DataValidationError(f"{path} must be a non-empty string")
     
     def generate_quiz(self, level: str = "americas", num_questions: int = 10) -> Dict[str, Any]:
         """
@@ -106,8 +308,8 @@ class GeoMasterEngine:
         questions = []
         question_types = challenge_config.get("question_types", ["identify_country", "match_capital", "guess_flag"])
         
-        for i in range(min(num_questions, len(available_countries))):
-            country_key = random.choice(available_countries)
+        country_pool = random.sample(available_countries, min(num_questions, len(available_countries)))
+        for i, country_key in enumerate(country_pool):
             country_data = self.countries.get(country_key, {})
             
             if not country_data:
@@ -133,7 +335,8 @@ class GeoMasterEngine:
     def _get_countries_by_level(self, level: str, challenge_config: Dict) -> List[str]:
         """Obtiene la lista de países según el nivel"""
         if level == "americas":
-            return challenge_config.get("countries_pool", list(self.countries.keys()))
+            countries_pool = challenge_config.get("countries_pool", list(self.countries.keys()))
+            return [country for country in countries_pool if country in self.countries]
         elif level == "world":
             continents = challenge_config.get("continents", ["americas", "europe", "asia", "africa", "oceania"])
             countries = [k for k, v in self.countries.items() 
@@ -188,21 +391,47 @@ class GeoMasterEngine:
     
     def _generate_capital_options(self, correct_capital: str, available_countries: List[str]) -> List[str]:
         """Genera opciones de respuesta para capitales"""
-        options = [correct_capital]
-        other_capitals = [self.countries[k].get('capital', '') 
-                         for k in random.sample(available_countries, min(3, len(available_countries)-1))
-                         if self.countries[k].get('capital') != correct_capital]
-        options.extend(other_capitals[:3])
-        random.shuffle(options)
-        return options
+        candidate_capitals = [
+            self.countries[country_key].get("capital", "")
+            for country_key in available_countries
+            if country_key in self.countries
+        ]
+        return self._build_options(correct_capital, candidate_capitals)
     
     def _generate_country_options(self, correct_country: str, available_countries: List[str]) -> List[str]:
         """Genera opciones de respuesta para países"""
-        options = [correct_country]
-        other_countries = [self.countries[k].get('name', '') 
-                          for k in random.sample(available_countries, min(3, len(available_countries)-1))
-                          if self.countries[k].get('name') != correct_country]
-        options.extend(other_countries[:3])
+        candidate_countries = [
+            self.countries[country_key].get("name", "")
+            for country_key in available_countries
+            if country_key in self.countries
+        ]
+        return self._build_options(correct_country, candidate_countries)
+
+    def _build_options(self, correct_answer: str, candidates: List[str], option_count: int = 4) -> List[str]:
+        """Builds clean answer options without empty values or duplicates."""
+        correct = correct_answer.strip()
+        if not correct:
+            return []
+
+        unique_candidates = []
+        seen_normalized: Set[str] = set()
+
+        for candidate in candidates:
+            if not isinstance(candidate, str):
+                continue
+            cleaned = candidate.strip()
+            if not cleaned:
+                continue
+            normalized = cleaned.lower()
+            if normalized in seen_normalized:
+                continue
+            seen_normalized.add(normalized)
+            unique_candidates.append(cleaned)
+
+        distractors = [item for item in unique_candidates if item.lower() != correct.lower()]
+        random.shuffle(distractors)
+
+        options = [correct, *distractors[: max(0, option_count - 1)]]
         random.shuffle(options)
         return options
     
@@ -372,8 +601,8 @@ class GeoMasterEngine:
         return {
             "total_countries": len(self.countries),
             "total_capitals": len(self.capitals),
-            "total_cities": len(self.cities),
-            "total_landmarks": len(self.landmarks),
+            "total_cities": len(self.cities.get("cities", [])),
+            "total_landmarks": len(self.landmarks.get("landmarks", [])),
             "available_levels": self.challenge_levels
         }
 

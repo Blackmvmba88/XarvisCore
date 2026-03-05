@@ -1,5 +1,15 @@
 import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import {
+  AmbientLight,
+  Color,
+  DirectionalLight,
+  Mesh,
+  MeshPhongMaterial,
+  PerspectiveCamera,
+  Scene,
+  SphereGeometry,
+  WebGLRenderer,
+} from 'three';
 
 interface GeoGlobeProps {
   mode: 'quiz' | 'explore' | 'challenge';
@@ -19,21 +29,21 @@ interface GeoGlobeProps {
  */
 export function GeoGlobe({ mode, highlightCountry, onCountryClick }: GeoGlobeProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const sceneRef = useRef<THREE.Scene | null>(null);
-  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
-  const globeRef = useRef<THREE.Mesh | null>(null);
+  const sceneRef = useRef<Scene | null>(null);
+  const rendererRef = useRef<WebGLRenderer | null>(null);
+  const cameraRef = useRef<PerspectiveCamera | null>(null);
+  const globeRef = useRef<Mesh | null>(null);
 
   useEffect(() => {
     if (!canvasRef.current) return;
 
     // Initialize Three.js scene
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x000814);
+    const scene = new Scene();
+    scene.background = new Color(0x000814);
     sceneRef.current = scene;
 
     // Setup camera
-    const camera = new THREE.PerspectiveCamera(
+    const camera = new PerspectiveCamera(
       75,
       canvasRef.current.clientWidth / canvasRef.current.clientHeight,
       0.1,
@@ -43,7 +53,7 @@ export function GeoGlobe({ mode, highlightCountry, onCountryClick }: GeoGlobePro
     cameraRef.current = camera;
 
     // Setup renderer
-    const renderer = new THREE.WebGLRenderer({
+    const renderer = new WebGLRenderer({
       canvas: canvasRef.current,
       antialias: true,
     });
@@ -51,30 +61,31 @@ export function GeoGlobe({ mode, highlightCountry, onCountryClick }: GeoGlobePro
     rendererRef.current = renderer;
 
     // Create globe
-    const geometry = new THREE.SphereGeometry(2, 64, 64);
+    const geometry = new SphereGeometry(2, 64, 64);
     
     // Create a basic material (in production, this would use Earth texture)
-    const material = new THREE.MeshPhongMaterial({
+    const material = new MeshPhongMaterial({
       color: 0x2c5f2d,
       emissive: 0x112211,
       shininess: 25,
     });
 
-    const globe = new THREE.Mesh(geometry, material);
+    const globe = new Mesh(geometry, material);
     scene.add(globe);
     globeRef.current = globe;
 
     // Add lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    const ambientLight = new AmbientLight(0xffffff, 0.6);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    const directionalLight = new DirectionalLight(0xffffff, 0.8);
     directionalLight.position.set(5, 3, 5);
     scene.add(directionalLight);
 
     // Animation loop
+    let frameId = 0;
     const animate = () => {
-      requestAnimationFrame(animate);
+      frameId = window.requestAnimationFrame(animate);
 
       if (globeRef.current) {
         globeRef.current.rotation.y += 0.002;
@@ -102,9 +113,14 @@ export function GeoGlobe({ mode, highlightCountry, onCountryClick }: GeoGlobePro
     // Cleanup
     return () => {
       window.removeEventListener('resize', handleResize);
-      if (rendererRef.current) {
-        rendererRef.current.dispose();
-      }
+      window.cancelAnimationFrame(frameId);
+      geometry.dispose();
+      material.dispose();
+      rendererRef.current?.dispose();
+      globeRef.current = null;
+      sceneRef.current = null;
+      cameraRef.current = null;
+      rendererRef.current = null;
     };
   }, []);
 

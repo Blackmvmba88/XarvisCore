@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 interface Question {
   id: string;
-  type: 'capital' | 'country' | 'flag' | 'city';
+  type: string;
   question: string;
   options: string[];
   correct_answer: string;

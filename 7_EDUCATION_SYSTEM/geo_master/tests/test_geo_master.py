@@ -6,12 +6,14 @@ Testing quiz generation, validation, scoring, and badge system
 import unittest
 import json
 import sys
+import tempfile
+import shutil
 from pathlib import Path
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from geo_master_engine import GeoMasterEngine
+from geo_master_engine import GeoMasterEngine, DataValidationError
 
 
 class TestGeoMasterEngine(unittest.TestCase):
@@ -312,6 +314,90 @@ class TestGeoMasterDataIntegrity(unittest.TestCase):
             20,
             f"Only {len(americas_countries)} Americas countries found, need at least 20"
         )
+
+
+class TestGeoMasterDataValidation(unittest.TestCase):
+    """Validation tests for malformed data files."""
+
+    def setUp(self):
+        self.source_data_dir = Path(__file__).parent.parent / "data"
+
+    def _build_temp_data_dir(self) -> Path:
+        temp_dir = Path(tempfile.mkdtemp(prefix="geomaster-data-"))
+        for filename in ("countries.json", "capitals.json", "cities.json", "landmarks.json"):
+            shutil.copy2(self.source_data_dir / filename, temp_dir / filename)
+        return temp_dir
+
+    def test_rejects_country_missing_required_field(self):
+        temp_dir = self._build_temp_data_dir()
+        try:
+            countries_file = temp_dir / "countries.json"
+            with open(countries_file, "r", encoding="utf-8") as file_obj:
+                countries = json.load(file_obj)
+            countries["mexico"].pop("capital")
+            with open(countries_file, "w", encoding="utf-8") as file_obj:
+                json.dump(countries, file_obj, ensure_ascii=False, indent=2)
+
+            with self.assertRaisesRegex(DataValidationError, "countries.json:mexico"):
+                GeoMasterEngine(data_dir=temp_dir)
+        finally:
+            shutil.rmtree(temp_dir)
+
+    def test_rejects_capitals_country_mismatch(self):
+        temp_dir = self._build_temp_data_dir()
+        try:
+            capitals_file = temp_dir / "capitals.json"
+            with open(capitals_file, "r", encoding="utf-8") as file_obj:
+                capitals = json.load(file_obj)
+            capitals["mexico"] = "Guadalajara"
+            with open(capitals_file, "w", encoding="utf-8") as file_obj:
+                json.dump(capitals, file_obj, ensure_ascii=False, indent=2)
+
+            with self.assertRaisesRegex(DataValidationError, "capitals.json:mexico"):
+                GeoMasterEngine(data_dir=temp_dir)
+        finally:
+            shutil.rmtree(temp_dir)
+
+    def test_rejects_city_with_unknown_country(self):
+        temp_dir = self._build_temp_data_dir()
+        try:
+            cities_file = temp_dir / "cities.json"
+            with open(cities_file, "r", encoding="utf-8") as file_obj:
+                cities = json.load(file_obj)
+            cities["cities"][0]["country"] = "atlantis"
+            with open(cities_file, "w", encoding="utf-8") as file_obj:
+                json.dump(cities, file_obj, ensure_ascii=False, indent=2)
+
+            with self.assertRaisesRegex(DataValidationError, "atlantis"):
+                GeoMasterEngine(data_dir=temp_dir)
+        finally:
+            shutil.rmtree(temp_dir)
+
+    def test_rejects_coordinates_out_of_range(self):
+        temp_dir = self._build_temp_data_dir()
+        try:
+            countries_file = temp_dir / "countries.json"
+            with open(countries_file, "r", encoding="utf-8") as file_obj:
+                countries = json.load(file_obj)
+            countries["mexico"]["coordinates"]["lat"] = 190
+            with open(countries_file, "w", encoding="utf-8") as file_obj:
+                json.dump(countries, file_obj, ensure_ascii=False, indent=2)
+
+            with self.assertRaisesRegex(DataValidationError, "lat must be between -90 and 90"):
+                GeoMasterEngine(data_dir=temp_dir)
+        finally:
+            shutil.rmtree(temp_dir)
+
+    def test_quiz_options_have_no_duplicates_or_empty_values(self):
+        engine = GeoMasterEngine()
+        quiz = engine.generate_quiz(level="world", num_questions=20)
+
+        for question in quiz["questions"]:
+            options = question.get("options", [])
+            self.assertTrue(options, f"Question {question['id']} has no options")
+            self.assertEqual(len(options), len(set(options)), f"Question {question['id']} has duplicate options")
+            self.assertTrue(all(option.strip() for option in options), f"Question {question['id']} has empty options")
+            self.assertIn(question["correct_answer"], options)
 
 
 if __name__ == "__main__":
