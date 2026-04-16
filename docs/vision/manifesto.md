@@ -1,8 +1,6 @@
 # Xarvis Vision
 
-Xarvis is the sovereign vision layer behind the runtime.
-
-This directory holds the narrative, governance, cultural direction, and long-term philosophy of the ecosystem.
+This directory is the narrative and strategy layer around the executable runtime.
 
 Use it for:
 - manifesto material
@@ -10,4 +8,7 @@ Use it for:
 - cultural framing
 - education and product direction
 
-The executable runtime lives in `xarvis/` and the demo lives in `examples/demo_full/`.
+Keep the runtime surface separate:
+- executable runtime: `xarvis/`
+- canonical demo: `examples/demo_full/`
+- technical docs: `docs/architecture/`
