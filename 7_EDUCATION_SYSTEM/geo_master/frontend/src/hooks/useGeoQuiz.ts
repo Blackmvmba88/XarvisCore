@@ -120,18 +120,18 @@ export function useGeoQuiz(level: string) {
     };
 
     // Update answers array
-    const newAnswers = [...answers, answer];
-    setAnswers(newAnswers);
+    const nextAnswers = [...answers, answer];
+    setAnswers((currentAnswers) => [...currentAnswers, answer]);
 
     // Update score
     if (isCorrect) {
-      setScore(score + 1);
+      setScore((currentScore) => currentScore + 1);
     }
 
     // Move to next question or complete quiz
     if (currentQuestionIndex + 1 >= quiz.questions.length) {
       setIsComplete(true);
-      await saveQuizResults(newAnswers);
+      await saveQuizResults(nextAnswers);
     } else {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
@@ -141,12 +141,13 @@ export function useGeoQuiz(level: string) {
   const saveQuizResults = async (finalAnswers: Answer[]) => {
     try {
       const timeSpent = Math.floor((Date.now() - startTime) / 1000);
+      const correctCount = finalAnswers.reduce((count, answer) => count + Number(answer.is_correct), 0);
       
       const results = {
         quiz_id: quiz?.quiz_id,
         level: quiz?.level,
         answers: finalAnswers,
-        score: finalAnswers.filter(a => a.is_correct).length,
+        score: correctCount,
         total_questions: quiz?.total_questions,
         time_spent: timeSpent,
       };

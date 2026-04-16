@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface Question {
   id: string;
@@ -32,6 +32,16 @@ export function QuizPanel({
 }: QuizPanelProps) {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
+  const timeoutRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current !== null) {
+        window.clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+    };
+  }, []);
 
   const handleOptionClick = (option: string) => {
     if (disabled || isAnswered) return;
@@ -40,10 +50,15 @@ export function QuizPanel({
     setIsAnswered(true);
     
     // Call the parent callback after a brief delay for visual feedback
-    setTimeout(() => {
+    if (timeoutRef.current !== null) {
+      window.clearTimeout(timeoutRef.current);
+    }
+
+    timeoutRef.current = window.setTimeout(() => {
       onAnswer(option);
       setSelectedAnswer(null);
       setIsAnswered(false);
+      timeoutRef.current = null;
     }, 500);
   };
 
