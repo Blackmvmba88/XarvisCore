@@ -25,7 +25,7 @@ def test_runs_export_json_stdout():
         db_path.unlink()
 
     run_xarvis("init")
-    run_xarvis("run")
+    run_xarvis("run", "--json")
 
     export = run_xarvis("runs", "export", "--format", "json", "--limit", "5")
     payload = json.loads(export.stdout)
@@ -39,7 +39,7 @@ def test_runs_export_csv_file(tmp_path):
         db_path.unlink()
 
     run_xarvis("init")
-    run_xarvis("run")
+    run_xarvis("run", "--json")
 
     out = tmp_path / "runs.csv"
     result = run_xarvis("runs", "export", "--format", "csv", "--output", str(out), "--limit", "5")

@@ -25,8 +25,8 @@ def test_runs_stats_human_and_json():
         db_path.unlink()
 
     run_xarvis("init")
-    run_xarvis("run")
-    run_xarvis("run")
+    run_xarvis("run", "--json")
+    run_xarvis("run", "--json")
 
     human = run_xarvis("runs", "stats")
     assert "Total runs:" in human.stdout

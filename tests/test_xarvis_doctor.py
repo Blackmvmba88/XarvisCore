@@ -21,7 +21,7 @@ def run_xarvis(*args):
 
 def test_doctor_reports_healthy_state():
     run_xarvis("init")
-    run_xarvis("run")
+    run_xarvis("run", "--json")
 
     payload = json.loads(run_xarvis("doctor").stdout)
     assert payload["ok"] is True
