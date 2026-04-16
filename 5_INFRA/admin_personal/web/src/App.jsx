@@ -143,9 +143,11 @@ export default function App() {
               <div style={{color:'var(--muted)'}}>No hay secretos — presiona "Refrescar índice"</div>
             ) : (
               Object.entries(secretsIndex).map(([svc, users]) => (
-                <div key={svc} style={{marginBottom:8}}>
-                  <strong>{svc}</strong>
-                  <ul>
+                <details key={svc} style={{marginBottom:8}} open={Object.keys(secretsIndex).length <= 5}>
+                  <summary style={{cursor:'pointer', fontWeight:700}}>
+                    {svc} <span style={{color:'var(--muted)', fontWeight:400}}>({users.length})</span>
+                  </summary>
+                  <ul style={{marginTop:8}}>
                     {users.map(u => (
                       <li key={u} style={{marginTop:6}}>
                         {u} <button className="ghost" style={{marginLeft:8}} onClick={() => getSecret(svc, u)}>Mostrar</button>
@@ -161,7 +163,7 @@ export default function App() {
                       </li>
                     ))}
                   </ul>
-                </div>
+                </details>
               ))
             )}
           </div>
