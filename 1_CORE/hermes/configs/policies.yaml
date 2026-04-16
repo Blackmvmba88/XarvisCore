@@ -1,0 +1,12 @@
+rules:
+  - tool: python
+    read:
+      - data/**
+      - services/**
+    write:
+      - data/**
+    network: false
+  - tool: rag
+    network: false
+  - tool: ingest
+    network: false

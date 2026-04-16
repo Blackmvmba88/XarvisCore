@@ -1,0 +1,17 @@
+runtime:
+  llm: llama3.1:8b   # servido por Ollama (recomendado) o llama.cpp
+  max_tokens: 2048
+  temperature: 0.6
+rag:
+  qdrant_url: ${QDRANT_URL}
+  embed_model: BAAI/bge-m3
+  reranker: bge-reranker-v2-m3
+memory:
+  episodic_dir: data/memory
+  vectors_dir: data/vectors
+policies:
+  allow_shell: false
+  allow_network: false
+  safe_paths:
+    - data
+    - services

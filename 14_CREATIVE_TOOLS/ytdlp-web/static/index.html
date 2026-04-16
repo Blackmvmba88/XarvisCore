@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Estación de Sonido yt-dlp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="min-h-screen bg-slate-950 text-white">
+    <main class="max-w-3xl mx-auto px-4 py-10">
+      <section class="bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-xl">
+        <h1 class="text-3xl font-semibold mb-2">Estación de sonido</h1>
+        <p class="text-slate-300 mb-6">
+          Pega un enlace compatible con yt-dlp, elige el pitch y descarga el resultado.
+        </p>
+        <form id="job-form" class="space-y-6">
+          <label class="block">
+            <span class="text-sm text-slate-400">URL del video/audio</span>
+            <input
+              id="url"
+              name="url"
+              type="url"
+              required
+              placeholder="https://www.youtube.com/watch?v=..."
+              class="mt-1 w-full rounded-lg bg-slate-800 border border-slate-700 px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            />
+          </label>
+
+          <label class="block">
+            <div class="flex items-center justify-between text-sm text-slate-400">
+              <span>Pitch (semitonos)</span>
+              <span id="pitch-label">0</span>
+            </div>
+            <input
+              id="pitch"
+              name="pitch"
+              type="range"
+              min="-12"
+              max="12"
+              step="0.5"
+              value="0"
+              class="w-full"
+            />
+          </label>
+
+          <button
+            type="submit"
+            class="w-full rounded-lg bg-emerald-500 py-3 text-lg font-semibold text-slate-900 transition hover:bg-emerald-400 disabled:opacity-60"
+          >
+            Procesar audio
+          </button>
+        </form>
+
+        <div id="status" class="mt-8 hidden">
+          <p id="status-message" class="text-sm text-slate-400"></p>
+          <a
+            id="download-link"
+            class="mt-4 inline-flex items-center justify-center rounded-lg border border-emerald-400 px-4 py-2 text-emerald-300 hover:bg-emerald-950"
+            href="#"
+            download
+          >Descargar resultado</a>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const form = document.getElementById("job-form");
+      const pitchInput = document.getElementById("pitch");
+      const pitchLabel = document.getElementById("pitch-label");
+      const statusBox = document.getElementById("status");
+      const statusMessage = document.getElementById("status-message");
+      const downloadLink = document.getElementById("download-link");
+
+      pitchInput.addEventListener("input", () => {
+        pitchLabel.textContent = pitchInput.value;
+      });
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const url = document.getElementById("url").value;
+        const pitch = parseFloat(pitchInput.value);
+
+        statusBox.classList.remove("hidden");
+        statusMessage.textContent = "Procesando... esto puede tomar un par de minutos";
+        downloadLink.classList.add("pointer-events-none", "opacity-30");
+
+        try {
+          const response = await fetch("/api/jobs", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ url, pitch_semitones: pitch }),
+          });
+
+          if (!response.ok) {
+            const error = await response.json().catch(() => ({ detail: "Error desconocido" }));
+            throw new Error(error.detail || "No se pudo procesar el audio");
+          }
+
+          const payload = await response.json();
+          statusMessage.textContent = `Listo: ${payload.title || "audio"}`;
+          downloadLink.href = payload.download_url;
+          downloadLink.classList.remove("pointer-events-none", "opacity-30");
+        } catch (error) {
+          statusMessage.textContent = error.message;
+          downloadLink.classList.add("pointer-events-none", "opacity-30");
+        }
+      });
+    </script>
+  </body>
+</html>

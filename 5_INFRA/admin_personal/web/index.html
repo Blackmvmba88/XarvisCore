@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blackmamba Secrets — Personal Manager</title>
+    <!-- Inter font for modern UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#0b0b0d">
+    <link id="favicon" rel="icon" href="/src/assets/snake.svg" type="image/svg+xml">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicons/favicon-48.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicons/favicon-64.png">
+    <link rel="icon" type="image/png" sizes="128x128" href="/favicons/favicon-128.png">
+    <link rel="icon" href="/favicons/favicon.ico" sizes="any">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="/favicons/favicon-128.png">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+
+    <!-- Animated favicon (SVG data URI). Most modern browsers will render the animation. -->
+    <script>
+      (function(){
+        try{
+          const svg = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' width='64' height='64'>
+            <defs>
+              <linearGradient id='g' x1='0' x2='1' y1='0' y2='1'>
+                <stop offset='0' stop-color='#cb36f3'/>
+                <stop offset='1' stop-color='#22d3ff'/>
+              </linearGradient>
+            </defs>
+            <rect width='100%' height='100%' fill='#0b0b0d' />
+            <g fill='none' stroke='url(#g)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
+              <path d='M10 38c4-6 10-10 18-12 7-1 14 0 20 4 4 3 6 7 6 7s-2-7-9-11c-6-3-12-3-18-2C20 26 14 30 10 38z' fill='#0b0b0d' stroke='url(#g)'/>
+            </g>
+            <g>
+              <ellipse cx='46' cy='18.8' rx='3' ry='2.4' fill='#fff'>
+                <animate attributeName='ry' dur='5s' values='2.4;0.3;2.4' repeatCount='indefinite' />
+              </ellipse>
+              <circle cx='46' cy='18.8' r='0.8' fill='#0b0b0d'>
+                <animate attributeName='r' dur='5s' values='0.8;0.1;0.8' repeatCount='indefinite' />
+              </circle>
+            </g>
+          </svg>`;
+          const encoded = 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+          const l = document.getElementById('favicon');
+          if(l) l.href = encoded;
+        }catch(e){ console.warn('favicon animation failed', e); }
+      })();
+    </script>
+  </body>
+</html>

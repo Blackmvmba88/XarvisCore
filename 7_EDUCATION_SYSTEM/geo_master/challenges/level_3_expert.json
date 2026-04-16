@@ -1,0 +1,19 @@
+{
+  "level_id": "expert_master",
+  "name": "Cartógrafo Soberano",
+  "difficulty": "expert",
+  "time_limit_minutes": null,
+  "num_questions": 195,
+  "passing_score": 90,
+  "badge": {
+    "name": "🗺️ Maestro Geógrafo",
+    "description": "Has conquistado el conocimiento total del planeta"
+  },
+  "question_types": [
+    "identify_country",
+    "match_capital",
+    "find_city",
+    "guess_flag"
+  ],
+  "all_countries": true
+}

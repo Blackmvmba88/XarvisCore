@@ -1,0 +1,138 @@
+```
+╔══════════════════════════════════════════════════════════════════╗
+║   🎵 BLACKMAMBA AUDIO DETECTOR - SISTEMA COMPLETO              ║
+║   Arquitecto: Iyari Cancino Gomez                               ║
+║   Fecha: 27 de Diciembre, 2025                                  ║
+╚══════════════════════════════════════════════════════════════════╝
+
+┌─ FILOSOFÍA ──────────────────────────────────────────────────────┐
+│ "Shazam reconoce Spotify, nosotros reconocemos SoundCloud."     │
+└──────────────────────────────────────────────────────────────────┘
+
+╭─ ARQUITECTURA DEL SISTEMA ─────────────────────────────────────╮
+│                                                                  │
+│  ┌─────────────┐      ┌──────────────┐      ┌──────────────┐  │
+│  │   MÚSICA    │──1──>│   INDEXAR    │──2──>│ FINGERPRINT  │  │
+│  │   LIBRARY   │      │   (fpcalc)   │      │   DATABASE   │  │
+│  │ 194 songs   │      └──────────────┘      │ audio_*.json │  │
+│  └─────────────┘                            └──────────────┘  │
+│                                                      │          │
+│                                                      │          │
+│  ┌─────────────┐      ┌──────────────┐             │          │
+│  │  REPRODUCE  │──3──>│    GRABA     │─────4───────┘          │
+│  │   CANCIÓN   │      │  (rec/sox)   │   COMPARA              │
+│  └─────────────┘      │  10 segundos │                        │
+│                       └──────────────┘                        │
+│                                │                               │
+│                                v                               │
+│                       ┌──────────────┐                        │
+│                       │   DETECTA    │                        │
+│                       │   CANCIÓN    │                        │
+│                       │  Confianza   │                        │
+│                       │    >60%      │                        │
+│                       └──────────────┘                        │
+│                                                                  │
+╰──────────────────────────────────────────────────────────────────╯
+
+╭─ MÉTODOS DE DETECCIÓN ─────────────────────────────────────────╮
+│                                                                  │
+│  1. SHAZAM (Spotify)          2. BLACKMAMBA (SoundCloud)       │
+│     ✅ Canciones mainstream    ✅ Tus producciones              │
+│     ⚡ Rápido (2-3 seg)         🎯 Precisión local              │
+│     ❌ No SoundCloud            ⚡ Offline                       │
+│                                                                  │
+│  3. DUAL MODE (RECOMENDADO)                                    │
+│     → Intenta Shazam primero (rápido)                          │
+│     → Si falla, usa BlackMamba (completo)                      │
+│     → Garantiza detección de TODAS tus canciones               │
+│                                                                  │
+╰──────────────────────────────────────────────────────────────────╯
+
+╭─ ARCHIVOS DEL SISTEMA ─────────────────────────────────────────╮
+│                                                                  │
+│  📄 audio_detector.py              - Detector standalone        │
+│  📄 vpa_with_detector.py           - VPA + Detector integrado   │
+│  📄 setup_audio_detector.sh        - Setup automático           │
+│  📄 start_vpa_detector.sh          - Launcher servidor          │
+│  📄 BLACKMAMBA_AUDIO_DETECTOR.md   - Documentación completa    │
+│                                                                  │
+│  📊 music_library.json             - Índice unificado (194)     │
+│  📊 audio_fingerprints.json        - Base de fingerprints       │
+│  📊 music_orphans_report.json      - Reporte de huérfanos       │
+│                                                                  │
+│  📁 audio_recordings/              - Grabaciones temporales     │
+│  📁 lyrics_cache/                  - Cache de letras            │
+│  📁 performance_logs/              - Logs de análisis vocal     │
+│                                                                  │
+╰──────────────────────────────────────────────────────────────────╯
+
+╭─ USO RÁPIDO ───────────────────────────────────────────────────╮
+│                                                                  │
+│  # 1. INDEXAR BIBLIOTECA (primera vez)                         │
+│  $ python3 audio_detector.py --index                           │
+│                                                                  │
+│  # 2. DETECTAR CANCIÓN                                         │
+│  $ python3 audio_detector.py --detect 10                       │
+│                                                                  │
+│  # 3. SERVIDOR VPA + DETECTOR                                  │
+│  $ ./start_vpa_detector.sh                                     │
+│  → http://localhost:9001                                       │
+│                                                                  │
+╰──────────────────────────────────────────────────────────────────╯
+
+╭─ API ENDPOINTS ────────────────────────────────────────────────╮
+│                                                                  │
+│  POST /api/detect/dual          - Shazam + BlackMamba          │
+│  POST /api/detect/blackmamba    - Solo BlackMamba              │
+│  POST /api/index                - Indexar biblioteca           │
+│  GET  /api/detector/status      - Estado del detector          │
+│                                                                  │
+│  # Ejemplo:                                                     │
+│  curl -X POST http://localhost:9001/api/detect/dual \          │
+│       -H "Content-Type: application/json" \                    │
+│       -d '{"duration": 10}'                                    │
+│                                                                  │
+╰──────────────────────────────────────────────────────────────────╯
+
+╭─ TECNOLOGÍA ───────────────────────────────────────────────────╮
+│                                                                  │
+│  🔧 chromaprint (fpcalc)     - Fingerprinting acústico         │
+│  🔧 sox (rec)                - Captura de audio sistema         │
+│  🔧 numpy                    - Procesamiento numérico           │
+│  🔧 flask + flask-cors       - API REST                         │
+│                                                                  │
+│  📐 Algoritmo: Sliding Window Matching                         │
+│     - Window size: 100 frames                                  │
+│     - Offset range: ±20 frames                                 │
+│     - Threshold: 60% similitud mínima                          │
+│                                                                  │
+╰──────────────────────────────────────────────────────────────────╯
+
+╭─ ESTADÍSTICAS ACTUALES ────────────────────────────────────────╮
+│                                                                  │
+│  📚 Biblioteca Total:     194 canciones                        │
+│  🔗 Pares Completos:      17 (MP3 + WAV)                       │
+│  📀 Solo MP3:             169 canciones                        │
+│  🎵 Solo WAV:             8 canciones                          │
+│  💾 Tamaño Total:         2.56 GB                              │
+│  📊 Indexados:            0 (ejecutar --index)                 │
+│                                                                  │
+╰──────────────────────────────────────────────────────────────────╯
+
+╭─ PRÓXIMOS PASOS ───────────────────────────────────────────────╮
+│                                                                  │
+│  ☐ Indexar biblioteca con fingerprints                         │
+│  ☐ Probar detección con canciones de SoundCloud                │
+│  ☐ Iniciar servidor VPA + Detector                             │
+│  ☐ Integrar con Afinador Suno para análisis F0                 │
+│  ☐ Escanear USB cuando esté montado (11,000+ tracks)           │
+│                                                                  │
+╰──────────────────────────────────────────────────────────────────╯
+
+┌─ COMANDO SUGERIDO ──────────────────────────────────────────────┐
+│                                                                  │
+│  # Indexar ahora y probar detector                             │
+│  python3 audio_detector.py --index                             │
+│                                                                  │
+└──────────────────────────────────────────────────────────────────┘
+```

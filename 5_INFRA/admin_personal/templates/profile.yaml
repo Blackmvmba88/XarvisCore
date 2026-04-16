@@ -1,0 +1,7 @@
+# profile.yaml — tu información personal (NO almacenar contraseñas en texto plano)
+name: ""
+email: ""
+phone: ""
+birthday: "YYYY-MM-DD"
+address: ""
+notes: ""

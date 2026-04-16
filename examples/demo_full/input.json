@@ -1,0 +1,7 @@
+{
+  "user_id": "demo_user",
+  "action": "process_data",
+  "payload": {
+    "value": 42
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "exact_title_duplicates": {
+    "": [
+      {
+        "title": "(Intro)",
+        "artist": "BlackMamba",
+        "file": null
+      },
+      {
+        "title": "  ",
+        "artist": "BlackMamba",
+        "file": null
+      }
+    ]
+  },
+  "similar_title_duplicates": [
+    {
+      "song1": {
+        "title": "  T\u00edtulo  Donde La Luna Aprende A Quedar",
+        "artist": "BlackMamba"
+      },
+      "song2": {
+        "title": "  T\u00edtulo  Donde La Luna Aprende A Quedar (Cover)",
+        "artist": "BlackMamba"
+      },
+      "similarity": 0.9024390243902439
+    },
+    {
+      "song1": {
+        "title": "Dennis Castr",
+        "artist": "BlackMamba"
+      },
+      "song2": {
+        "title": "Dennis Castroo",
+        "artist": "BlackMamba"
+      },
+      "similarity": 0.9230769230769231
+    },
+    {
+      "song1": {
+        "title": "Karieluy",
+        "artist": "BlackMamba"
+      },
+      "song2": {
+        "title": "Kariely",
+        "artist": "BlackMamba"
+      },
+      "similarity": 0.9333333333333333
+    },
+    {
+      "song1": {
+        "title": "Nuevo Ritmo",
+        "artist": "BlackMamba"
+      },
+      "song2": {
+        "title": "Nurvo Ritmo",
+        "artist": "BlackMamba"
+      },
+      "similarity": 0.9090909090909091
+    },
+    {
+      "song1": {
+        "title": "Responsereceived1",
+        "artist": "BlackMamba"
+      },
+      "song2": {
+        "title": "Responsereceived2",
+        "artist": "BlackMamba"
+      },
+      "similarity": 0.9411764705882353
+    },
+    {
+      "song1": {
+        "title": "Responsereceived1",
+        "artist": "BlackMamba"
+      },
+      "song2": {
+        "title": "Responsereceived3",
+        "artist": "BlackMamba"
+      },
+      "similarity": 0.9411764705882353
+    },
+    {
+      "song1": {
+        "title": "Responsereceived1",
+        "artist": "BlackMamba"
+      },
+      "song2": {
+        "title": "Responsereceived4",
+        "artist": "BlackMamba"
+      },
+      "similarity": 0.9411764705882353
+    },
+    {
+      "song1": {
+        "title": "Responsereceived2",
+        "artist": "BlackMamba"
+      },
+      "song2": {
+        "title": "Responsereceived3",
+        "artist": "BlackMamba"
+      },
+      "similarity": 0.9411764705882353
+    },
+    {
+      "song1": {
+        "title": "Responsereceived2",
+        "artist": "BlackMamba"
+      },
+      "song2": {
+        "title": "Responsereceived4",
+        "artist": "BlackMamba"
+      },
+      "similarity": 0.9411764705882353
+    },
+    {
+      "song1": {
+        "title": "Responsereceived3",
+        "artist": "BlackMamba"
+      },
+      "song2": {
+        "title": "Responsereceived4",
+        "artist": "BlackMamba"
+      },
+      "similarity": 0.9411764705882353
+    },
+    {
+      "song1": {
+        "title": "T\u00edtulo Sugerido   Principio De Conservac",
+        "artist": "BlackMamba"
+      },
+      "song2": {
+        "title": "T\u00edtulo Sugerido   Principio De Conservac (Cover)",
+        "artist": "BlackMamba"
+      },
+      "similarity": 0.9047619047619048
+    },
+    {
+      "song1": {
+        "title": "Whatsapp Audio 2025-12-23 At 18.01.37 (Cover)",
+        "artist": "BlackMamba"
+      },
+      "song2": {
+        "title": "Whatsapp Audio 2025-12-23 At 18.01.37 (Cover) (Cover)",
+        "artist": "BlackMamba"
+      },
+      "similarity": 0.9183673469387755
+    }
+  ],
+  "file_hash_duplicates": {}
+}

@@ -1,0 +1,20 @@
+# XarvisCore - Dependencias del Sistema Soberano
+# Arquitectura: 19 Dominios Integrados (0-18)
+
+# === CORE FRAMEWORK ===
+flask>=3.0.0
+flask-cors>=4.0.0
+python-dotenv>=1.0.0
+
+# === MONITOREO Y SISTEMA ===
+psutil>=5.9.0
+
+# === HTTP CLIENT ===
+requests>=2.31.0
+
+# === SEGURIDAD (Opcional - SSL/TLS) ===
+pyOpenSSL>=23.0.0
+
+# === HERRAMIENTAS DE DESARROLLO ===
+pytest>=7.4.0
+black>=23.0.0

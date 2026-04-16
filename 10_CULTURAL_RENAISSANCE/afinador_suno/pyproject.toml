@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "afinador_suno"
+version = "0.1.0"
+description = "Afinador en vivo alineado con melodía de canciones (Suno) para macOS"
+authors = [
+  { name = "BlackMamba" }
+]
+requires-python = ">=3.10"
+dependencies = [
+  "numpy>=1.24",
+  "scipy>=1.10",
+  "librosa>=0.10.1",
+  "sounddevice>=0.4.6",
+  "soundfile>=0.12.1",
+  "ffmpeg-python>=0.2.0",
+  "pydantic>=2.7",
+  "rich>=13.7",
+  "ruamel.yaml>=0.18",
+  "typer>=0.12",
+  "torch>=2.2",
+  "torchaudio>=2.2",
+  "torchcrepe>=0.0.23",
+  "demucs>=4.0.1",
+]
+
+[project.scripts]
+afinador-suno = "afinador_suno.cli.main:app"
+
+[tool.setuptools]
+packages = { find = { where = ["src"] } }
+
+[tool.setuptools.package-data]
+"afinador_suno" = ["../settings.yml"]

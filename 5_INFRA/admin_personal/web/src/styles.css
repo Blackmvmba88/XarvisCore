@@ -1,0 +1,104 @@
+:root{
+  --bg-1: #050409; /* deep */
+  --bg-2: linear-gradient(135deg,#071018 0%, #0b0b0d 60%, #060406 100%);
+  --glass: rgba(255,255,255,0.04);
+  --glass-2: rgba(255,255,255,0.02);
+  --accent: rgba(203,54,243,0.95); /* magenta-ey */
+  --accent-2: rgba(34,211,255,0.95); /* aqua */
+  --muted: rgba(255,255,255,0.65);
+  --card-border: rgba(255,255,255,0.06);
+  --radius: 12px;
+  --max-width: 980px;
+}
+
+*{box-sizing:border-box}
+html,body,#root{height:100%}
+body{
+  margin:0;padding:0;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background: var(--bg-2);
+  color: #e6e6e6;
+  -webkit-font-smoothing:antialiased;
+}
+.app-wrap{
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;padding:28px 16px 80px;
+  background-image: radial-gradient( circle at 10% 20%, rgba(203,54,243,0.04), transparent 10% ),
+                    radial-gradient( circle at 70% 70%, rgba(34,211,255,0.03), transparent 10% );
+}
+.header{
+  width:100%;max-width:var(--max-width);display:flex;align-items:center;justify-content:space-between;padding:16px;border-radius:14px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  box-shadow: 0 6px 30px rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px) saturate(120%);
+  border: 1px solid var(--card-border);
+}
+.brand{display:flex;align-items:center;gap:12px}
+.brand .logo{width:56px;height:56px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));box-shadow:0 8px 24px rgba(0,0,0,0.6);padding:6px}
+.brand .logo-img{width:44px;height:44px;display:block;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.6));transition:transform .25s ease}
+.brand .logo-img:hover{transform:scale(1.08) rotate(-8deg)}
+
+/* subtle continuous slither animation */
+@keyframes slither {
+  0% { transform: translateY(0px) rotate(0deg); }
+  25% { transform: translateY(-2px) rotate(-2deg); }
+  50% { transform: translateY(0px) rotate(0deg); }
+  75% { transform: translateY(2px) rotate(2deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+.brand .logo-img{
+  animation: slither 6s ease-in-out infinite;
+}
+
+/* moving highlight over logo container */
+.brand .logo{
+  position:relative;overflow:hidden
+}
+.brand .logo::after{
+  content:"";position:absolute;left:-60%;top:0;width:60%;height:100%;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.12), rgba(255,255,255,0.02));transform:skewX(-18deg);opacity:0.0;pointer-events:none;transition:opacity .2s ease}
+.brand .logo:hover::after{opacity:1;animation: sweep 1.2s ease-in-out}
+@keyframes sweep{
+  0%{left:-60%}
+  100%{left:160%}
+}
+
+/* SVG eye blink animation */
+@keyframes blink {
+  0% { transform: scaleY(1); opacity: 1 }
+  40% { transform: scaleY(1); opacity: 1 }
+  45% { transform: scaleY(0.15); opacity: 0.95 }
+  50% { transform: scaleY(0.02); opacity: 0 }
+  55% { transform: scaleY(0.15); opacity: 0.95 }
+  60% { transform: scaleY(1); opacity: 1 }
+  100% { transform: scaleY(1); opacity: 1 }
+}
+.eye-group .snake-eye{transform-origin:46px 18.8px;animation: blink 6.8s ease-in-out infinite}
+.eye-group .snake-pupil{transform-origin:46px 18.8px;animation: blink 6.8s ease-in-out infinite}
+.eye-group .snake-closed{transform-origin:46px 18.8px;animation: blink 6.8s ease-in-out infinite}
+
+/* faster blink when hovering logo */
+.brand .logo:hover .eye-group .snake-eye,
+.brand .logo:hover .eye-group .snake-pupil,
+.brand .logo:hover .eye-group .snake-closed{animation-duration:1.1s}
+
+.brand .title{font-weight:800;font-size:18px;letter-spacing:0.4px}
+.brand .subtitle{color:var(--muted);font-size:12px;margin-top:2px}
+
+.container{width:100%;max-width:var(--max-width);margin-top:22px;display:grid;grid-template-columns:1fr;gap:18px}
+.card{background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:var(--radius);padding:16px;border:1px solid var(--card-border);backdrop-filter: blur(6px);}
+.card h2{margin:0 0 8px 0}
+..inputs input, .inputs textarea{background: rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.04);padding:8px;border-radius:8px;color: #fff}
+
+.secret-value{width:100%;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.04);padding:8px;border-radius:8px;color:#fff;white-space:pre-wrap;overflow-wrap:break-word}
+
+button.btn{background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;padding:8px 12px;border-radius:10px;color:#050409;font-weight:700;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,0.5)}
+button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);padding:6px 10px;border-radius:8px}
+pre.response{background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.25));padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);}
+
+.footer{margin-top:24px;color:var(--muted);font-size:13px}
+
+a[data-brand-link]{color:var(--muted);text-decoration: none}
+
+@media (min-width:900px){
+  .container{grid-template-columns: 1fr 420px}
+}

@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+pydantic
+requests
+qdrant-client
+sentence-transformers
+numpy

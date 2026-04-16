@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎤 Vocal Performance Analyzer - HonorHero Edition</title>
+    <style>
+        :root {
+            --primary: #00ff41;
+            --secondary: #ff0080;
+            --bg: #0a0a0a;
+            --glass: rgba(20, 20, 20, 0.8);
+            --border: rgba(0, 255, 65, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--primary);
+            font-family: 'Inter', 'Courier New', monospace;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #0a0a0a 100%);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-shadow: 0 0 20px var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .header .tagline {
+            color: var(--secondary);
+            font-size: 1.2rem;
+            font-style: italic;
+        }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .song-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .song-cover {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .song-details h3 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .song-details p {
+            color: rgba(0, 255, 65, 0.7);
+        }
+
+        .lyrics-container {
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            line-height: 1.8;
+        }
+
+        .lyrics-line {
+            padding: 10px;
+            margin: 5px 0;
+            border-left: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .lyrics-line.active {
+            background: rgba(0, 255, 65, 0.1);
+            border-left-color: var(--primary);
+            transform: translateX(10px);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .metric {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        .metric-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-shadow: 0 0 15px var(--primary);
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 10px;
+        }
+
+        .pitch-meter {
+            position: relative;
+            height: 120px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .pitch-needle {
+            position: absolute;
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 10px var(--primary);
+            transition: transform 0.1s;
+        }
+
+        .pitch-scale {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .pitch-mark {
+            width: 2px;
+            height: 60%;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .pitch-mark.center {
+            height: 100%;
+            background: rgba(0, 255, 65, 0.5);
+            width: 3px;
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--primary), #00cc33);
+            border: none;
+            color: #000;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 30px rgba(0, 255, 65, 0.5);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .waveform {
+            height: 80px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            padding: 10px;
+        }
+
+        .wave-bar {
+            width: 4px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 2px;
+            animation: wave 1s ease-in-out infinite;
+        }
+
+        .wave-bar:nth-child(2) { animation-delay: 0.1s; }
+        .wave-bar:nth-child(3) { animation-delay: 0.2s; }
+        .wave-bar:nth-child(4) { animation-delay: 0.3s; }
+        .wave-bar:nth-child(5) { animation-delay: 0.4s; }
+
+        @keyframes wave {
+            0%, 100% { height: 20px; }
+            50% { height: 60px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎤 Vocal Performance Analyzer</h1>
+            <p class="tagline">"Interpretación Consciente sobre Perfección Mecánica"</p>
+            <p style="margin-top: 10px;">
+                <span class="status-indicator"></span>
+                <span id="status-text">Esperando detección...</span>
+            </p>
+        </div>
+
+        <div class="controls">
+            <button onclick="detectSong()">🔍 Detectar Canción (Shazam)</button>
+            <button onclick="startAnalysis()">🎤 Iniciar Análisis Vocal</button>
+            <button onclick="stopAnalysis()">⏹️ Detener</button>
+            <button onclick="savePerformance()">💾 Guardar Performance</button>
+        </div>
+
+        <div class="grid">
+            <div class="glass-card">
+                <h2>🎵 Canción Actual</h2>
+                <div class="song-info" id="song-info">
+                    <div class="song-cover">🎵</div>
+                    <div class="song-details">
+                        <h3 id="song-title">-</h3>
+                        <p id="song-artist">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <h2>📊 Performance en Tiempo Real</h2>
+                <div class="metrics-grid">
+                    <div class="metric">
+                        <div class="metric-value" id="pitch-score">0</div>
+                        <div class="metric-label">Afinación</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="timing-score">0</div>
+                        <div class="metric-label">Sincronización</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <h2>🎯 Medidor de Afinación</h2>
+            <div class="pitch-meter">
+                <div class="pitch-scale">
+                    <div class="pitch-mark"></div>
+                    <div class="pitch-mark"></div>
+                    <div class="pitch-mark center"></div>
+                    <div class="pitch-mark"></div>
+                    <div class="pitch-mark"></div>
+                </div>
+                <div class="pitch-needle" id="pitch-needle"></div>
+            </div>
+            <div class="waveform">
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <h2>📝 Letra Sincronizada</h2>
+            <div class="lyrics-container" id="lyrics-container">
+                <p style="text-align: center; color: rgba(255,255,255,0.5);">
+                    Esperando detección de canción...
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = "http://localhost:9000";
+        let analysisInterval = null;
+
+        async function detectSong() {
+            updateStatus("Detectando canción...");
+            try {
+                const response = await fetch(`${API_BASE}/detect`, {
+                    method: "POST"
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById("song-title").textContent = data.song.title;
+                    document.getElementById("song-artist").textContent = data.song.artist;
+                    
+                    if (data.lyrics) {
+                        displayLyrics(data.lyrics.lyrics);
+                    }
+                    
+                    updateStatus("Canción detectada ✅");
+                } else {
+                    updateStatus("No se detectó canción ❌");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                updateStatus("Error de conexión ❌");
+            }
+        }
+
+        function displayLyrics(lyricsText) {
+            const container = document.getElementById("lyrics-container");
+            const lines = lyricsText.split("\n");
+            
+            container.innerHTML = lines.map((line, index) => 
+                `<div class="lyrics-line" id="line-${index}">${line || "&nbsp;"}</div>`
+            ).join("");
+        }
+
+        function startAnalysis() {
+            updateStatus("Analizando voz en tiempo real...");
+            analysisInterval = setInterval(updateMetrics, 500);
+        }
+
+        function stopAnalysis() {
+            if (analysisInterval) {
+                clearInterval(analysisInterval);
+                analysisInterval = null;
+            }
+            updateStatus("Análisis detenido");
+        }
+
+        async function updateMetrics() {
+            try {
+                const response = await fetch(`${API_BASE}/performance`);
+                const data = await response.json();
+                
+                if (data.performance) {
+                    document.getElementById("pitch-score").textContent = 
+                        Math.round(data.performance.pitch_score);
+                    document.getElementById("timing-score").textContent = 
+                        Math.round(data.performance.timing_score);
+                    
+                    // Actualizar aguja de afinación (mock)
+                    const deviation = (Math.random() - 0.5) * 100; // -50 a +50 cents
+                    updatePitchNeedle(deviation);
+                }
+            } catch (error) {
+                console.error("Error actualizando métricas:", error);
+            }
+        }
+
+        function updatePitchNeedle(cents) {
+            const needle = document.getElementById("pitch-needle");
+            // Transformar cents (-100 a +100) a posición (-50% a +50%)
+            const position = (cents / 100) * 50;
+            needle.style.transform = `translateX(calc(-50% + ${position}%))`;
+            
+            // Cambiar color según precisión
+            if (Math.abs(cents) <= 25) {
+                needle.style.background = "var(--primary)";
+            } else if (Math.abs(cents) <= 50) {
+                needle.style.background = "#ffaa00";
+            } else {
+                needle.style.background = "var(--secondary)";
+            }
+        }
+
+        async function savePerformance() {
+            updateStatus("Guardando performance...");
+            // TODO: implementar guardado
+            setTimeout(() => updateStatus("Performance guardada ✅"), 1000);
+        }
+
+        function updateStatus(text) {
+            document.getElementById("status-text").textContent = text;
+        }
+
+        // Actualizar estado cada 5 segundos
+        setInterval(async () => {
+            try {
+                const response = await fetch(`${API_BASE}/status`);
+                const data = await response.json();
+                if (data.current_song && !analysisInterval) {
+                    updateStatus("Listo para analizar");
+                }
+            } catch (error) {
+                // Silencioso
+            }
+        }, 5000);
+    </script>
+</body>
+</html>

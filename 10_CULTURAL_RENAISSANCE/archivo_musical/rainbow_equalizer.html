@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌈 BLACKMAMBA RAINBOW EQUALIZER</title>
+    <!-- Hydra Synth para efectos visuales -->
+    <script src="https://unpkg.com/hydra-synth"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .equalizer-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+        }
+
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #ff0066, #ffaa00, #00ff66, #0066ff, #6600ff, #ff0066);
+            background-size: 600% 600%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            animation: rainbow-text 3s ease-in-out infinite;
+        }
+
+        @keyframes rainbow-text {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .controls {
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .control-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .control-btn.active {
+            background: linear-gradient(45deg, #ff0066, #00ff66);
+            border-color: transparent;
+        }
+
+        #visualizer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: 2;
+        }
+
+        #hydraCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.7;
+            mix-blend-mode: screen;
+        }
+
+        .status {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 10px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .volume-meter {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .volume-fill {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: linear-gradient(to top, #ff0066, #ffaa00, #00ff66, #0066ff);
+            transition: height 0.1s ease;
+            border-radius: 10px;
+        }
+
+        .frequency-labels {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        .pulsing {
+            animation: pulse 0.5s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="equalizer-container">
+        <div class="header">
+            <h1>🌈 BLACKMAMBA RAINBOW EQUALIZER 🎵</h1>
+            <p>Visualizador de Audio en Tiempo Real | Studio Mac</p>
+        </div>
+
+        <div class="controls">
+            <button class="control-btn" id="startBtn">🎤 Iniciar Micrófono</button>
+            <button class="control-btn" id="stopBtn">⏹️ Detener</button>
+            <button class="control-btn" id="modeBtn">🌊 Modo: Ondas</button>
+            <button class="control-btn" id="speedBtn">⚡ Velocidad: Normal</button>
+            <button class="control-btn" id="hydraBtn">🐍 Efectos: OFF</button>
+            <button class="control-btn" id="effectBtn">✨ Efecto: Plasma</button>
+        </div>
+
+        <canvas id="hydraCanvas"></canvas>
+        <canvas id="visualizer"></canvas>
+
+        <div class="volume-meter">
+            <div class="volume-fill" id="volumeFill"></div>
+        </div>
+
+        <div class="frequency-labels">
+            <span>60Hz</span>
+            <span>170Hz</span>
+            <span>310Hz</span>
+            <span>600Hz</span>
+            <span>1kHz</span>
+            <span>3kHz</span>
+            <span>6kHz</span>
+            <span>12kHz</span>
+            <span>14kHz</span>
+            <span>16kHz</span>
+        </div>
+
+        <div class="status">
+            <div id="statusText">🎵 Haz clic en "Iniciar Micrófono" para comenzar</div>
+        </div>
+    </div>
+
+    <script>
+        class BlackMambaRainbowEqualizer {
+            constructor() {
+                this.canvas = document.getElementById('visualizer');
+                this.ctx = this.canvas.getContext('2d');
+                this.audioContext = null;
+                this.analyser = null;
+                this.microphone = null;
+                this.dataArray = null;
+                this.bufferLength = null;
+                this.isActive = false;
+                
+                // Hydra Synth para efectos
+                this.hydra = null;
+                this.isHydraActive = false;
+                this.currentEffect = 'plasma';
+                this.startTime = Date.now();
+                this.hydraCanvas = document.getElementById('hydraCanvas');
+                
+                // Optimización de rendimiento
+                this.lastFrame = 0;
+                this.lastHydraUpdate = 0;
+                this.performanceMode = false; // Auto-optimización
+                this.performanceCounter = 0;
+                
+                // Configuración visual
+                this.mode = 'waves'; // 'waves', 'bars', 'circle'
+                this.speed = 1;
+                this.colorOffset = 0;
+                this.waveOffset = 0;
+                
+                // Elementos UI
+                this.startBtn = document.getElementById('startBtn');
+                this.stopBtn = document.getElementById('stopBtn');
+                this.modeBtn = document.getElementById('modeBtn');
+                this.speedBtn = document.getElementById('speedBtn');
+                this.hydraBtn = document.getElementById('hydraBtn');
+                this.effectBtn = document.getElementById('effectBtn');
+                this.statusText = document.getElementById('statusText');
+                this.volumeFill = document.getElementById('volumeFill');
+                
+                this.initializeCanvas();
+                this.setupEventListeners();
+                this.setupGradientColors();
+                this.initializeHydra();
+            }
+
+            initializeCanvas() {
+                const resizeCanvas = () => {
+                    this.canvas.width = window.innerWidth;
+                    this.canvas.height = window.innerHeight;
+                    this.hydraCanvas.width = window.innerWidth;
+                    this.hydraCanvas.height = window.innerHeight;
+                };
+                
+                resizeCanvas();
+                window.addEventListener('resize', resizeCanvas);
+            }
+
+            setupEventListeners() {
+                this.startBtn.addEventListener('click', () => this.startMicrophone());
+                this.stopBtn.addEventListener('click', () => this.stopMicrophone());
+                this.modeBtn.addEventListener('click', () => this.cycleMode());
+                this.speedBtn.addEventListener('click', () => this.cycleSpeed());
+                this.hydraBtn.addEventListener('click', () => this.toggleHydra());
+                this.effectBtn.addEventListener('click', () => this.cycleEffect());
+            }
+
+            setupGradientColors() {
+                this.rainbowColors = [
+                    '#ff0066', '#ff3366', '#ff6666', '#ff9966', '#ffcc66',
+                    '#ffff66', '#ccff66', '#99ff66', '#66ff66', '#66ff99',
+                    '#66ffcc', '#66ffff', '#66ccff', '#6699ff', '#6666ff',
+                    '#9966ff', '#cc66ff', '#ff66ff', '#ff66cc', '#ff6699'
+                ];
+            }
+
+            initializeHydra() {
+                try {
+                    if (typeof Hydra !== 'undefined') {
+                        this.hydra = new Hydra({
+                            canvas: this.hydraCanvas,
+                            detectAudio: false,
+                            enableStreamCapture: false,
+                            precision: 'mediump'
+                        });
+                        console.log('🐍 Hydra inicializado correctamente');
+                    } else {
+                        console.warn('⚠️ Hydra no disponible, efectos deshabilitados');
+                        this.hydraBtn.style.display = 'none';
+                        this.effectBtn.style.display = 'none';
+                    }
+                } catch (error) {
+                    console.error('❌ Error inicializando Hydra:', error);
+                    this.hydraBtn.style.display = 'none';
+                    this.effectBtn.style.display = 'none';
+                }
+            }
+
+            toggleHydra() {
+                if (this.isHydraActive) {
+                    this.isHydraActive = false;
+                    this.hydraBtn.textContent = '🐍 Efectos: OFF';
+                    this.hydraBtn.classList.remove('active');
+                    this.hydraCanvas.style.display = 'none';
+                    if (this.hydra) {
+                        solid(0, 0, 0, 0).out();
+                    }
+                } else {
+                    this.isHydraActive = true;
+                    this.hydraBtn.textContent = '🐍 Efectos: ON';
+                    this.hydraBtn.classList.add('active');
+                    this.hydraCanvas.style.display = 'block';
+                    this.startHydraEffect();
+                }
+            }
+
+            cycleEffect() {
+                const effects = ['plasma', 'kaleidoscope', 'waves', 'tunnel', 'fractal'];
+                const currentIndex = effects.indexOf(this.currentEffect);
+                this.currentEffect = effects[(currentIndex + 1) % effects.length];
+                this.effectBtn.textContent = `✨ Efecto: ${this.currentEffect.charAt(0).toUpperCase() + this.currentEffect.slice(1)}`;
+                
+                if (this.isHydraActive) {
+                    this.startHydraEffect();
+                }
+            }
+
+            startHydraEffect() {
+                if (!this.hydra || !this.isHydraActive || !this.dataArray) return;
+                
+                // Throttling para mejor rendimiento
+                if (!this.lastHydraUpdate) this.lastHydraUpdate = 0;
+                const now = Date.now();
+                if (now - this.lastHydraUpdate < 33) return; // Max 30fps para Hydra
+                this.lastHydraUpdate = now;
+                
+                const time = (now - this.startTime) * 0.001;
+                const audioValue = this.dataArray.reduce((a, b) => a + b) / this.dataArray.length / 255;
+                
+                try {
+                    switch (this.currentEffect) {
+                        case 'plasma':
+                            osc(4, 0.1, () => audioValue * 2)
+                                .color(() => Math.sin(time * 0.5) * 0.5 + 0.5, () => Math.cos(time * 0.3) * 0.5 + 0.5, () => Math.sin(time * 0.7) * 0.5 + 0.5)
+                                .rotate(() => time * 0.1)
+                                .modulate(noise(3, () => audioValue * 0.5))
+                                .blend(osc(8, 0.1, 2).rotate(() => time * -0.05))
+                                .out();
+                            break;
+                            
+                        case 'kaleidoscope':
+                            osc(10, () => audioValue * 0.5, 1.2)
+                                .kaleid(() => Math.max(3, Math.floor(audioValue * 8) + 3))
+                                .color(() => Math.sin(time * 0.2), () => Math.cos(time * 0.3), () => Math.sin(time * 0.25))
+                                .rotate(() => time * 0.2)
+                                .scale(() => 1 + audioValue * 0.5)
+                                .out();
+                            break;
+                            
+                        case 'waves':
+                            osc(20, () => audioValue * 0.3, 0.8)
+                                .mult(osc(40, 0.1, 1.2).rotate(() => time * 0.1))
+                                .color(1.2, 0.8, () => 1 + Math.sin(time * 0.1))
+                                .modulate(voronoi(5, () => audioValue * 2))
+                                .scale(() => 1 + audioValue * 0.3)
+                                .out();
+                            break;
+                            
+                        case 'tunnel':
+                            osc(5, 0.1, () => 1 + audioValue)
+                                .rotate(() => time * 0.2)
+                                .mult(osc(20, 0.05, 2))
+                                .color(() => Math.sin(time * 0.3) * 0.5 + 0.5, 0.5, () => Math.cos(time * 0.2) * 0.5 + 0.5)
+                                .modulateScale(voronoi(8, () => audioValue), () => audioValue * 0.5 + 0.5)
+                                .out();
+                            break;
+                            
+                        case 'fractal':
+                            noise(3, () => audioValue * 0.3)
+                                .thresh(() => audioValue * 0.5 + 0.2)
+                                .color(() => Math.sin(time * 0.1) * 0.5 + 0.5, () => Math.cos(time * 0.15) * 0.5 + 0.5, () => Math.sin(time * 0.2) * 0.5 + 0.5)
+                                .kaleid(() => Math.max(2, Math.floor(audioValue * 6) + 2))
+                                .scale(() => 1 + Math.sin(time * 0.05) * 0.3)
+                                .rotate(() => time * 0.1)
+                                .out();
+                            break;
+                    }
+                } catch (error) {
+                    console.warn('🐍 Error en efecto Hydra:', error);
+                    // Fallback a efecto básico
+                    try {
+                        solid(Math.sin(time) * 0.5 + 0.5, Math.cos(time * 0.7) * 0.5 + 0.5, Math.sin(time * 1.3) * 0.5 + 0.5, 0.3).out();
+                    } catch (fallbackError) {
+                        console.error('❌ Error crítico en Hydra:', fallbackError);
+                    }
+                }
+            }
+
+            async startMicrophone() {
+                try {
+                    // Validar soporte de Web Audio API
+                    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                        throw new Error('Web Audio API no soportada en este navegador');
+                    }
+                    
+                    this.statusText.textContent = '🎤 Solicitando acceso al micrófono...';
+                    
+                    const stream = await navigator.mediaDevices.getUserMedia({ 
+                        audio: {
+                            echoCancellation: false,
+                            noiseSuppression: false,
+                            autoGainControl: false,
+                            sampleRate: 44100,
+                            channelCount: 1
+                        }
+                    });
+                    
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)({
+                        latencyHint: 'interactive',
+                        sampleRate: 44100
+                    });
+                    this.microphone = this.audioContext.createMediaStreamSource(stream);
+                    this.analyser = this.audioContext.createAnalyser();
+                    
+                    // Configuración optimizada del analizador
+                    this.analyser.fftSize = 2048; // Más precisión
+                    this.analyser.smoothingTimeConstant = 0.25; // Más responsivo
+                    this.analyser.minDecibels = -90;
+                    this.analyser.maxDecibels = -10;
+                    this.bufferLength = this.analyser.frequencyBinCount;
+                    this.dataArray = new Uint8Array(this.bufferLength);
+                    
+                    this.microphone.connect(this.analyser);
+                    
+                    this.isActive = true;
+                    this.startBtn.classList.add('active');
+                    this.statusText.textContent = '🎵 ¡Ecualizador activo! Habla o toca música';
+                    
+                    this.animate();
+                    
+                } catch (error) {
+                    console.error('Error accediendo al micrófono:', error);
+                    this.statusText.textContent = '❌ Error: Permite acceso al micrófono';
+                }
+            }
+
+            stopMicrophone() {
+                try {
+                    this.isActive = false;
+                    
+                    // Desconectar micrófono primero
+                    if (this.microphone) {
+                        this.microphone.disconnect();
+                        this.microphone = null;
+                    }
+                    
+                    // Cerrar contexto de audio
+                    if (this.audioContext && this.audioContext.state !== 'closed') {
+                        this.audioContext.close().then(() => {
+                            this.audioContext = null;
+                        }).catch(err => console.warn('Error cerrando AudioContext:', err));
+                    }
+                    
+                    // Limpiar Hydra
+                    if (this.isHydraActive && this.hydra) {
+                        solid(0, 0, 0, 0).out();
+                        this.isHydraActive = false;
+                        this.hydraBtn.textContent = '🐍 Efectos: OFF';
+                        this.hydraBtn.classList.remove('active');
+                    }
+                    
+                    this.startBtn.classList.remove('active');
+                    this.statusText.textContent = '⏹️ Ecualizador detenido - Recursos liberados';
+                    
+                    // Limpiar ambos canvas
+                    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                    if (this.hydraCanvas) {
+                        const hydraCtx = this.hydraCanvas.getContext('2d');
+                        if (hydraCtx) hydraCtx.clearRect(0, 0, this.hydraCanvas.width, this.hydraCanvas.height);
+                    }
+                    
+                    // Reset volume meter
+                    this.volumeFill.style.height = '0%';
+                    
+                } catch (error) {
+                    console.error('Error al detener micrófono:', error);
+                    this.statusText.textContent = '⚠️ Error al detener - Recarga la página';
+                }
+            }
+
+            cycleMode() {
+                const modes = ['waves', 'bars', 'circle', 'spiral', 'sphere'];
+                const currentIndex = modes.indexOf(this.mode);
+                this.mode = modes[(currentIndex + 1) % modes.length];
+                this.modeBtn.textContent = `🌊 Modo: ${this.mode.charAt(0).toUpperCase() + this.mode.slice(1)}`;
+            }
+
+            cycleSpeed() {
+                const speeds = [0.5, 1, 2, 3];
+                const speedNames = ['Lento', 'Normal', 'Rápido', 'Turbo'];
+                const currentIndex = speeds.indexOf(this.speed);
+                const nextIndex = (currentIndex + 1) % speeds.length;
+                this.speed = speeds[nextIndex];
+                this.speedBtn.textContent = `⚡ Velocidad: ${speedNames[nextIndex]}`;
+            }
+
+            animate() {
+                if (!this.isActive || !this.analyser) return;
+                
+                requestAnimationFrame(() => this.animate());
+                
+                // Gestión de frame rate
+                if (!this.lastFrame) this.lastFrame = 0;
+                const now = performance.now();
+                const deltaTime = now - this.lastFrame;
+                
+                // Limitar a 60fps máximo
+                if (deltaTime < 16.67) return;
+                this.lastFrame = now;
+                
+                try {
+                    this.analyser.getByteFrequencyData(this.dataArray);
+                } catch (error) {
+                    console.warn('⚠️ Error obteniendo datos de audio:', error);
+                    // Continuar con datos anteriores o crear datos simulados
+                    if (!this.dataArray) {
+                        this.dataArray = new Uint8Array(this.bufferLength).fill(0);
+                    }
+                    return;
+                }
+                
+                // Actualizar offset para animación rainbow
+                this.colorOffset += 0.02 * this.speed;
+                this.waveOffset += 0.05 * this.speed;
+                
+                // Calcular volumen promedio una sola vez
+                const audioSum = this.dataArray.reduce((a, b) => a + b);
+                const averageVolume = audioSum / this.dataArray.length;
+                this.updateVolumemeter(averageVolume);
+                
+                // Limpiar canvas con fade effect
+                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Renderizar según el modo
+                switch (this.mode) {
+                    case 'waves':
+                        this.drawWaves();
+                        break;
+                    case 'bars':
+                        this.drawBars();
+                        break;
+                    case 'circle':
+                        this.drawCircle();
+                        break;
+                    case 'spiral':
+                        this.drawSpiral();
+                        break;
+                    case 'sphere':
+                        this.drawSphere();
+                        break;
+                }
+                
+                // Actualizar efectos Hydra si están activos
+                if (this.isHydraActive && this.hydra) {
+                    this.startHydraEffect();
+                }
+                
+                // Monitor de rendimiento automático
+                this.monitorPerformance();
+            }
+            
+            monitorPerformance() {
+                if (!this.performanceCounter) this.performanceCounter = 0;
+                this.performanceCounter++;
+                
+                // Verificar rendimiento cada 300 frames (~5 segundos a 60fps)
+                if (this.performanceCounter % 300 === 0) {
+                    const frameTime = performance.now() - this.lastFrame;
+                    
+                    // Si el frame time es > 33ms (< 30fps), activar modo rendimiento
+                    if (frameTime > 33 && !this.performanceMode) {
+                        this.enablePerformanceMode();
+                    } else if (frameTime < 16 && this.performanceMode) {
+                        this.disablePerformanceMode();
+                    }
+                }
+            }
+            
+            enablePerformanceMode() {
+                this.performanceMode = true;
+                this.analyser.fftSize = 1024; // Reducir precisión
+                this.statusText.textContent += ' | 🚀 Modo rendimiento activo';
+                console.log('🚀 Modo rendimiento activado automáticamente');
+            }
+            
+            disablePerformanceMode() {
+                this.performanceMode = false;
+                this.analyser.fftSize = 2048; // Restaurar precisión
+                this.statusText.textContent = this.statusText.textContent.replace(' | 🚀 Modo rendimiento activo', '');
+                console.log('⚡ Modo rendimiento desactivado');
+            }
+
+            drawWaves() {
+                const centerY = this.canvas.height / 2;
+                const baseAmplitude = 150;
+                const frequency = 0.015;
+                
+                // Calcular amplitud dinámica basada en el volumen promedio
+                const averageVolume = this.dataArray.reduce((a, b) => a + b) / this.dataArray.length;
+                const volumeMultiplier = Math.max(0.3, averageVolume / 128); // Mínimo 30% amplitud
+                const dynamicAmplitude = baseAmplitude * volumeMultiplier;
+                
+                // Dibujar múltiples ondas con diferentes frecuencias y amplitudes
+                for (let wave = 0; wave < 7; wave++) {
+                    this.ctx.beginPath();
+                    this.ctx.lineWidth = wave === 0 ? 4 : 2;
+                    
+                    const gradient = this.ctx.createLinearGradient(0, 0, this.canvas.width, 0);
+                    const colorShift = (this.colorOffset + wave * 3) % this.rainbowColors.length;
+                    for (let i = 0; i < this.rainbowColors.length; i++) {
+                        const colorIndex = (i + Math.floor(colorShift)) % this.rainbowColors.length;
+                        gradient.addColorStop(i / (this.rainbowColors.length - 1), this.rainbowColors[colorIndex]);
+                    }
+                    this.ctx.strokeStyle = gradient;
+                    
+                    for (let x = 0; x < this.canvas.width; x += 2) {
+                        const dataIndex = Math.floor((x / this.canvas.width) * this.bufferLength);
+                        const audioValue = this.dataArray[dataIndex] || 0;
+                        
+                        // Amplificar ondas pequeñas
+                        const normalizedAudio = audioValue / 255;
+                        const amplifiedAudio = Math.pow(normalizedAudio, 0.7); // Amplificación no lineal
+                        
+                        const waveAmplitude = dynamicAmplitude * (amplifiedAudio + 0.2); // Base mínima
+                        const waveFreq = frequency * (1 + wave * 0.3);
+                        
+                        const y = centerY + 
+                                 Math.sin(x * waveFreq + this.waveOffset + wave) * waveAmplitude +
+                                 Math.sin(x * waveFreq * 1.5 + this.waveOffset * 1.5) * (waveAmplitude * 0.3) +
+                                 Math.sin(x * 0.005 + this.waveOffset) * 15; // Onda base
+                        
+                        if (x === 0) {
+                            this.ctx.moveTo(x, y);
+                        } else {
+                            this.ctx.lineTo(x, y);
+                        }
+                    }
+                    
+                    this.ctx.stroke();
+                }
+            }
+
+            drawBars() {
+                const barWidth = this.canvas.width / this.bufferLength * 2;
+                const barSpacing = 2;
+                
+                for (let i = 0; i < this.bufferLength; i++) {
+                    const barHeight = (this.dataArray[i] / 255) * this.canvas.height * 0.8;
+                    const x = i * (barWidth + barSpacing);
+                    const y = this.canvas.height - barHeight;
+                    
+                    // Crear gradiente rainbow para cada barra
+                    const gradient = this.ctx.createLinearGradient(0, y, 0, this.canvas.height);
+                    const colorIndex = (i + this.colorOffset * 10) % this.rainbowColors.length;
+                    gradient.addColorStop(0, this.rainbowColors[Math.floor(colorIndex)]);
+                    gradient.addColorStop(1, this.rainbowColors[Math.floor((colorIndex + 1) % this.rainbowColors.length)]);
+                    
+                    this.ctx.fillStyle = gradient;
+                    this.ctx.fillRect(x, y, barWidth, barHeight);
+                }
+            }
+
+            drawCircle() {
+                const centerX = this.canvas.width / 2;
+                const centerY = this.canvas.height / 2;
+                const baseRadius = 80;
+                
+                // Calcular volumen promedio para animación dinámica
+                const averageVolume = this.dataArray.reduce((a, b) => a + b) / this.dataArray.length;
+                const pulseRadius = baseRadius + (averageVolume / 255) * 50;
+                
+                // Dibujar círculo base pulsante
+                this.ctx.beginPath();
+                this.ctx.strokeStyle = this.rainbowColors[Math.floor(this.colorOffset * 5) % this.rainbowColors.length];
+                this.ctx.lineWidth = 2;
+                this.ctx.arc(centerX, centerY, pulseRadius, 0, Math.PI * 2);
+                this.ctx.stroke();
+                
+                // Dibujar puntos de frecuencia
+                for (let i = 0; i < this.bufferLength; i += 2) {
+                    const angle = (i / this.bufferLength) * Math.PI * 4; // Dos vueltas
+                    const audioValue = this.dataArray[i] || 0;
+                    
+                    // Amplificar valores pequeños
+                    const normalizedAudio = audioValue / 255;
+                    const amplifiedAudio = Math.pow(normalizedAudio, 0.6) + 0.1;
+                    
+                    const amplitude = amplifiedAudio * 180;
+                    const radius = baseRadius + amplitude;
+                    
+                    const x = centerX + Math.cos(angle + this.waveOffset) * radius;
+                    const y = centerY + Math.sin(angle + this.waveOffset) * radius;
+                    
+                    const colorIndex = (i + this.colorOffset * 15) % this.rainbowColors.length;
+                    this.ctx.fillStyle = this.rainbowColors[Math.floor(colorIndex)];
+                    
+                    // Tamaño del punto basado en amplitud
+                    const pointSize = Math.max(1, amplifiedAudio * 6);
+                    this.ctx.beginPath();
+                    this.ctx.arc(x, y, pointSize, 0, Math.PI * 2);
+                    this.ctx.fill();
+                    
+                    // Líneas conectoras ocasionales
+                    if (i > 0 && i % 8 === 0 && amplifiedAudio > 0.3) {
+                        const prevAngle = ((i - 8) / this.bufferLength) * Math.PI * 4;
+                        const prevAudio = (this.dataArray[i - 8] || 0) / 255;
+                        const prevRadius = baseRadius + Math.pow(prevAudio, 0.6) * 180;
+                        const prevX = centerX + Math.cos(prevAngle + this.waveOffset) * prevRadius;
+                        const prevY = centerY + Math.sin(prevAngle + this.waveOffset) * prevRadius;
+                        
+                        this.ctx.beginPath();
+                        this.ctx.strokeStyle = this.rainbowColors[Math.floor(colorIndex)];
+                        this.ctx.lineWidth = 1;
+                        this.ctx.moveTo(prevX, prevY);
+                        this.ctx.lineTo(x, y);
+                        this.ctx.stroke();
+                    }
+                }
+            }
+
+            drawSpiral() {
+                const centerX = this.canvas.width / 2;
+                const centerY = this.canvas.height / 2;
+                const maxRadius = Math.min(this.canvas.width, this.canvas.height) * 0.4;
+                
+                // Múltiples espirales con diferentes velocidades
+                for (let spiral = 0; spiral < 3; spiral++) {
+                    this.ctx.beginPath();
+                    
+                    const spiralOffset = spiral * Math.PI * 2 / 3; // 120° entre espirales
+                    const spiralSpeed = 1 + spiral * 0.3;
+                    
+                    for (let i = 0; i < this.bufferLength; i++) {
+                        const audioValue = this.dataArray[i] || 0;
+                        
+                        // Amplificar valores pequeños significativamente
+                        const normalizedAudio = audioValue / 255;
+                        const amplifiedAudio = Math.pow(normalizedAudio, 0.5) + 0.15; // Base mínima del 15%
+                        
+                        // Ángulo del espiral
+                        const spiralTurns = 4; // Número de vueltas
+                        const angle = (i / this.bufferLength) * Math.PI * spiralTurns * spiralSpeed + 
+                                     this.waveOffset * spiralSpeed + spiralOffset;
+                        
+                        // Radio base del espiral + amplitud del audio
+                        const baseRadius = (i / this.bufferLength) * maxRadius;
+                        const amplitude = amplifiedAudio * 100;
+                        const radius = baseRadius + amplitude;
+                        
+                        const x = centerX + Math.cos(angle) * radius;
+                        const y = centerY + Math.sin(angle) * radius;
+                        
+                        // Color dinámico
+                        const colorIndex = (i + this.colorOffset * 10 + spiral * 5) % this.rainbowColors.length;
+                        this.ctx.fillStyle = this.rainbowColors[Math.floor(colorIndex)];
+                        
+                        // Tamaño del punto basado en amplitud
+                        const pointSize = Math.max(1, amplifiedAudio * 4 + spiral * 0.5);
+                        this.ctx.beginPath();
+                        this.ctx.arc(x, y, pointSize, 0, Math.PI * 2);
+                        this.ctx.fill();
+                        
+                        // Conectar puntos cercanos con líneas
+                        if (i > 0 && amplifiedAudio > 0.25) {
+                            const prevAudio = (this.dataArray[i - 1] || 0) / 255;
+                            const prevAmplifiedAudio = Math.pow(prevAudio, 0.5) + 0.15;
+                            const prevAngle = ((i - 1) / this.bufferLength) * Math.PI * spiralTurns * spiralSpeed + 
+                                            this.waveOffset * spiralSpeed + spiralOffset;
+                            const prevRadius = ((i - 1) / this.bufferLength) * maxRadius + prevAmplifiedAudio * 100;
+                            const prevX = centerX + Math.cos(prevAngle) * prevRadius;
+                            const prevY = centerY + Math.sin(prevAngle) * prevRadius;
+                            
+                            this.ctx.beginPath();
+                            this.ctx.strokeStyle = this.rainbowColors[Math.floor(colorIndex)];
+                            this.ctx.lineWidth = Math.max(0.5, amplifiedAudio * 2);
+                            this.ctx.moveTo(prevX, prevY);
+                            this.ctx.lineTo(x, y);
+                            this.ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            drawSphere() {
+                const centerX = this.canvas.width / 2;
+                const centerY = this.canvas.height / 2;
+                const baseRadius = 50;
+                const maxAmplitude = 200;
+                const numParticles = 100;
+
+                this.ctx.save();
+                this.ctx.translate(centerX, centerY);
+                this.ctx.rotate(this.waveOffset * 0.01); // Rotación lenta de la esfera
+
+                for (let i = 0; i < numParticles; i++) {
+                    const audioValue = this.dataArray[Math.floor(i * this.bufferLength / numParticles)] || 0;
+                    const normalizedAudio = audioValue / 255;
+                    const amplifiedAudio = Math.pow(normalizedAudio, 0.8); // Más sensible a bajos volúmenes
+
+                    const amplitude = amplifiedAudio * maxAmplitude;
+                    const radius = baseRadius + amplitude;
+
+                    // Posición 3D simulada
+                    const phi = Math.acos(-1 + (2 * i) / numParticles); // Latitud
+                    const theta = Math.sqrt(numParticles * Math.PI) * phi; // Longitud
+
+                    const x = radius * Math.cos(theta + this.colorOffset * 0.1) * Math.sin(phi);
+                    const y = radius * Math.sin(theta + this.colorOffset * 0.1) * Math.sin(phi);
+                    const z = radius * Math.cos(phi);
+
+                    // Escalar por perspectiva (simulada)
+                    const perspective = 0.8;
+                    const zOffset = z / (baseRadius + maxAmplitude);
+                    const scale = perspective / Math.max(0.1, perspective + zOffset); // Evitar división por cero
+
+                    const finalX = x * scale;
+                    const finalY = y * scale;
+
+                    // Color dinámico con menos cálculos
+                    const colorIndex = (i + Math.floor(this.colorOffset * 5)) % this.rainbowColors.length;
+                    this.ctx.fillStyle = this.rainbowColors[colorIndex];
+                    
+                    // Tamaño optimizado del punto
+                    const pointSize = Math.max(0.5, amplifiedAudio * 5 * scale);
+                    
+                    // Solo dibujar si el punto es visible
+                    if (pointSize > 0.5 && scale > 0.1) {
+                        this.ctx.beginPath();
+                        this.ctx.arc(finalX, finalY, pointSize, 0, Math.PI * 2);
+                        this.ctx.fill();
+                    }
+                }
+                this.ctx.restore();
+            }
+
+            updateVolumemeter(volume) {
+                const percentage = (volume / 255) * 100;
+                this.volumeFill.style.height = `${percentage}%`;
+                
+                if (percentage > 80) {
+                    this.volumeFill.style.background = 'linear-gradient(to top, #ff0066, #ffaa00)';
+                } else if (percentage > 50) {
+                    this.volumeFill.style.background = 'linear-gradient(to top, #ffaa00, #00ff66)';
+                } else {
+                    this.volumeFill.style.background = 'linear-gradient(to top, #0066ff, #00ff66)';
+                }
+            }
+        }
+
+        // Inicializar cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', () => {
+            window.equalizer = new BlackMambaRainbowEqualizer();
+        });
+
+        // Mensaje de bienvenida con información del sistema
+        console.log(`
+🌈 BLACKMAMBA RAINBOW EQUALIZER v2.2
+====================================
+🎵 Visualizador de audio en tiempo real
+🎤 Captura audio del micrófono Studio Mac  
+🌊 5 modos de visualización avanzados
+🐍 Integración Hydra Synth (5 efectos)
+⚡ Auto-optimización de rendimiento
+🎨 Colores rainbow animados responsivos
+🚀 Throttling inteligente para 60fps
+====================================
+💡 Controles disponibles:
+   🎤 Iniciar/Detener micrófono
+   🌊 Cambiar modos: Ondas, Barras, Círculo, Espiral, Esfera
+   ⚡ Velocidad: Lento, Normal, Rápido, Turbo
+   🐍 Efectos Hydra: ON/OFF
+   ✨ Ciclar efectos: Plasma, Kaleidoscope, Waves, Tunnel, Fractal
+====================================
+"El audio merece ser arte visual" 🎨
+        `);
+        
+        // Estadísticas del navegador
+        console.log(`
+📊 INFO DEL SISTEMA:
+🖥️  User Agent: ${navigator.userAgent.split(' ')[0]}
+🎧 Web Audio API: ${window.AudioContext ? '✅ Soportado' : '❌ No soportado'}
+🐍 Hydra Synth: ${typeof Hydra !== 'undefined' ? '✅ Cargado' : '❌ No disponible'}
+🎮 GamePad API: ${navigator.getGamepads ? '✅ Disponible' : '❌ No disponible'}
+⏰ Timestamp: ${new Date().toLocaleString()}
+        `);
+        
+        // Verificación de características avanzadas
+        if ('mediaDevices' in navigator) {
+            navigator.mediaDevices.enumerateDevices().then(devices => {
+                const audioInputs = devices.filter(device => device.kind === 'audioinput');
+                console.log(`🎤 Dispositivos de audio detectados: ${audioInputs.length}`);
+            });
+        }
+    </script>
+</body>
+</html>

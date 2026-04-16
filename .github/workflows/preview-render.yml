@@ -1,0 +1,57 @@
+name: Preview Render (manual)
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  tests:
+    name: Run tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install requirements (if any)
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          if [ -f dev-requirements.txt ]; then pip install -r dev-requirements.txt; fi
+      - name: Run pytest (fast)
+        run: pytest -q -m "not slow"
+
+  preview:
+    name: Generate preview artifact (manual, cheap)
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Dry-run render_headless.sh (fail-fast glue check)
+        run: |
+          chmod +x cybercam-blender/scripts/dev/render_headless.sh
+          BLENDER_BIN=echo ./cybercam-blender/scripts/dev/render_headless.sh --preset mk1 --frames 1 --timestamped-output --use-gpu --log-file preview.log
+
+      - name: Create preview render placeholder
+        run: |
+          mkdir -p exports/renders/mk1
+          python - <<'PY'
+from pathlib import Path
+out = Path('exports/renders/mk1/frame_0001.png')
+out.parent.mkdir(parents=True, exist_ok=True)
+out.write_bytes(b'\x89PNG\r\n\x1a\n')
+print('Wrote', out)
+PY
+      - name: List render output
+        run: ls -la exports/renders || true
+      - name: Upload preview artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cybercam-preview-render
+          path: exports/renders/mk1
+
+# Notes:
+# - Workflow is manual-only (workflow_dispatch) and does not produce hero renders.
+# - Designed to run on any runner (no Blender/GPU required).
+# - Future: add a "hero-render" workflow that targets self-hosted GPU runners and performs Cycles renders.

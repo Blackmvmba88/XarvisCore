@@ -1,0 +1,115 @@
+
+═══════════════════════════════════════════════════════════════════════
+                    IMAGE RESIZER 3000 - UI MOCKUP
+═══════════════════════════════════════════════════════════════════════
+
+Window: 700x750 pixels | Resizable | Background: Deep Purple (#1a0033)
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ ╔══════════════════════════════════════════════════════════════╗ ┃
+┃ ║  Bright Purple Header (#6B00FF) - Height: 100px             ║ ┃
+┃ ║                                                              ║ ┃
+┃ ║        ✨ 📐 REDIMENSIONADOR 3000x3000 PX 📐 ✨             ║ ┃
+┃ ║             (Neon Green #00FF88, 20pt bold)                 ║ ┃
+┃ ║                                                              ║ ┃
+┃ ║   🔥 Convierte cualquier imagen a formato cuadrado 1:1 🔥   ║ ┃
+┃ ║              (White, 12pt bold)                             ║ ┃
+┃ ║                                                              ║ ┃
+┃ ╚══════════════════════════════════════════════════════════════╝ ┃
+┃                                                                  ┃
+┃   ┌────────────────────────────┬────────────────────────────┐   ┃
+┃   │  📁 SELECCIONAR IMÁGENES  │     🗑️ LIMPIAR           │   ┃
+┃   │   (Neon Green #00FF88)     │   (Hot Pink #FF00AA)      │   ┃
+┃   │    Bold, 13pt, Raised      │   Bold, 13pt, Raised      │   ┃
+┃   └────────────────────────────┴────────────────────────────┘   ┃
+┃                                                                  ┃
+┃   ╔═══════════════════════════════════════════════════════════╗ ┃
+┃   ║        📂 CARPETA DE DESTINO                              ║ ┃
+┃   ║    (Medium Purple #2D0052, Neon Green text)              ║ ┃
+┃   ║ ┌───────────────────────────────────────────────────────┐ ║ ┃
+┃   ║ │ 💾 Guardar en: ~/Desktop        │  ✏️ CAMBIAR       │ ║ ┃
+┃   ║ │  (Purple #8B00FF bg)             │  (Neon Green)     │ ║ ┃
+┃   ║ └───────────────────────────────────────────────────────┘ ║ ┃
+┃   ╚═══════════════════════════════════════════════════════════╝ ┃
+┃                                                                  ┃
+┃   ╔═══════════════════════════════════════════════════════════╗ ┃
+┃   ║        🎯 IMÁGENES SELECCIONADAS                          ║ ┃
+┃   ║    (Medium Purple #2D0052, Neon Green text)              ║ ┃
+┃   ║ ┌───────────────────────────────────────────────────────┐ ║ ┃
+┃   ║ │ photo_001.jpg                                         │▲║ ┃
+┃   ║ │ image_002.png                                         │ ║ ┃
+┃   ║ │ picture_003.jpeg                                      │ ║ ┃
+┃   ║ │                                                       │ ║ ┃
+┃   ║ │ (Deep Purple #1a0033 bg, Neon Green text)            │▼║ ┃
+┃   ║ └───────────────────────────────────────────────────────┘ ║ ┃
+┃   ╚═══════════════════════════════════════════════════════════╝ ┃
+┃                                                                  ┃
+┃   ╔═══════════════════════════════════════════════════════════╗ ┃
+┃   ║        ⚡ MODO DE REDIMENSIONADO                          ║ ┃
+┃   ║    (Medium Purple #2D0052, Neon Green text)              ║ ┃
+┃   ║                                                           ║ ┃
+┃   ║   ◉ 📦 Ajustar dentro (con márgenes si es necesario)    ║ ┃
+┃   ║   ○ 🔲 Rellenar cuadrado (recorta excedente)            ║ ┃
+┃   ║   ○ 🎯 Estirar a 3000x3000 (puede deformar)             ║ ┃
+┃   ║                                                           ║ ┃
+┃   ║   (White text, Purple selection #8B00FF)                 ║ ┃
+┃   ╚═══════════════════════════════════════════════════════════╝ ┃
+┃                                                                  ┃
+┃   ╔═══════════════════════════════════════════════════════════╗ ┃
+┃   ║        ⚙️ OPCIONES                                        ║ ┃
+┃   ║    (Medium Purple #2D0052, Neon Green text)              ║ ┃
+┃   ║                                                           ║ ┃
+┃   ║   ☑️ 💾 Mantener imagen original (no sobrescribir)       ║ ┃
+┃   ║                                                           ║ ┃
+┃   ╚═══════════════════════════════════════════════════════════╝ ┃
+┃                                                                  ┃
+┃   ╔═══════════════════════════════════════════════════════════╗ ┃
+┃   ║        ℹ️ INFORMACIÓN                                     ║ ┃
+┃   ║    (Medium Purple #2D0052, Neon Green text)              ║ ┃
+┃   ║                                                           ║ ┃
+┃   ║   • Ajustar: Mantiene proporciones + márgenes           ║ ┃
+┃   ║   • Rellenar: Recorta para llenar el cuadrado           ║ ┃
+┃   ║   • Estirar: Estira la imagen (puede distorsionar)      ║ ┃
+┃   ║                                                           ║ ┃
+┃   ╚═══════════════════════════════════════════════════════════╝ ┃
+┃                                                                  ┃
+┃          ┌───────────────────────────────────────┐               ┃
+┃          │                                       │               ┃
+┃          │  🚀 REDIMENSIONAR A 3000x3000 🚀     │               ┃
+┃          │                                       │               ┃
+┃          │  (Neon Green #00FF88, 16pt bold)     │               ┃
+┃          │  Large button: 40px H-pad, 20px V    │               ┃
+┃          │  5px raised border                   │               ┃
+┃          │                                       │               ┃
+┃          └───────────────────────────────────────┘               ┃
+┃                                                                  ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+═══════════════════════════════════════════════════════════════════════
+                         COLOR PALETTE
+═══════════════════════════════════════════════════════════════════════
+
+  #1a0033  Deep Purple       - Main background
+  #6B00FF  Bright Purple     - Header background
+  #00FF88  Neon Green        - Primary accent, buttons, labels
+  #2D0052  Medium Purple     - Frame backgrounds
+  #8B00FF  Purple            - Secondary highlights
+  #FF00AA  Hot Pink          - Warning/clear button
+  #FFFFFF  White             - General text
+
+═══════════════════════════════════════════════════════════════════════
+
+WHEN PROCESSING - PROGRESS WINDOW (Modal):
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃   Procesando... (400x150 px)       ┃
+┃                                    ┃
+┃   Procesando imágenes...           ┃
+┃                                    ┃
+┃   ████████████░░░░░░░░░ 60%        ┃
+┃                                    ┃
+┃   Procesando: photo_003.jpg        ┃
+┃                                    ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+═══════════════════════════════════════════════════════════════════════

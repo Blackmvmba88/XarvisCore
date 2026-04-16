@@ -1,0 +1,14 @@
+{
+  "input": {
+    "user_id": "demo_user",
+    "action": "process_data",
+    "payload": {
+      "value": 42
+    }
+  },
+  "decision": "MEDIUM",
+  "status": "processed",
+  "valid": true,
+  "errors": [],
+  "timestamp": "2026-04-16T11:27:35.857926+00:00"
+}

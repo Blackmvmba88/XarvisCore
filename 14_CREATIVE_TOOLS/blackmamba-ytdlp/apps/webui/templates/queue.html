@@ -1,0 +1,30 @@
+<table>
+  <thead>
+    <tr>
+      <th>ID</th><th>Modo</th><th>Estado</th><th>Progreso</th><th>Actual</th><th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for job in jobs %}
+    <tr>
+      <td>{{ job.id[:8] }}</td>
+      <td>{{ job.mode.value if job.mode.value else job.mode }}</td>
+      <td>{{ job.status.value if job.status.value else job.status }}</td>
+<td>
+        <div class="bar"><div class="bar-inner" style="width: {{ "%.0f"|format(job.progress) }}%"></div></div>
+        <span class="pct">{{ "%.0f"|format(job.progress) }}%</span>
+      </td>
+      <td>{{ job.current or "" }}</td>
+      <td>
+        {% if job.output_paths %}
+          {% set p = job.output_paths[0] %}
+          {% set rel = p.replace('/Users/blackmamba/Projects/blackmamba-ytdlp/downloads/', '') %}
+<a href="/play?rel={{ rel }}" data-rel="{{ rel }}" data-title="{{ job.current or job.id[:8] }}" data-kind="{{ job.mode.value if job.mode.value else job.mode }}">▶ Reproducir</a>
+        {% endif %}
+      </td>
+    </tr>
+  {% else %}
+    <tr><td colspan="6">Sin trabajos en cola.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>

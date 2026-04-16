@@ -1,0 +1,6 @@
+a4_hz: 440
+tuner_threshold_cents: 25
+hop_ms: 10
+rt_model: tiny
+offline_model: full
+default_offset_ms: 0

@@ -1,0 +1,42 @@
+{
+  "level_id": "americas_basic",
+  "name": "Maestro de América Latina",
+  "difficulty": "easy",
+  "time_limit_minutes": 10,
+  "num_questions": 20,
+  "passing_score": 80,
+  "badge": {
+    "name": "🌎 Explorador de las Américas",
+    "description": "Dominas la geografía del continente americano"
+  },
+  "question_types": [
+    "identify_country",
+    "match_capital",
+    "find_city",
+    "guess_flag"
+  ],
+  "countries_pool": [
+    "mexico",
+    "argentina",
+    "brazil",
+    "chile",
+    "colombia",
+    "peru",
+    "venezuela",
+    "ecuador",
+    "bolivia",
+    "uruguay",
+    "paraguay",
+    "cuba",
+    "dominican_republic",
+    "costa_rica",
+    "panama",
+    "guatemala",
+    "honduras",
+    "nicaragua",
+    "el_salvador",
+    "puerto_rico",
+    "united_states",
+    "canada"
+  ]
+}

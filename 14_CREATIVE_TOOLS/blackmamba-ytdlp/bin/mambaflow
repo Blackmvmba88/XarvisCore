@@ -1,0 +1,131 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+PROJECT_ROOT="/Users/blackmamba/Projects/blackmamba-ytdlp"
+VENV_BIN="$PROJECT_ROOT/.venv/bin"
+UVICORN="$VENV_BIN/uvicorn"
+APP="apps.webui.main:app"
+HOST="127.0.0.1"
+DEFAULT_PORT="8088"
+LOG="$PROJECT_ROOT/logs/webui.log"
+PID_FILE="$PROJECT_ROOT/logs/mambaflow.pid"
+
+usage(){
+  cat <<USAGE
+Uso: $(basename "$0") {start|stop|status|logs} [--host 127.0.0.1] [--port 8088]
+  start   Inicia el servidor (elige puerto libre si el indicado está ocupado)
+  stop    Detiene el servidor en ejecución (usa pidfile si existe)
+  status  Muestra estado actual (PID/puerto)
+  logs    Muestra logs (tail -f)
+
+Variables/env:
+  PORT           Puerto preferido (por defecto 8088)
+USAGE
+}
+
+parse_args(){
+  CMD="${1:-}"; shift || true
+  PORT="${PORT:-$DEFAULT_PORT}"
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --host) HOST="$2"; shift 2;;
+      --port) PORT="$2"; shift 2;;
+      -h|--help) usage; exit 0;;
+      *) shift;;
+    esac
+  done
+}
+
+choose_port(){
+  local p candidates
+  candidates=("$PORT" 8088 8089 8090 8091 8092)
+  for p in "${candidates[@]}"; do
+    if ! lsof -iTCP:"$p" -sTCP:LISTEN -n -P >/dev/null 2>&1; then
+      PORT="$p"; return 0
+    fi
+  done
+  echo "No hay puerto libre entre: ${candidates[*]}" >&2
+  exit 1
+}
+
+start_server(){
+  choose_port
+  nohup "$UVICORN" --app-dir "$PROJECT_ROOT" "$APP" --host "$HOST" --port "$PORT" > "$LOG" 2>&1 &
+  local pid=$!
+  echo "PID=$pid PORT=$PORT" > "$PID_FILE"
+  echo "Iniciado PID=$pid HOST=$HOST PORT=$PORT LOG=$LOG"
+}
+
+stop_server(){
+  if [[ -f "$PID_FILE" ]]; then
+    local pid port
+    pid=$(sed -n 's/^PID=\([0-9]*\).*$/\1/p' "$PID_FILE" | head -n1 || true)
+    port=$(sed -n 's/^.*PORT=\([0-9]*\).*$/\1/p' "$PID_FILE" | head -n1 || echo "$DEFAULT_PORT")
+    if [[ -n "$pid" ]] && kill -0 "$pid" >/dev/null 2>&1; then
+      kill "$pid" || true
+      echo "Detenido PID=$pid"
+      rm -f "$PID_FILE"
+      return 0
+    fi
+    # fallback por puerto
+    if lsof -iTCP:"$port" -sTCP:LISTEN -n -P -t >/dev/null 2>&1; then
+      pid=$(lsof -iTCP:"$port" -sTCP:LISTEN -n -P -t | head -n1)
+      kill "$pid" || true
+      echo "Detenido PID=$pid en puerto $port"
+      rm -f "$PID_FILE" 2>/dev/null || true
+      return 0
+    fi
+    echo "No se encontró proceso en PID file."
+    rm -f "$PID_FILE" 2>/dev/null || true
+    return 0
+  fi
+  # Sin pidfile, intentar por PORT
+  if lsof -iTCP:"$PORT" -sTCP:LISTEN -n -P -t >/dev/null 2>&1; then
+    local pid
+    pid=$(lsof -iTCP:"$PORT" -sTCP:LISTEN -n -P -t | head -n1)
+    kill "$pid" || true
+    echo "Detenido PID=$pid en puerto $PORT"
+  else
+    echo "No hay servidor escuchando en puerto $PORT"
+  fi
+}
+
+status_server(){
+  if [[ -f "$PID_FILE" ]]; then
+    local pid port
+    pid=$(sed -n 's/^PID=\([0-9]*\).*$/\1/p' "$PID_FILE" | head -n1 || true)
+    port=$(sed -n 's/^.*PORT=\([0-9]*\).*$/\1/p' "$PID_FILE" | head -n1 || echo "$DEFAULT_PORT")
+    if [[ -n "$pid" ]] && kill -0 "$pid" >/dev/null 2>&1; then
+      echo "RUNNING PID=$pid PORT=$port LOG=$LOG"
+      return 0
+    fi
+  fi
+  # fallback por puerto
+  if lsof -iTCP:"$PORT" -sTCP:LISTEN -n -P -t >/dev/null 2>&1; then
+    local pid
+    pid=$(lsof -iTCP:"$PORT" -sTCP:LISTEN -n -P -t | head -n1)
+    echo "RUNNING PID=$pid PORT=$PORT LOG=$LOG"
+  else
+    echo "STOPPED"
+  fi
+}
+
+logs_follow(){
+  touch "$LOG"
+  tail -n 100 -f "$LOG"
+}
+
+main(){
+  local cmd="${1:-}"; [[ -z "$cmd" ]] && { usage; exit 1; }
+  shift || true
+  parse_args "$cmd" "$@"
+  case "$cmd" in
+    start) start_server;;
+    stop) stop_server;;
+    status) status_server;;
+    logs) logs_follow;;
+    *) usage; exit 1;;
+  esac
+}
+
+main "$@"

@@ -1,0 +1,41 @@
+{% if q %}
+  {% if artists %}
+    <div class="row" style="margin-bottom:10px; flex-wrap: wrap; gap: 8px;">
+      <span class="label">Artistas:</span>
+      {% for a in artists %}
+        <a class="chip" hx-get="/search" hx-vals='{"q": "{{ a }}"}' hx-target="#search-results">{{ a }}</a>
+      {% endfor %}
+    </div>
+  {% endif %}
+  {% if results %}
+    <table>
+      <thead><tr><th>Miniatura</th><th>Título</th><th>Artista</th><th>Duración</th><th>Acciones</th></tr></thead>
+      <tbody>
+      {% for r in results %}
+        <tr>
+          <td>{% if r.thumb %}<img src="{{ r.thumb }}" alt="thumb" style="width:72px;height:auto;border-radius:6px;"/>{% endif %}</td>
+          <td>{{ r.title }}</td>
+          <td>{{ r.uploader or '' }}</td>
+          <td>{% if r.duration %}{{ (r.duration // 60)|int }}:{{ '%02d' % (r.duration % 60) }}{% endif %}</td>
+          <td>
+            <form method="post" action="/jobs" style="display:inline-block;">
+              <input type="hidden" name="urls" value="{{ r.url }}"/>
+              <input type="hidden" name="mode" value="audio"/>
+              <button class="btn" type="submit">Audio</button>
+            </form>
+            <form method="post" action="/jobs" style="display:inline-block; margin-left:6px;">
+              <input type="hidden" name="urls" value="{{ r.url }}"/>
+              <input type="hidden" name="mode" value="video"/>
+              <button class="btn primary" type="submit">Video</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="label">Sin resultados</div>
+  {% endif %}
+{% else %}
+  <div class="label">Escribe para buscar…</div>
+{% endif %}

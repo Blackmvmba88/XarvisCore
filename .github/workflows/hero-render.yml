@@ -1,0 +1,91 @@
+name: Hero Render (GPU, manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      preset:
+        description: "Preset name (exports/renders/<preset>)"
+        required: true
+        default: "mk1"
+      frames:
+        description: "Number of frames to render"
+        required: true
+        default: "1"
+      confirm:
+        description: "Type YES to run the GPU job on self-hosted runners"
+        required: true
+        default: "NO"
+
+jobs:
+  dry_run:
+    name: Dry-run validation (no GPU)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -r dev-requirements.txt
+      - name: Run tests (fast)
+        run: pytest -q -m "not slow"
+      - name: Dry-run render script (glue check)
+        run: |
+          chmod +x cybercam-blender/scripts/dev/render_headless.sh
+          BLENDER_BIN=echo ./cybercam-blender/scripts/dev/render_headless.sh \
+            --preset "${{ inputs.preset }}" \
+            --frames "${{ inputs.frames }}" \
+            --timestamped-output \
+            --use-gpu \
+            --log-file hero-dry-run.log
+      - name: Validate dry-run log
+        run: |
+          # Ensure the dry-run log was created and is not empty
+          test -s hero-dry-run.log
+          # Verify that preset and frames inputs are reflected in the log output
+          grep -F "${{ inputs.preset }}" hero-dry-run.log
+          grep -F "${{ inputs.frames }}" hero-dry-run.log
+      - name: Upload dry-run log
+        uses: actions/upload-artifact@v4
+        with:
+          name: hero-dry-run-${{ inputs.preset }}
+          path: hero-dry-run.log
+
+  hero_render:
+    name: Hero render (self-hosted GPU)
+    needs: dry_run
+    if: ${{ github.event.inputs.confirm == 'YES' }}
+    runs-on: [self-hosted, gpu]
+    env:
+      BLENDER_BIN: blender
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify Blender is available
+        run: |
+          command -v "$BLENDER_BIN"
+          "$BLENDER_BIN" --version
+      - name: Run hero render
+        run: |
+          chmod +x cybercam-blender/scripts/dev/render_headless.sh
+          ./cybercam-blender/scripts/dev/render_headless.sh \
+            --preset "${{ inputs.preset }}" \
+            --frames "${{ inputs.frames }}" \
+            --render-preset final \
+            --width 2048 \
+            --height 2048 \
+            --format PNG \
+            --timestamped-output \
+            --use-gpu \
+            --log-file hero-render.log
+      - name: Upload hero artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: hero-render-${{ inputs.preset }}
+          path: |
+            exports/renders/${{ inputs.preset }}
+            exports/gltf/${{ inputs.preset }}*.glb
+            hero-render.log
+

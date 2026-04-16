@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦅 BlackMamba Music Collection</title>
+    <style>
+        :root {
+            --primary: #00ff41;
+            --bg: #0a0a0a;
+            --glass: rgba(20, 20, 20, 0.8);
+            --border: rgba(0, 255, 65, 0.3);
+            --purple: #8B5CF6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'SF Pro Display', -apple-system, sans-serif;
+            background: var(--bg);
+            background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #0a0a0a 100%);
+            color: var(--primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: linear-gradient(90deg, var(--purple) 0%, var(--primary) 100%);
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            text-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .header .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+            font-size: 1.1rem;
+            flex-wrap: wrap;
+        }
+
+        .header .stat {
+            background: var(--glass);
+            padding: 10px 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        .controls {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            color: var(--primary);
+            font-size: 16px;
+            margin-bottom: 20px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar:focus {
+            background: rgba(0, 255, 65, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+        }
+
+        .filters {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .filter-btn:hover {
+            background: rgba(0, 255, 65, 0.2);
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: #000;
+            font-weight: 600;
+        }
+
+        .music-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .song-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .song-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 8px 32px rgba(0, 255, 65, 0.3);
+        }
+
+        .song-card.playing {
+            border-color: var(--primary);
+            background: rgba(0, 255, 65, 0.1);
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.5);
+        }
+
+        .song-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+        }
+
+        .song-artist {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 12px;
+        }
+
+        .song-info {
+            display: flex;
+            gap: 10px;
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+
+        .song-badge {
+            background: rgba(139, 92, 246, 0.3);
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+        }
+
+        .player-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
+            padding: 20px 30px;
+            box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.8);
+            display: none;
+        }
+
+        .player-bar.active {
+            display: block;
+        }
+
+        .player-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .now-playing {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .album-art {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--purple), var(--primary));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .track-info h3 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .track-info p {
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+
+        .player-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ctrl-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .ctrl-btn:hover {
+            background: var(--primary);
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+        }
+
+        .ctrl-btn.play-pause {
+            width: 55px;
+            height: 55px;
+            font-size: 1.5rem;
+        }
+
+        .progress-bar {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            font-size: 0.8rem;
+        }
+
+        .progress {
+            flex: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.8);
+        }
+
+        .volume-control {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .volume-slider {
+            width: 100px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .volume-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 70%;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.8);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            opacity: 0.6;
+        }
+
+        .empty-state h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .player-content {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .music-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🦅 BLACKMAMBA MUSIC COLLECTION</h1>
+        <p>Archivo Soberano Musical</p>
+        <div class="stats">
+            <div class="stat">📀 <span id="totalSongs">0</span> canciones</div>
+            <div class="stat">💿 <span id="totalMP3">0</span> MP3</div>
+            <div class="stat">🔊 <span id="totalSoundCloud">0</span> SoundCloud</div>
+            <div class="stat">🎵 <span id="totalSuno">0</span> Suno</div>
+            <div class="stat">💿 <span id="totalLocal">0</span> Local</div>
+            <div class="stat">🎵 <span id="totalWAV">0</span> WAV</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="controls">
+            <input type="text" id="searchBar" class="search-bar" placeholder="🔍 Buscar por título, artista..." />
+            
+            <div class="filters">
+                <div class="filter-btn active" data-filter="all">Todas</div>
+                <div class="filter-btn" data-filter="mp3_only">Solo MP3</div>
+                <div class="filter-btn" data-filter="wav_only">Solo WAV</div>
+                <div class="filter-btn" data-filter="complete">Completas (MP3+WAV)</div>
+                <div class="filter-btn" data-filter="soundcloud" style="margin-left: 20px;">🔊 SoundCloud</div>
+                <div class="filter-btn" data-filter="suno">🎵 Suno</div>
+                <div class="filter-btn" data-filter="local">💿 Local</div>
+            </div>
+        </div>
+
+        <div id="musicGrid" class="music-grid"></div>
+    </div>
+
+    <div id="playerBar" class="player-bar">
+        <div class="player-content">
+            <div class="now-playing">
+                <div class="album-art">🎵</div>
+                <div class="track-info">
+                    <h3 id="currentTitle">-</h3>
+                    <p id="currentArtist">-</p>
+                </div>
+            </div>
+
+            <div class="player-controls">
+                <div class="control-buttons">
+                    <div class="ctrl-btn" id="prevBtn">⏮️</div>
+                    <div class="ctrl-btn play-pause" id="playPauseBtn">▶️</div>
+                    <div class="ctrl-btn" id="nextBtn">⏭️</div>
+                </div>
+                <div class="progress-bar">
+                    <span id="currentTime">0:00</span>
+                    <div class="progress" id="progressBar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <span id="totalTime">0:00</span>
+                </div>
+            </div>
+
+            <div class="volume-control">
+                <span>🔊</span>
+                <div class="volume-slider" id="volumeSlider">
+                    <div class="volume-fill" id="volumeFill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="audioPlayer"></audio>
+
+    <script>
+        // Estado global
+        let musicLibrary = [];
+        let filteredLibrary = [];
+        let currentFilter = 'all';
+        let currentIndex = -1;
+        let isPlaying = false;
+
+        // Elementos DOM
+        const audioPlayer = document.getElementById('audioPlayer');
+        const musicGrid = document.getElementById('musicGrid');
+        const searchBar = document.getElementById('searchBar');
+        const playerBar = document.getElementById('playerBar');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        const currentTime = document.getElementById('currentTime');
+        const totalTime = document.getElementById('totalTime');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const volumeFill = document.getElementById('volumeFill');
+
+        // Cargar biblioteca de música
+        async function loadMusicLibrary() {
+            try {
+                const response = await fetch('music_library.json');
+                musicLibrary = await response.json();
+                filteredLibrary = musicLibrary;
+                updateStats();
+                renderMusicGrid();
+            } catch (error) {
+                console.error('Error cargando biblioteca:', error);
+           Detectar origen de canción
+        function detectSource(song) {
+            const title = (song.title || '').toLowerCase();
+            const songName = (song.song_name || '').toLowerCase();
+            const paths = Object.values(song.formats || {})
+                .map(f => (f.path || '').toLowerCase())
+                .join(' ');
+            
+            const allText = `${title} ${songName} ${paths}`;
+            
+            // SoundCloud
+            if (allText.includes('soundcloud') || allText.includes('sc-')) {
+                return 'soundcloud';
+            }
+            
+            // Suno (intro, verse, chorus, bridge, outro)
+            if (/(intro|verse|chorus|bridge|outro|suno)/i.test(allText)) {
+                return 'suno';{
+                song.source = song.source || detectSource(song);
+                const sourceEmoji = {
+                    'soundcloud': '🔊',
+                    'suno': '🎵',
+                    'local': '💿'
+                };
+                
+                return `
+                <div class="song-card" data-index="${index}" onclick="playSong(${index})">
+                    <div class="song-title">${song.title}</div>
+                    <div class="song-artist">${song.artist}</div>
+                    <div class="song-info">
+                        <span class="song-badge">${sourceEmoji[song.source]} ${song.source}</span>
+                        ${song.formats?.mp3 ? '<span class="song-badge">MP3</span>' : ''}
+                        ${song.formats?.wav ? '<span class="song-badge">WAV</span>' : ''}
+                        <span class="song-badge">${song.size_total_mb?.toFixed(2) || '?'} MB</span>
+                    </div>
+                </div>
+            `;
+            }
+            // Detectar y contar por origen
+            const bySounce = { soundcloud: 0, suno: 0, local: 0 };
+            musicLibrary.forEach(song => {
+                song.source = song.source || detectSource(song);
+                bySounce[song.source]++;
+            });
+            
+            document.getElementById('totalSongs').textContent = musicLibrary.length;
+            document.getElementById('totalMP3').textContent = totalMP3;
+            document.getElementById('totalWAV').textContent = totalWAV;
+            document.getElementById('totalSoundCloud').textContent = bySounce.soundcloud;
+            document.getElementById('totalSuno').textContent = bySounce.suno;
+            document.getElementById('totalLocal').textContent = bySounce.locallength;
+            
+            document.getElementById('totalSongs').textContent = musicLibrary.length;
+            document.getElementById('totalMP3').textContent = totalMP3;
+            document.getElementById('totalWAV').textContent = totalWAV;
+        }
+
+        // Renderizar grid de canciones
+        function renderMusicGrid() {
+            if (filteredLibrary.length === 0) {
+                showEmptyState();
+                return;
+            }
+
+            musicGrid.innerHTML = filteredLibrary.map((song, index) => `
+                <div class="song-card" data-index="${index}" onclick="playSong(${index})">
+                    <div class="song-title">${song.title}</div>
+                    <div class="song-artist">${song.artist}</div>
+                    <div class="song-info">
+                        ${song.formats?.mp3 ? '<span class="song-badge">MP3</span>' : ''}
+                        ${song.formats?.wav ? '<span class="song-badge">WAV</span>' : ''}
+                        <span class="song-badge">${song.size_total_mb?.toFixed(2) || '?'} MB</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Mostrar estado vacío
+        function showEmptyState() {
+            musicGrid.innerHTML = `
+                <div class="empty-state">
+                    <h2>No se encontraron canciones</h2>
+                    <p>Intenta con otro filtro o búsqueda</p>
+                </div>
+            `;
+        }
+
+        // Reproducir canción
+        function playSong(index) {
+            const song = filteredLibrary[index];
+            const audioPath = song.formats?.mp3?.path || song.formats?.wav?.path;
+            
+            if (!audioPath) {
+                alert('No hay archivo de audio disponible');
+                return;
+            }
+
+            // Actualizar UI
+            document.querySelectorAll('.song-card').forEach(card => card.classList.remove('playing'));
+            document.querySelector(`[data-index="${index}"]`)?.classList.add('playing');
+
+            // Actualizar player
+            document.getElementById('currentTitle').textContent = song.title;
+            document.getElementById('currentArtist').textContent = song.artist;
+            
+            // Reproducir
+            audioPlayer.src = 'file://' + audioPath;
+            audioPlayer.play();
+            isPlaying = true;
+            currentIndex = index;
+            playPauseBtn.textContent = '⏸️';
+            playerBar.classList.add('active');
+        }
+
+        // Control play/pause
+        playPauseBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                audioPlayer.pause();
+                playPauseBtn.textContent = '▶️';
+                isPlaying = false;
+            } else {
+                audioPlayer.play();
+                playPauseBtn.textContent = '⏸️';
+                isPlaying = true;
+            }
+        });
+
+        // Siguiente/Anterior
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if (currentIndex < filteredLibrary.length - 1) {
+                playSong(currentIndex + 1);
+            }
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            if (currentIndex > 0) {
+                playSong(currentIndex - 1);
+            }
+        });
+
+        // Actualizar progreso
+        audioPlayer.addEventListener('timeupdate', () => {
+                case 'soundcloud':
+                    filteredLibrary = filteredLibrary.filter(s => {
+                        s.source = s.source || detectSource(s);
+                        return s.source === 'soundcloud';
+                    });
+                    break;
+                case 'suno':
+                    filteredLibrary = filteredLibrary.filter(s => {
+                        s.source = s.source || detectSource(s);
+                        return s.source === 'suno';
+                    });
+                    break;
+                case 'local':
+                    filteredLibrary = filteredLibrary.filter(s => {
+                        s.source = s.source || detectSource(s);
+                        return s.source === 'local';
+                    });
+                    break;
+            const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+            progressFill.style.width = progress + '%';
+            currentTime.textContent = formatTime(audioPlayer.currentTime);
+            totalTime.textContent = formatTime(audioPlayer.duration);
+        });
+
+        // Buscar canciones
+        searchBar.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            filteredLibrary = musicLibrary.filter(song => 
+                song.title.toLowerCase().includes(query) ||
+                song.artist.toLowerCase().includes(query)
+            );
+            applyFilter(currentFilter);
+        });
+
+        // Filtros
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                applyFilter(currentFilter);
+            });
+        });
+
+        function applyFilter(filter) {
+            switch(filter) {
+                case 'mp3_only':
+                    filteredLibrary = filteredLibrary.filter(s => s.status === 'mp3_only');
+                    break;
+                case 'wav_only':
+                    filteredLibrary = filteredLibrary.filter(s => s.status === 'wav_only');
+                    break;
+                case 'complete':
+                    filteredLibrary = filteredLibrary.filter(s => s.status === 'complete');
+                    break;
+            }
+            renderMusicGrid();
+        }
+
+        // Control de volumen
+        volumeSlider.addEventListener('click', (e) => {
+            const rect = volumeSlider.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            audioPlayer.volume = percent;
+            volumeFill.style.width = (percent * 100) + '%';
+        });
+
+        // Barra de progreso clickeable
+        progressBar.addEventListener('click', (e) => {
+            const rect = progressBar.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            audioPlayer.currentTime = percent * audioPlayer.duration;
+        });
+
+        // Formatear tiempo
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '0:00';
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Auto-reproducir siguiente
+        audioPlayer.addEventListener('ended', () => {
+            if (currentIndex < filteredLibrary.length - 1) {
+                playSong(currentIndex + 1);
+            }
+        });
+
+        // Inicializar
+        loadMusicLibrary();
+    </script>
+</body>
+</html>

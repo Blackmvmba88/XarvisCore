@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Resultado — Xarvis Blender WebUI</title>
+  </head>
+  <body>
+    <h1>Resultado: {{ cmd }}</h1>
+    <h2>Código de salida: {{ result.returncode }}</h2>
+    <h3>JSON parseado</h3>
+    <pre>{{ result.json | tojson(indent=2, ensure_ascii=False) }}</pre>
+    <h3>Stdout</h3>
+    <pre>{{ result.stdout }}</pre>
+    <h3>Stderr</h3>
+    <pre>{{ result.stderr }}</pre>
+    <p><a href="/">Volver</a></p>
+  </body>
+</html>

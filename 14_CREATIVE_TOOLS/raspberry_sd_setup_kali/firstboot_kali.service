@@ -1,0 +1,11 @@
+[Unit]
+Description=Run XarvisCore first‑boot setup on Kali Linux
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/boot/xarvis/raspberry_sd_setup_kali/firstboot_kali.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

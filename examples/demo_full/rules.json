@@ -1,0 +1,4 @@
+{
+  "min_value": 0,
+  "allowed_actions": ["process_data"]
+}

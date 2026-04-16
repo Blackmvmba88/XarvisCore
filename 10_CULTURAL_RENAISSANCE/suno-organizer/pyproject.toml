@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "suno-organizer"
+version = "0.1.0"
+description = "List and organize Suno downloads with indexing and dedupe"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{name="blackmamba"}]
+license = {text = "MIT"}
+dependencies = [
+  "typer[all]",
+  "rich",
+  "mutagen",
+  "tqdm",
+  "requests",
+  "beautifulsoup4",
+]
+
+[project.scripts]
+suno-org = "suno_org.cli:app"

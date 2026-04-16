@@ -1,0 +1,5 @@
+{
+    "modo_seguro": true,
+    "puerto": 8080,
+    "acceso_remoto": false
+}
