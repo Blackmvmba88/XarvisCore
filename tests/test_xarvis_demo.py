@@ -30,7 +30,7 @@ def test_demo_init_run_status_inspect(tmp_path):
     init = run_xarvis("init")
     assert "initialized" in init.stdout
 
-    run = run_xarvis("run")
+    run = run_xarvis("run", "--json")
     payload = json.loads(run.stdout)
     assert payload["decision"] == "MEDIUM"
     assert payload["status"] == "processed"

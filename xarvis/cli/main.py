@@ -4,7 +4,6 @@ import argparse
 import json
 from pathlib import Path
 import platform
-import sqlite3
 import sys
 
 from xarvis.config import DEMO_DIR, INPUT_PATH, RULES_PATH, OUTPUT_PATH, RUNS_DB_PATH
@@ -91,7 +90,9 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="xarvis")
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("init")
-    sub.add_parser("run")
+    run_parser = sub.add_parser("run")
+    run_parser.add_argument("mode", nargs="?", choices=["demo"], default="demo")
+    run_parser.add_argument("--json", action="store_true")
     sub.add_parser("status")
     sub.add_parser("inspect")
     runs_parser = sub.add_parser("runs")
@@ -117,6 +118,20 @@ def main(argv: list[str] | None = None) -> int:
         result = init_demo()
     elif args.command == "run":
         result = engine.run_demo()
+        if args.json:
+            print(json.dumps(result, indent=2, ensure_ascii=False))
+            return 0
+
+        if result.get("valid"):
+            print("✔ Validation passed")
+            print(f"🧠 Decision: {result['decision']}")
+            print(f"💾 Stored in memory (run_id={_latest_run_id()})")
+            print("📄 Output saved → examples/demo_full/output.json")
+        else:
+            print("✖ Validation failed")
+            for error in result.get("errors", []):
+                print(f"  - {error}")
+        return 0
     elif args.command == "status":
         result = engine.status()
     elif args.command == "runs":
@@ -169,3 +184,10 @@ def main(argv: list[str] | None = None) -> int:
 
     print(json.dumps(result, indent=2, ensure_ascii=False))
     return 0
+
+
+def _latest_run_id() -> int | None:
+    rows = list_runs(RUNS_DB_PATH, limit=1)
+    if not rows:
+        return None
+    return rows[0]["id"]

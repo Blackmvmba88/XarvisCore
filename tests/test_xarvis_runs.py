@@ -25,8 +25,8 @@ def test_runs_list_records_history():
         db_path.unlink()
 
     run_xarvis("init")
-    run_xarvis("run")
-    run_xarvis("run")
+    run_xarvis("run", "--json")
+    run_xarvis("run", "--json")
 
     runs = run_xarvis("runs", "list", "--limit", "10")
     payload = json.loads(runs.stdout)

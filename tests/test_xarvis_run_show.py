@@ -25,7 +25,7 @@ def test_runs_show_returns_full_record():
         db_path.unlink()
 
     run_xarvis("init")
-    run_xarvis("run")
+    run_xarvis("run", "--json")
 
     listed = json.loads(run_xarvis("runs", "list", "--limit", "1").stdout)
     run_id = listed["runs"][0]["id"]
