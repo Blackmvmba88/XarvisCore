@@ -1,106 +1,159 @@
-
 import os
 import subprocess
 import time
 import signal
 import sys
 from datetime import datetime
+from pathlib import Path
 
 # === INFRAESTRUCTURA DE DOMINIOS XARVIS ===
 # Arquitectura Soberana: 19 Dominios Integrados (0-18)
-BASE_DIR = "/Users/blackmamba/Desktop/XarvisCore"
-VENV_PYTHON = os.path.join(BASE_DIR, "venv/bin/python3")
-LOG_DIR = os.path.join(BASE_DIR, "5_INFRA/logs")
+BASE_DIR = Path(os.environ.get("XARVIS_BASE_DIR", Path(__file__).resolve().parent)).expanduser().resolve()
+_DEFAULT_VENV_PYTHON = BASE_DIR / "venv" / "bin" / "python3"
+VENV_PYTHON = Path(os.environ.get("XARVIS_PYTHON", _DEFAULT_VENV_PYTHON)).expanduser()
+if not VENV_PYTHON.exists():
+    VENV_PYTHON = Path(sys.executable)
+LOG_DIR = Path(os.environ.get("XARVIS_LOG_DIR", BASE_DIR / "5_INFRA" / "logs")).expanduser()
 
-if not os.path.exists(LOG_DIR):
-    os.makedirs(LOG_DIR)
+LOG_DIR.mkdir(parents=True, exist_ok=True)
+ACTIVE_PROCESSES = {}
+
+
+def process_config(relative_path, log_name, priority, enabled=True):
+    return {
+        "path": BASE_DIR / relative_path,
+        "log": LOG_DIR / log_name,
+        "proc": None,
+        "priority": priority,
+        "enabled": enabled,
+    }
+
+
+def env_flag(name):
+    return os.environ.get(name, "").strip().lower() in {"1", "true", "yes", "on"}
+
+
+def clone_processes(processes, force_enabled=False):
+    return {
+        name: {
+            **config,
+            "enabled": True if force_enabled else config.get("enabled", True),
+            "proc": None,
+        }
+        for name, config in processes.items()
+    }
+
+
+def runtime_processes(include_extended=False):
+    processes = clone_processes(PROCESSES)
+    if include_extended:
+        processes.update(clone_processes(EXTENDED_PROCESSES, force_enabled=True))
+    return processes
+
+
+def enabled_process_items(processes):
+    return sorted(
+        ((name, config) for name, config in processes.items() if config.get("enabled", True)),
+        key=lambda item: (item[1].get("priority", 100), item[0]),
+    )
+
 
 # Mapa de Procesos por Dominio - Núcleo Principal
 PROCESSES = {
-    "CORE_SOVEREIGN": {
-        "path": os.path.join(BASE_DIR, "1_CORE/xarvis_core.py"),
-        "log": os.path.join(LOG_DIR, "core.log"),
-        "proc": None,
-        "priority": 1  # Máxima prioridad
-    },
-    "POWER_EXECUTION": {
-        "path": os.path.join(BASE_DIR, "3_POWER/xarvis_full_power.py"),
-        "log": os.path.join(LOG_DIR, "full_power.log"),
-        "proc": None,
-        "priority": 2
-    },
-    "RAM_GUARDIAN": {
-        "path": os.path.join(BASE_DIR, "3_POWER/ram_guardian.py"),
-        "log": os.path.join(LOG_DIR, "ram_guardian.log"),
-        "proc": None,
-        "priority": 2  # Alta prioridad - protege el sistema
-    }
+    "CORE_SOVEREIGN": process_config("1_CORE/xarvis_core.py", "core.log", 1),  # Máxima prioridad
+    "POWER_EXECUTION": process_config("3_POWER/xarvis_full_power.py", "full_power.log", 2),
+    "RAM_GUARDIAN": process_config("3_POWER/ram_guardian.py", "ram_guardian.log", 2),
 }
 
 # Procesos Extendidos - Activación Opcional
 EXTENDED_PROCESSES = {
-    "STATION_COMMAND": {
-        "path": os.path.join(BASE_DIR, "18_BLACKMAMBA_STATION/core/simple_server.py"),
-        "log": os.path.join(LOG_DIR, "station.log"),
-        "proc": None,
-        "priority": 3,
-        "enabled": False  # Activar manualmente cuando sea necesario
-    }
+    "STATION_COMMAND": process_config("18_BLACKMAMBA_STATION/core/simple_server.py", "station.log", 3, enabled=False),
 }
+
 
 def log_master(msg):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(f"[{timestamp}] [MASTER_INFRA] {msg}")
-    with open(os.path.join(LOG_DIR, "master.log"), "a") as f:
+    with (LOG_DIR / "master.log").open("a", encoding="utf-8") as f:
         f.write(f"[{timestamp}] {msg}\n")
 
+
 def start_process(name, config):
+    if not config.get("enabled", True):
+        log_master(f"{name} omitido: dominio desactivado.")
+        return False
+
+    script_path = Path(config["path"])
+    if not script_path.exists():
+        config["enabled"] = False
+        log_master(f"{name} omitido: script no encontrado en {script_path}")
+        return False
+
     log_master(f"Cargando Dominio {name}...")
     try:
-        f_log = open(config["log"], "a")
-        proc = subprocess.Popen(
-            [VENV_PYTHON, config["path"]],
-            stdout=f_log,
-            stderr=f_log,
-            preexec_fn=os.setsid,
-            cwd=os.path.dirname(config["path"]) # Correr en su propio directorio
-        )
+        with Path(config["log"]).open("a", encoding="utf-8") as f_log:
+            proc = subprocess.Popen(
+                [str(VENV_PYTHON), str(script_path)],
+                stdout=f_log,
+                stderr=f_log,
+                preexec_fn=os.setsid,
+                cwd=str(script_path.parent),  # Correr en su propio directorio
+            )
         config["proc"] = proc
         log_master(f"{name} en línea. PID: {proc.pid}")
-    except Exception as e:
+        return True
+    except (OSError, ValueError) as e:
         log_master(f"FALLO CRÍTICO en {name}: {e}")
+        return False
+
 
 def kill_process(name, config):
     if config["proc"]:
         log_master(f"Desactivando {name} (PID: {config['proc'].pid})...")
         try:
             os.killpg(os.getpgid(config["proc"].pid), signal.SIGTERM)
-        except:
-            pass
+        except ProcessLookupError:
+            log_master(f"{name} ya estaba detenido.")
+        except PermissionError as exc:
+            log_master(f"No se pudo detener {name}: {exc}")
         config["proc"] = None
+
 
 def signal_handler(sig, frame):
     log_master("Apagado de Infraestructura solicitado. Resguardando dominios...")
-    for name, config in PROCESSES.items():
+    for name, config in ACTIVE_PROCESSES.items():
         kill_process(name, config)
     sys.exit(0)
 
-signal.signal(signal.SIGINT, signal_handler)
-signal.signal(signal.SIGTERM, signal_handler)
 
-log_master("==== ORQUESTADOR DE INFRAESTRUCTURA DEL MUNDO INICIADO ====")
-
-# Despliegue Inicial
-for name, config in PROCESSES.items():
-    start_process(name, config)
-
-# Vigilancia Resiliente
-try:
+def monitor_processes(processes):
     while True:
         time.sleep(15)
-        for name, config in PROCESSES.items():
-            if config["proc"].poll() is not None:
+        for name, config in enabled_process_items(processes):
+            proc = config.get("proc")
+            if proc is None or proc.poll() is not None:
                 log_master(f"⚠️ Alerta: Dominio {name} fuera de servicio. Restaurando...")
                 start_process(name, config)
-except KeyboardInterrupt:
-    signal_handler(None, None)
+
+
+def main():
+    global ACTIVE_PROCESSES
+    signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
+    ACTIVE_PROCESSES = runtime_processes(include_extended=env_flag("XARVIS_ENABLE_EXTENDED"))
+
+    log_master("==== ORQUESTADOR DE INFRAESTRUCTURA DEL MUNDO INICIADO ====")
+
+    # Despliegue Inicial
+    for name, config in enabled_process_items(ACTIVE_PROCESSES):
+        start_process(name, config)
+
+    # Vigilancia Resiliente
+    try:
+        monitor_processes(ACTIVE_PROCESSES)
+    except KeyboardInterrupt:
+        signal_handler(None, None)
+
+
+if __name__ == "__main__":
+    main()
