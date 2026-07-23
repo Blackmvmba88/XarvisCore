@@ -1,3 +1,4 @@
+import os
 import importlib.util
 from pathlib import Path
 
@@ -7,8 +8,10 @@ SUPERVISOR_PATH = ROOT / "xarvis_supervisor.py"
 
 
 def load_supervisor(monkeypatch, tmp_path):
-    monkeypatch.setenv("XARVIS_BASE_DIR", str(ROOT))
-    monkeypatch.setenv("XARVIS_LOG_DIR", str(tmp_path / "logs"))
+    if "XARVIS_BASE_DIR" not in os.environ:
+        monkeypatch.setenv("XARVIS_BASE_DIR", str(ROOT))
+    if "XARVIS_LOG_DIR" not in os.environ:
+        monkeypatch.setenv("XARVIS_LOG_DIR", str(tmp_path / "logs"))
     spec = importlib.util.spec_from_file_location("xarvis_supervisor_test", SUPERVISOR_PATH)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
@@ -22,6 +25,20 @@ def test_supervisor_uses_repo_relative_paths(monkeypatch, tmp_path):
     assert supervisor.LOG_DIR == tmp_path / "logs"
     assert supervisor.PROCESSES["CORE_SOVEREIGN"]["path"] == ROOT / "1_CORE/xarvis_core.py"
     assert supervisor.PROCESSES["RAM_GUARDIAN"]["log"] == tmp_path / "logs" / "ram_guardian.log"
+
+
+def test_supervisor_resolves_relative_python_override(monkeypatch, tmp_path):
+    python_path = tmp_path / "repo" / "venv" / "bin" / "python3"
+    python_path.parent.mkdir(parents=True)
+    python_path.write_text("#!/usr/bin/env python3\n", encoding="utf-8")
+    monkeypatch.setenv("XARVIS_BASE_DIR", str(tmp_path / "repo"))
+    monkeypatch.setenv("XARVIS_LOG_DIR", str(tmp_path / "logs"))
+    monkeypatch.setenv("XARVIS_PYTHON", "venv/bin/python3")
+
+    supervisor = load_supervisor(monkeypatch, tmp_path)
+
+    assert supervisor.VENV_PYTHON == python_path.resolve()
+    assert supervisor.VENV_PYTHON.is_absolute()
 
 
 def test_supervisor_import_does_not_start_processes(monkeypatch, tmp_path):

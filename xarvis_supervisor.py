@@ -10,7 +10,8 @@ from pathlib import Path
 # Arquitectura Soberana: 19 Dominios Integrados (0-18)
 BASE_DIR = Path(os.environ.get("XARVIS_BASE_DIR", Path(__file__).resolve().parent)).expanduser().resolve()
 _DEFAULT_VENV_PYTHON = BASE_DIR / "venv" / "bin" / "python3"
-VENV_PYTHON = Path(os.environ.get("XARVIS_PYTHON", _DEFAULT_VENV_PYTHON)).expanduser()
+_CONFIGURED_PYTHON = Path(os.environ.get("XARVIS_PYTHON", _DEFAULT_VENV_PYTHON)).expanduser()
+VENV_PYTHON = (_CONFIGURED_PYTHON if _CONFIGURED_PYTHON.is_absolute() else BASE_DIR / _CONFIGURED_PYTHON).resolve()
 if not VENV_PYTHON.exists():
     VENV_PYTHON = Path(sys.executable)
 LOG_DIR = Path(os.environ.get("XARVIS_LOG_DIR", BASE_DIR / "5_INFRA" / "logs")).expanduser()
