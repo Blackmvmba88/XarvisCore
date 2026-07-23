@@ -15,6 +15,8 @@ __pycache__/
 *.log
 5_INFRA/logs/
 logs/
+!xarvis/logs/
+!xarvis/logs/*.py
 
 # IDE
 .vscode/
