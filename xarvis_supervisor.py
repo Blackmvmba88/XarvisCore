@@ -1,8 +1,9 @@
+import math
 import os
-import subprocess
-import time
 import signal
+import subprocess
 import sys
+import time
 from datetime import datetime
 from pathlib import Path
 
@@ -19,6 +20,26 @@ LOG_DIR.mkdir(parents=True, exist_ok=True)
 ACTIVE_PROCESSES = {}
 
 
+def positive_float_env(name, default):
+    raw_value = os.environ.get(name)
+    if raw_value is None:
+        return default
+    try:
+        value = float(raw_value)
+    except ValueError as exc:
+        raise ValueError(f"{name} debe ser un número positivo") from exc
+    if not math.isfinite(value) or value <= 0:
+        raise ValueError(f"{name} debe ser un número positivo")
+    return value
+
+
+MONITOR_INTERVAL = positive_float_env("XARVIS_MONITOR_INTERVAL", 15.0)
+RESTART_BACKOFF_INITIAL = positive_float_env("XARVIS_RESTART_BACKOFF_INITIAL", 5.0)
+RESTART_BACKOFF_MAX = positive_float_env("XARVIS_RESTART_BACKOFF_MAX", 300.0)
+RESTART_STABLE_AFTER = positive_float_env("XARVIS_RESTART_STABLE_AFTER", 60.0)
+SHUTDOWN_TIMEOUT = positive_float_env("XARVIS_SHUTDOWN_TIMEOUT", 10.0)
+
+
 def process_config(relative_path, log_name, priority, enabled=True):
     return {
         "path": BASE_DIR / relative_path,
@@ -26,6 +47,9 @@ def process_config(relative_path, log_name, priority, enabled=True):
         "proc": None,
         "priority": priority,
         "enabled": enabled,
+        "restart_attempts": 0,
+        "restart_at": 0.0,
+        "started_at": 0.0,
     }
 
 
@@ -39,6 +63,9 @@ def clone_processes(processes, force_enabled=False):
             **config,
             "enabled": True if force_enabled else config.get("enabled", True),
             "proc": None,
+            "restart_attempts": 0,
+            "restart_at": 0.0,
+            "started_at": 0.0,
         }
         for name, config in processes.items()
     }
@@ -100,6 +127,8 @@ def start_process(name, config):
                 cwd=str(script_path.parent),  # Correr en su propio directorio
             )
         config["proc"] = proc
+        config["restart_at"] = 0.0
+        config["started_at"] = time.monotonic()
         log_master(f"{name} en línea. PID: {proc.pid}")
         return True
     except (OSError, ValueError) as e:
@@ -108,32 +137,84 @@ def start_process(name, config):
 
 
 def kill_process(name, config):
-    if config["proc"]:
-        log_master(f"Desactivando {name} (PID: {config['proc'].pid})...")
+    proc = config.get("proc")
+    if proc is None:
+        return
+
+    log_master(f"Desactivando {name} (PID: {proc.pid})...")
+    try:
+        process_group = os.getpgid(proc.pid)
+        os.killpg(process_group, signal.SIGTERM)
+        proc.wait(timeout=SHUTDOWN_TIMEOUT)
+    except ProcessLookupError:
+        log_master(f"{name} ya estaba detenido.")
+    except PermissionError as exc:
+        log_master(f"No se pudo detener {name}: {exc}")
+    except subprocess.TimeoutExpired:
+        log_master(f"{name} no respondió a SIGTERM; forzando cierre.")
         try:
-            os.killpg(os.getpgid(config["proc"].pid), signal.SIGTERM)
+            os.killpg(process_group, signal.SIGKILL)
+            proc.wait(timeout=SHUTDOWN_TIMEOUT)
         except ProcessLookupError:
-            log_master(f"{name} ya estaba detenido.")
+            pass
         except PermissionError as exc:
-            log_master(f"No se pudo detener {name}: {exc}")
+            log_master(f"No se pudo forzar el cierre de {name}: {exc}")
+        except subprocess.TimeoutExpired:
+            log_master(f"{name} sigue activo después de SIGKILL.")
+    finally:
         config["proc"] = None
 
 
 def signal_handler(sig, frame):
     log_master("Apagado de Infraestructura solicitado. Resguardando dominios...")
-    for name, config in ACTIVE_PROCESSES.items():
+    for name, config in reversed(enabled_process_items(ACTIVE_PROCESSES)):
         kill_process(name, config)
     sys.exit(0)
 
 
+def schedule_restart(name, config, now):
+    attempts = config.get("restart_attempts", 0) + 1
+    delay = min(RESTART_BACKOFF_INITIAL, RESTART_BACKOFF_MAX)
+    for _ in range(attempts - 1):
+        delay = min(delay * 2, RESTART_BACKOFF_MAX)
+        if delay >= RESTART_BACKOFF_MAX:
+            break
+    config["restart_attempts"] = attempts
+    config["restart_at"] = now + delay
+    log_master(f"{name} se reintentará en {delay:g}s (intento {attempts}).")
+
+
+def monitor_once(processes, now=None):
+    now = time.monotonic() if now is None else now
+    for name, config in enabled_process_items(processes):
+        proc = config.get("proc")
+        if proc is not None and proc.poll() is None:
+            started_at = config.get("started_at", now)
+            if config.get("restart_attempts", 0) and now - started_at >= RESTART_STABLE_AFTER:
+                config["restart_attempts"] = 0
+            continue
+
+        if proc is not None:
+            config["proc"] = None
+            schedule_restart(name, config, now)
+            continue
+
+        restart_at = config.get("restart_at", 0.0)
+        if restart_at == 0.0:
+            schedule_restart(name, config, now)
+            continue
+        if now < restart_at:
+            continue
+
+        log_master(f"Alerta: Dominio {name} fuera de servicio. Restaurando...")
+        if not start_process(name, config) and config.get("enabled", True):
+            schedule_restart(name, config, now)
+
+
 def monitor_processes(processes):
     while True:
-        time.sleep(15)
-        for name, config in enabled_process_items(processes):
-            proc = config.get("proc")
-            if proc is None or proc.poll() is not None:
-                log_master(f"⚠️ Alerta: Dominio {name} fuera de servicio. Restaurando...")
-                start_process(name, config)
+        time.sleep(MONITOR_INTERVAL)
+        monitor_once(processes)
 
 
 def main():
