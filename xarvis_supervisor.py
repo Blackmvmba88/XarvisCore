@@ -27,9 +27,9 @@ def positive_float_env(name, default):
     try:
         value = float(raw_value)
     except ValueError as exc:
-        raise ValueError(f"{name} debe ser un número positivo") from exc
+        raise ValueError(f"{name} debe ser un número positivo: {raw_value!r}") from exc
     if not math.isfinite(value) or value <= 0:
-        raise ValueError(f"{name} debe ser un número positivo")
+        raise ValueError(f"{name} debe ser un número positivo: {raw_value!r}")
     return value
 
 
@@ -141,12 +141,15 @@ def kill_process(name, config):
     if proc is None:
         return
 
+    stopped = False
     log_master(f"Desactivando {name} (PID: {proc.pid})...")
     try:
         process_group = os.getpgid(proc.pid)
         os.killpg(process_group, signal.SIGTERM)
         proc.wait(timeout=SHUTDOWN_TIMEOUT)
+        stopped = True
     except ProcessLookupError:
+        stopped = True
         log_master(f"{name} ya estaba detenido.")
     except PermissionError as exc:
         log_master(f"No se pudo detener {name}: {exc}")
@@ -155,13 +158,14 @@ def kill_process(name, config):
         try:
             os.killpg(process_group, signal.SIGKILL)
             proc.wait(timeout=SHUTDOWN_TIMEOUT)
+            stopped = True
         except ProcessLookupError:
-            pass
+            stopped = True
         except PermissionError as exc:
             log_master(f"No se pudo forzar el cierre de {name}: {exc}")
         except subprocess.TimeoutExpired:
             log_master(f"{name} sigue activo después de SIGKILL.")
-    finally:
+    if stopped:
         config["proc"] = None
 
 
@@ -201,7 +205,9 @@ def monitor_once(processes, now=None):
 
         restart_at = config.get("restart_at", 0.0)
         if restart_at == 0.0:
-            schedule_restart(name, config, now)
+            log_master(f"Alerta: Dominio {name} fuera de servicio. Restaurando...")
+            if not start_process(name, config) and config.get("enabled", True):
+                schedule_restart(name, config, now)
             continue
         if now < restart_at:
             continue

@@ -79,7 +79,7 @@ def test_positive_float_env_rejects_invalid_values(monkeypatch, tmp_path):
     supervisor = load_supervisor(monkeypatch, tmp_path)
     monkeypatch.setenv("INVALID_INTERVAL", "0")
 
-    with pytest.raises(ValueError, match="INVALID_INTERVAL"):
+    with pytest.raises(ValueError, match="INVALID_INTERVAL.*'0'"):
         supervisor.positive_float_env("INVALID_INTERVAL", 1.0)
 
 
@@ -97,11 +97,11 @@ def test_monitor_once_schedules_exponential_restart(monkeypatch, tmp_path):
         "restart_at": 0.0,
     }
 
+    monkeypatch.setattr(supervisor, "start_process", lambda name, current: False)
     supervisor.monitor_once({"CORE": config}, now=100.0)
     assert config["restart_attempts"] == 1
     assert config["restart_at"] == 102.0
 
-    monkeypatch.setattr(supervisor, "start_process", lambda name, current: False)
     supervisor.monitor_once({"CORE": config}, now=102.0)
     assert config["restart_attempts"] == 2
     assert config["restart_at"] == 106.0
@@ -210,6 +210,47 @@ def test_kill_process_forces_shutdown_after_timeout(monkeypatch, tmp_path):
     ]
     assert Process.wait_calls == 2
     assert config["proc"] is None
+
+
+def test_kill_process_keeps_handle_when_shutdown_fails(monkeypatch, tmp_path):
+    supervisor = load_supervisor(monkeypatch, tmp_path)
+
+    class Process:
+        pid = 123
+
+    process = Process()
+    config = {"proc": process}
+    monkeypatch.setattr(supervisor.os, "getpgid", lambda pid: 456)
+    monkeypatch.setattr(
+        supervisor.os,
+        "killpg",
+        lambda group, sent_signal: (_ for _ in ()).throw(PermissionError("denied")),
+    )
+    monkeypatch.setattr(supervisor, "log_master", lambda message: None)
+
+    supervisor.kill_process("CORE", config)
+
+    assert config["proc"] is process
+
+
+def test_monitor_once_attempts_immediate_start_without_backoff(monkeypatch, tmp_path):
+    supervisor = load_supervisor(monkeypatch, tmp_path)
+    calls = []
+    config = {
+        "enabled": True,
+        "priority": 1,
+        "proc": None,
+        "restart_attempts": 0,
+        "restart_at": 0.0,
+    }
+    monkeypatch.setattr(supervisor, "start_process", lambda name, current: calls.append(name) or True)
+    monkeypatch.setattr(supervisor, "log_master", lambda message: None)
+
+    supervisor.monitor_once({"CORE": config}, now=100.0)
+
+    assert calls == ["CORE"]
+    assert config["restart_attempts"] == 0
+    assert config["restart_at"] == 0.0
 
 
 def test_signal_handler_stops_higher_priority_processes_first(monkeypatch, tmp_path):
