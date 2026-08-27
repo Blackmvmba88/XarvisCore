@@ -10,6 +10,7 @@ build/
 *.egg
 
 # Virtual environments
+.venv/
 venv/
 env/
 ENV/
@@ -28,6 +29,8 @@ htmlcov/
 # OS
 .DS_Store
 Thumbs.db
+*.dmg
+*.spec
 
 # Temporary files
 *.tmp

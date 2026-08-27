@@ -1,234 +1,202 @@
-import tkinter as tk
-from tkinter import ttk, filedialog, messagebox
 import os
-from datetime import datetime
+import colorsys
+import subprocess
+import sys
 import threading
-from concurrent.futures import ThreadPoolExecutor
+import tkinter as tk
+import tkinter.font as tkfont
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from tkinter import filedialog
 
-# Import core logic
 try:
     from core import ResizerCore
 except ImportError:
-    # Fallback if core is in same directory but not in path
-    import sys
     sys.path.append(os.path.dirname(os.path.abspath(__file__)))
     from core import ResizerCore
 
+
+THEMES = {
+    "Mamba Neon": {"bg": "#11001f", "header": "#3a0066", "panel": "#25003f", "accent": "#00ff88", "highlight": "#8b00ff", "text": "#ffffff"},
+    "Medianoche": {"bg": "#07111f", "header": "#102a43", "panel": "#132f4c", "accent": "#52d3ff", "highlight": "#246bfd", "text": "#ffffff"},
+    "Fuego": {"bg": "#210704", "header": "#611108", "panel": "#3a0d08", "accent": "#ffb000", "highlight": "#ff3d00", "text": "#fff7e6"},
+    "Rosa Eléctrico": {"bg": "#240018", "header": "#680044", "panel": "#42002c", "accent": "#ff4fc8", "highlight": "#b700ff", "text": "#ffffff"},
+    "Esmeralda": {"bg": "#031b16", "header": "#074c3c", "panel": "#08362d", "accent": "#5cffbd", "highlight": "#00a978", "text": "#f2fff9"},
+}
 class ImageResizer3000:
     def __init__(self, root):
         self.root = root
-        self.root.title("Visual Alpha Studio - 3000x3000px")
-        self.root.geometry("800x850")
-        self.root.resizable(True, True)
-        
-        # Theme Colors
-        self.COLORS = {
-            "bg": "#1a0033",
-            "header": "#6B00FF",
-            "accent": "#00FF88",
-            "secondary": "#2D0052",
-            "highlight": "#8B00FF",
-            "warning": "#FF00AA",
-            "text": "#FFFFFF"
-        }
-        
+        self.root.title("BlackMamba 3000 × 3000 — Iyari Gomez")
+        self.root.geometry("760x640")
+        self.root.minsize(680, 580)
         self.selected_files = []
-        self.resize_mode = tk.StringVar(value="fit")
-        self.output_folder = os.path.expanduser("~/Desktop")
+        self.output_folder = os.path.expanduser("~/Desktop/BlackMamba 3000x3000")
+        self.resize_mode = tk.StringVar(value="fill")
+        self.theme_name = tk.StringVar(value="Mamba Neon")
+        self.status_var = tk.StringVar(value="Selecciona una imagen: se procesará automáticamente")
         self.is_processing = False
-        
+        self.themed_widgets = []
+        self.rainbow_canvases = []
+        self.rainbow_phase = 0.0
         self.create_ui()
-    
+        self.apply_theme()
+        self.animate_rainbow()
+
+    def themed(self, widget, role="panel"):
+        self.themed_widgets.append((widget, role))
+        return widget
+
+    def rainbow_title(self, parent, text, size):
+        font = tkfont.Font(family="Helvetica Neue", size=size, weight="bold")
+        spacing = max(1, size // 10)
+        width = sum(font.measure(char) + spacing for char in text) + 28
+        height = font.metrics("linespace") + 20
+        canvas = self.themed(tk.Canvas(parent, width=width, height=height, bd=0, highlightthickness=0), "header")
+        canvas.pack()
+        x = 14
+        letters = []
+        glow_offsets = ((-3, 0), (3, 0), (0, -3), (0, 3), (-2, -2), (2, -2), (-2, 2), (2, 2))
+        for index, char in enumerate(text):
+            char_width = font.measure(char) + spacing
+            center_x = x + char_width / 2
+            center_y = height / 2
+            glow = [canvas.create_text(center_x + dx, center_y + dy, text=char, font=font, fill="#34104c") for dx, dy in glow_offsets]
+            core = canvas.create_text(center_x, center_y, text=char, font=font, fill="#ffffff")
+            shine = canvas.create_text(center_x - 1, center_y - 1, text=char, font=font, fill="#ffffff")
+            letters.append((glow, core, shine, index))
+            x += char_width
+        self.rainbow_canvases.append((canvas, letters))
+
+    @staticmethod
+    def rainbow_color(hue, brightness=1.0):
+        red, green, blue = colorsys.hsv_to_rgb(hue % 1.0, 0.92, brightness)
+        return f"#{int(red * 255):02x}{int(green * 255):02x}{int(blue * 255):02x}"
+
+    def animate_rainbow(self):
+        self.rainbow_phase = (self.rainbow_phase + 0.012) % 1.0
+        pulse = 0.76 + 0.24 * abs(((self.rainbow_phase * 4) % 2) - 1)
+        for canvas, letters in self.rainbow_canvases:
+            for glow, core, shine, index in letters:
+                hue = self.rainbow_phase + index * 0.075
+                glow_color = self.rainbow_color(hue, 0.48 * pulse)
+                core_color = self.rainbow_color(hue, 1.0)
+                shine_color = self.rainbow_color(hue + 0.035, 1.0)
+                for item in glow:
+                    canvas.itemconfigure(item, fill=glow_color)
+                canvas.itemconfigure(core, fill=core_color)
+                canvas.itemconfigure(shine, fill=shine_color)
+        self.root.after(55, self.animate_rainbow)
+
     def create_ui(self):
-        self.root.configure(bg=self.COLORS["bg"])
-        
-        # Header
-        title_frame = tk.Frame(self.root, bg=self.COLORS["header"], pady=25)
-        title_frame.pack(fill=tk.X)
-        
-        tk.Label(
-            title_frame,
-            text="✨ Visual Alpha Resizer ✨",
-            font=("Helvetica", 24, "bold"),
-            bg=self.COLORS["header"],
-            fg=self.COLORS["accent"]
-        ).pack()
-        
-        tk.Label(
-            title_frame,
-            text="Powered by Xarvis Core - 3000x3000px Excellence",
-            font=("Helvetica", 10, "italic"),
-            bg=self.COLORS["header"],
-            fg="white"
-        ).pack()
-        
-        # Main Frame
-        main_frame = tk.Frame(self.root, padx=30, pady=20, bg=self.COLORS["bg"])
-        main_frame.pack(fill=tk.BOTH, expand=True)
-        
-        # Selection Buttons
-        btn_frame = tk.Frame(main_frame, bg=self.COLORS["bg"])
-        btn_frame.pack(fill=tk.X, pady=10)
-        
-        self.select_button = tk.Button(
-            btn_frame, text="📁 SELECT IMAGES", command=self.select_files,
-            font=("Helvetica", 12, "bold"), bg=self.COLORS["accent"], fg="#1a0033",
-            padx=20, pady=10, cursor="hand2", relief=tk.RAISED, borderwidth=3
-        )
-        self.select_button.pack(side=tk.LEFT, padx=5)
-        
-        self.clear_button = tk.Button(
-            btn_frame, text="🗑️ CLEAR ALL", command=self.clear_files,
-            font=("Helvetica", 12, "bold"), bg=self.COLORS["warning"], fg="white",
-            padx=20, pady=10, cursor="hand2", relief=tk.RAISED, borderwidth=3
-        )
-        self.clear_button.pack(side=tk.LEFT, padx=5)
-        
-        # Output Folder
-        dest_frame = tk.LabelFrame(main_frame, text="📂 DESTINATION", padx=15, pady=15, 
-                                    bg=self.COLORS["secondary"], fg=self.COLORS["accent"], 
-                                    font=("Helvetica", 11, "bold"), relief=tk.RIDGE)
-        dest_frame.pack(fill=tk.X, pady=10)
-        
-        self.dest_label = tk.Label(
-            dest_frame, text=f"Path: {self.output_folder}", font=("Courier", 9),
-            anchor=tk.W, bg=self.COLORS["highlight"], fg="white", padx=10, pady=8, relief=tk.SUNKEN
-        )
+        header = self.themed(tk.Frame(self.root, pady=20), "header")
+        header.pack(fill=tk.X)
+        self.rainbow_title(header, "IYARI GOMEZ", 26)
+        self.rainbow_title(header, "BLACKMAMBA", 18)
+        subtitle = self.themed(tk.Label(header, text="RESIZER AUTOMÁTICO · 3000 × 3000", font=("Helvetica Neue", 11, "bold"), pady=7), "header_text")
+        subtitle.pack()
+
+        main = self.themed(tk.Frame(self.root, padx=28, pady=22), "bg")
+        main.pack(fill=tk.BOTH, expand=True)
+        top = self.themed(tk.Frame(main), "bg")
+        top.pack(fill=tk.X)
+
+        self.select_button = self.themed(tk.Button(top, text="📁  ELEGIR Y REDIMENSIONAR", command=self.select_files, font=("Helvetica Neue", 14, "bold"), padx=18, pady=12, cursor="hand2", relief=tk.FLAT), "button")
+        self.select_button.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 12))
+        theme_menu = self.themed(tk.OptionMenu(top, self.theme_name, *THEMES, command=lambda _value: self.apply_theme()), "button")
+        theme_menu.config(font=("Helvetica Neue", 11, "bold"), relief=tk.FLAT, padx=8, pady=9)
+        theme_menu.pack(side=tk.RIGHT)
+
+        destination = self.themed(tk.LabelFrame(main, text=" DESTINO ", padx=14, pady=14, font=("Helvetica Neue", 11, "bold")), "panel")
+        destination.pack(fill=tk.X, pady=18)
+        self.dest_label = self.themed(tk.Label(destination, text=self.output_folder, anchor=tk.W, font=("Menlo", 9), padx=10, pady=9), "highlight")
         self.dest_label.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 10))
-        
-        tk.Button(
-            dest_frame, text="CHANGE", command=self.select_output_folder,
-            font=("Helvetica", 10, "bold"), bg=self.COLORS["accent"], fg="#1a0033"
-        ).pack(side=tk.RIGHT)
-        
-        # File List
-        list_frame = tk.LabelFrame(main_frame, text="🎯 QUEUE", padx=10, pady=10,
-                                   bg=self.COLORS["secondary"], fg=self.COLORS["accent"], 
-                                   font=("Helvetica", 11, "bold"), relief=tk.RIDGE)
-        list_frame.pack(fill=tk.BOTH, expand=True, pady=10)
-        
-        scrollbar = tk.Scrollbar(list_frame)
-        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        
-        self.files_listbox = tk.Listbox(
-            list_frame, yscrollcommand=scrollbar.set, font=("Courier", 10),
-            bg=self.COLORS["bg"], fg=self.COLORS["accent"], selectbackground=self.COLORS["highlight"]
-        )
+        change = self.themed(tk.Button(destination, text="CAMBIAR", command=self.select_output_folder, font=("Helvetica Neue", 10, "bold"), relief=tk.FLAT), "button")
+        change.pack(side=tk.RIGHT)
+
+        settings = self.themed(tk.LabelFrame(main, text=" ENCUADRE AUTOMÁTICO ", padx=16, pady=12, font=("Helvetica Neue", 11, "bold")), "panel")
+        settings.pack(fill=tk.X)
+        for label, value in (("Llenar todo (recomendado, sin bordes)", "fill"), ("Ajustar completa (puede agregar bordes)", "fit"), ("Estirar", "stretch")):
+            radio = self.themed(tk.Radiobutton(settings, text=label, variable=self.resize_mode, value=value, font=("Helvetica Neue", 10), anchor=tk.W), "radio")
+            radio.pack(fill=tk.X, pady=2)
+
+        queue = self.themed(tk.LabelFrame(main, text=" ACTIVIDAD ", padx=12, pady=12, font=("Helvetica Neue", 11, "bold")), "panel")
+        queue.pack(fill=tk.BOTH, expand=True, pady=18)
+        self.files_listbox = self.themed(tk.Listbox(queue, font=("Menlo", 10), bd=0, highlightthickness=0), "list")
         self.files_listbox.pack(fill=tk.BOTH, expand=True)
-        scrollbar.config(command=self.files_listbox.yview)
-        
-        # Modes & Options
-        options_container = tk.Frame(main_frame, bg=self.COLORS["bg"])
-        options_container.pack(fill=tk.X, pady=10)
-        
-        mode_frame = tk.LabelFrame(options_container, text="⚡ MODE", padx=15, pady=10,
-                                   bg=self.COLORS["secondary"], fg=self.COLORS["accent"], 
-                                   font=("Helvetica", 11, "bold"))
-        mode_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 5))
-        
-        modes = [("Fit (Margins)", "fit"), ("Fill (Crop)", "fill"), ("Stretch", "stretch")]
-        for text, val in modes:
-            tk.Radiobutton(
-                mode_frame, text=text, variable=self.resize_mode, value=val,
-                bg=self.COLORS["secondary"], fg="white", selectcolor=self.COLORS["highlight"],
-                font=("Helvetica", 10)
-            ).pack(anchor=tk.W)
-        
-        settings_frame = tk.LabelFrame(options_container, text="⚙️ SETTINGS", padx=15, pady=10,
-                                       bg=self.COLORS["secondary"], fg=self.COLORS["accent"], 
-                                       font=("Helvetica", 11, "bold"))
-        settings_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(5, 0))
-        
-        self.save_original = tk.BooleanVar(value=True)
-        tk.Checkbutton(
-            settings_frame, text="Keep Original Names", variable=self.save_original,
-            bg=self.COLORS["secondary"], fg="white", selectcolor=self.COLORS["highlight"],
-            font=("Helvetica", 10)
-        ).pack(anchor=tk.W)
-        
-        # Process Button
-        self.process_button = tk.Button(
-            main_frame, text="🚀 START RESIZING 🚀", command=self.start_processing,
-            font=("Helvetica", 16, "bold"), bg=self.COLORS["accent"], fg="#1a0033",
-            pady=15, cursor="hand2", state=tk.DISABLED, relief=tk.RAISED, borderwidth=5
-        )
-        self.process_button.pack(fill=tk.X, pady=20)
-        
-        # Progress status
-        self.status_var = tk.StringVar(value="Ready to process")
-        tk.Label(main_frame, textvariable=self.status_var, bg=self.COLORS["bg"], fg=self.COLORS["accent"]).pack()
+        status = self.themed(tk.Label(main, textvariable=self.status_var, font=("Helvetica Neue", 11, "bold"), pady=6), "status")
+        status.pack(fill=tk.X)
+
+    def apply_theme(self):
+        colors = THEMES[self.theme_name.get()]
+        self.root.configure(bg=colors["bg"])
+        for widget, role in self.themed_widgets:
+            if role == "bg": widget.configure(bg=colors["bg"])
+            elif role == "header": widget.configure(bg=colors["header"])
+            elif role == "header_text": widget.configure(bg=colors["header"], fg=colors["text"])
+            elif role == "panel": widget.configure(bg=colors["panel"], fg=colors["accent"])
+            elif role == "highlight": widget.configure(bg=colors["highlight"], fg=colors["text"])
+            elif role == "button": widget.configure(bg=colors["accent"], fg=colors["bg"], activebackground=colors["highlight"])
+            elif role == "radio": widget.configure(bg=colors["panel"], fg=colors["text"], selectcolor=colors["highlight"], activebackground=colors["panel"])
+            elif role == "list": widget.configure(bg=colors["bg"], fg=colors["accent"], selectbackground=colors["highlight"])
+            elif role == "status": widget.configure(bg=colors["bg"], fg=colors["accent"])
 
     def select_files(self):
-        files = filedialog.askopenfilenames(
-            title="Select Images",
-            filetypes=[("Images", "*.png *.jpg *.jpeg *.webp *.bmp *.tiff")]
-        )
-        if files:
-            for f in files:
-                if f not in self.selected_files:
-                    self.selected_files.append(f)
-                    self.files_listbox.insert(tk.END, os.path.basename(f))
-            self.process_button.config(state=tk.NORMAL)
-
-    def clear_files(self):
-        self.selected_files = []
+        if self.is_processing:
+            return
+        files = filedialog.askopenfilenames(title="Elige imágenes — se procesan automáticamente", filetypes=[("Imágenes", "*.png *.jpg *.jpeg *.webp *.bmp *.tiff")])
+        if not files:
+            return
+        self.selected_files = list(files)
         self.files_listbox.delete(0, tk.END)
-        self.process_button.config(state=tk.DISABLED)
+        for filepath in files:
+            self.files_listbox.insert(tk.END, f"⏳  {os.path.basename(filepath)}")
+        self.start_processing()
 
     def select_output_folder(self):
         folder = filedialog.askdirectory(initialdir=self.output_folder)
         if folder:
             self.output_folder = folder
-            self.dest_label.config(text=f"Path: {self.output_folder}")
+            self.dest_label.configure(text=folder)
 
     def start_processing(self):
-        if not self.selected_files or self.is_processing:
-            return
-            
         self.is_processing = True
-        self.process_button.config(state=tk.DISABLED)
-        self.status_var.set("Processing...")
-        
-        # Run in separate thread to keep UI responsive
+        self.select_button.configure(state=tk.DISABLED)
+        self.status_var.set(f"Procesando {len(self.selected_files)} imagen(es)…")
         threading.Thread(target=self.batch_process, daemon=True).start()
 
     def batch_process(self):
-        mode = self.resize_mode.get()
-        save_orig = self.save_original.get()
-        success = 0
-        errors = []
-        
-        total = len(self.selected_files)
-        
-        with ThreadPoolExecutor(max_workers=min(4, os.cpu_count() or 1)) as executor:
-            futures = []
-            for filepath in self.selected_files:
-                futures.append(executor.submit(
-                    ResizerCore.process_image, 
-                    filepath, self.output_folder, mode, save_orig
-                ))
-            
-            for i, future in enumerate(futures):
+        successes, errors = [], []
+        max_workers = min(4, len(self.selected_files), os.cpu_count() or 1)
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            futures = {executor.submit(ResizerCore.process_image, filepath, self.output_folder, self.resize_mode.get(), True): filepath for filepath in self.selected_files}
+            for future in as_completed(futures):
                 try:
-                    future.result()
-                    success += 1
-                except Exception as e:
-                    errors.append(str(e))
-                
-                self.status_var.set(f"Processing: {i+1}/{total}")
-                self.root.update_idletasks()
+                    successes.append(future.result())
+                except Exception as error:
+                    errors.append(f"{os.path.basename(futures[future])}: {error}")
+        self.root.after(0, lambda: self.finish_processing(successes, errors))
 
+    def finish_processing(self, successes, errors):
         self.is_processing = False
-        self.status_var.set(f"Done! {success} success, {len(errors)} errors")
-        
-        msg = f"Completed!\nSuccess: {success}\nErrors: {len(errors)}"
-        if errors:
-            msg += f"\n\nLast error: {errors[-1]}"
-            
-        messagebox.showinfo("Results", msg)
-        self.root.after(0, self.clear_files)
+        self.select_button.configure(state=tk.NORMAL)
+        self.files_listbox.delete(0, tk.END)
+        for path in successes:
+            self.files_listbox.insert(tk.END, f"✅  {os.path.basename(path)}")
+        for error in errors:
+            self.files_listbox.insert(tk.END, f"❌  {error}")
+        self.status_var.set(f"Listo: {len(successes)} creada(s) · {len(errors)} error(es)")
+        if successes:
+            self.open_output_folder()
+
+    def open_output_folder(self):
+        try:
+            if sys.platform == "darwin": subprocess.Popen(["open", self.output_folder])
+            elif os.name == "nt": os.startfile(self.output_folder)
+            else: subprocess.Popen(["xdg-open", self.output_folder])
+        except OSError as error:
+            self.status_var.set(f"Imagen lista. No pude abrir la carpeta: {error}")
+
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = ImageResizer3000(root)
+    ImageResizer3000(root)
     root.mainloop()
