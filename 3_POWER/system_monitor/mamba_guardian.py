@@ -100,6 +100,41 @@ class MambaGuardian:
             self.log(f"Error obteniendo procesos: {e}", "WARN")
             return []
 
+    @staticmethod
+    def _parse_disk_used(output: str) -> str:
+        lines = [line for line in output.splitlines() if line.strip()]
+        if not lines:
+            return "?"
+        parts = lines[-1].split()
+        return parts[4] if len(parts) > 4 else "?"
+
+    def get_disk_usage(self):
+        """Read disk usage through WARPBLACK when configured, with a safe local fallback."""
+        if os.environ.get("WARPBLACK_TOKEN", "").strip():
+            try:
+                from xarvis.integrations.warpblack import WarpBlackAdapter
+
+                result = WarpBlackAdapter.from_env().execute(
+                    ["df", "-h", "."],
+                    cwd=".",
+                    timeout_s=10.0,
+                    approved=False,
+                )
+                return self._parse_disk_used(str(result.get("stdout", "")))
+            except Exception as e:
+                self.log(
+                    f"WARPBLACK disk inspection failed; using local fallback: {e}",
+                    "WARN",
+                )
+
+        result = subprocess.run(
+            ["df", "-h", "/"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        return self._parse_disk_used(result.stdout)
+
     def get_system_stats(self):
         """Obtener estadísticas del sistema"""
         try:
@@ -117,20 +152,15 @@ class MambaGuardian:
 
             # Memory usage
             mem_cmd = "vm_stat | head -5"
-            mem_result = subprocess.run(
+            subprocess.run(
                 mem_cmd, shell=True, capture_output=True, text=True
             )
 
-            # Disk usage
-            disk_cmd = "df -h / | tail -1"
-            disk_result = subprocess.run(
-                disk_cmd, shell=True, capture_output=True, text=True
-            )
-            disk_parts = disk_result.stdout.split()
-            disk_used = disk_parts[4] if len(disk_parts) > 4 else "?"
+            # Disk usage is the first real subprocess site migrated behind WARPBLACK.
+            disk_used = self.get_disk_usage()
 
             return {"cpu_total": cpu_total, "disk_used": disk_used}
-        except Exception as e:
+        except Exception:
             return {"cpu_total": 0, "disk_used": "?"}
 
     def is_protected(self, process_name):
