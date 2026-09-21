@@ -68,3 +68,74 @@ def test_monitor_run_once(monkeypatch, tmp_path):
     st = server.load_state()
     assert 'actions' in st
     assert any('would_close' in (a.get('result') or '') for a in st['actions'])
+
+
+
+def test_kill_marked_protected_requires_force(monkeypatch):
+    state = {
+        "marked": [{"pid": 418, "comm": "WindowServer"}],
+        "actions": [],
+    }
+
+    monkeypatch.setattr(server, "run_ps", fake_run_ps_windowserver)
+    monkeypatch.setattr(server, "load_state", lambda: state)
+    monkeypatch.setattr(server, "save_state", lambda new_state: state.update(new_state))
+
+    kill_calls = []
+    monkeypatch.setattr(server.os, "kill", lambda pid, sig: kill_calls.append((pid, sig)))
+
+    r = client.post("/kill", json={"force": False})
+
+    assert r.status_code == 200
+    result = r.json()["results"][0]
+    assert result["killed"] is False
+    assert result["confirmed"] is False
+    assert "force=true" in result["error"]
+    assert kill_calls == []
+    assert state["marked"] == [{"pid": 418, "comm": "WindowServer"}]
+
+
+def test_kill_marked_force_escalates_and_confirms(monkeypatch):
+    state = {
+        "marked": [{"pid": 418, "comm": "WindowServer"}],
+        "actions": [],
+    }
+
+    monkeypatch.setattr(server, "run_ps", fake_run_ps_windowserver)
+    monkeypatch.setattr(server, "load_state", lambda: state)
+    monkeypatch.setattr(server, "save_state", lambda new_state: state.update(new_state))
+
+    kill_calls = []
+
+    def fake_kill(pid, sig):
+        kill_calls.append((pid, sig))
+
+    waits = iter([False, True])
+
+    async def fake_wait_for_process_exit(pid, timeout=1.0, poll_interval=0.05):
+        return next(waits)
+
+    monkeypatch.setattr(server.os, "kill", fake_kill)
+    monkeypatch.setattr(server, "wait_for_process_exit", fake_wait_for_process_exit)
+
+    r = client.post("/kill", json={"force": True})
+
+    assert r.status_code == 200
+    result = r.json()["results"][0]
+    assert result["killed"] is True
+    assert result["confirmed"] is True
+    assert result["forced"] is True
+    assert result["escalated"] is True
+    assert result["signals"] == ["SIGTERM", "SIGKILL"]
+    assert kill_calls == [
+        (418, server.signal.SIGTERM),
+        (418, server.signal.SIGKILL),
+    ]
+    assert state["marked"] == []
+    assert any(a.get("action") == "kill_marked" for a in state["actions"])
+
+
+def test_kill_rejects_non_boolean_force():
+    r = client.post("/kill", json={"force": "yes"})
+    assert r.status_code == 400
+    assert r.json()["detail"] == "force must be a boolean"
