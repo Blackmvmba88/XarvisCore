@@ -25,6 +25,7 @@ dev = [
 
 [project.scripts]
 xarvis = "xarvis.cli.main:main"
+xarvis-warp = "xarvis.cli.warp:main"
 
 [tool.setuptools]
 include-package-data = true

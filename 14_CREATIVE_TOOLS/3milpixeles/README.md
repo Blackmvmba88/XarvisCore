@@ -43,6 +43,21 @@ pip install -r requirements.txt
 python3 image_resizer_3000.py
 ```
 
+La interfaz procesa automáticamente las imágenes al seleccionarlas, usa el modo
+**Llenar** por defecto y abre la carpeta de resultados al terminar.
+
+## 🍎 Aplicación para macOS y DMG
+
+Para construir la aplicación con su icono BlackMamba y generar el instalador:
+
+```bash
+chmod +x build_macos.sh
+./build_macos.sh
+```
+
+El resultado queda en `dist/BlackMamba-3000-macOS-arm64.dmg`. Al abrir el DMG,
+arrastra **BlackMamba 3000** a la carpeta **Applications**.
+
 O hacer el script ejecutable:
 ```bash
 chmod +x image_resizer_3000.py
