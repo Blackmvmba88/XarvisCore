@@ -348,20 +348,92 @@ async def show_marked():
 async def kill(request: Request):
     params = await request.json()
     force = params.get("force", False)
+    if not isinstance(force, bool):
+        raise HTTPException(status_code=400, detail="force must be a boolean")
+
     state = load_state()
     if not state.get("marked"):
         return {"status": "no_marked"}
+
+    current = {p["pid"]: p for p in run_ps()}
     results = []
+
     for m in state["marked"]:
         pid = m["pid"]
+        target = current.get(pid)
+
+        if not target:
+            results.append({
+                "pid": pid,
+                "killed": False,
+                "confirmed": True,
+                "already_exited": True,
+                "forced": force,
+                "escalated": False,
+                "signals": [],
+            })
+            continue
+
+        # A marked PID can be reused by the OS. Refuse to act if the command changed.
+        marked_comm = (m.get("comm") or "").lower()
+        current_comm = (target.get("comm") or "").lower()
+        if marked_comm and marked_comm != current_comm:
+            results.append({
+                "pid": pid,
+                "killed": False,
+                "confirmed": False,
+                "forced": force,
+                "escalated": False,
+                "signals": [],
+                "error": "PID identity changed since it was marked",
+            })
+            continue
+
+        protected = (
+            any(w in current_comm for w in WHITELIST)
+            or classify(target) == "critical"
+        )
+        if protected and not force:
+            results.append({
+                "pid": pid,
+                "killed": False,
+                "confirmed": False,
+                "forced": False,
+                "escalated": False,
+                "signals": [],
+                "error": "Proceso protegido; requiere force=true",
+            })
+            continue
+
         try:
-            os.kill(pid, 15)
-            results.append({"pid": pid, "killed": True})
+            result = await terminate_pid(pid, force=force)
+            result.update({"pid": pid, "comm": target.get("comm")})
+            results.append(result)
         except Exception as e:
-            results.append({"pid": pid, "killed": False, "error": str(e)})
-    # limpiar marcados que fueron matados
-    state["marked"] = [m for m, r in zip(state["marked"], results) if not r.get("killed")]
+            results.append({
+                "pid": pid,
+                "comm": target.get("comm"),
+                "killed": False,
+                "confirmed": False,
+                "forced": force,
+                "escalated": False,
+                "signals": [],
+                "error": str(e),
+            })
+
+    # Clear only PIDs confirmed gone. Unconfirmed targets remain marked for inspection/retry.
+    confirmed_pids = {r["pid"] for r in results if r.get("confirmed")}
+    state["marked"] = [m for m in state["marked"] if m["pid"] not in confirmed_pids]
     save_state(state)
+
+    # Audit after saving mark state so action entries are not overwritten.
+    for result in results:
+        log_action({
+            "time": datetime.utcnow().isoformat(),
+            "action": "kill_marked",
+            **result,
+        })
+
     return JSONResponse(content={"results": results})
 
 
