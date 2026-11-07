@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import math
+
 
 def validate(input_data: dict, rules: dict | None = None) -> dict:
     rules = rules or {}
@@ -17,13 +19,13 @@ def validate(input_data: dict, rules: dict | None = None) -> dict:
         payload = {}
 
     value = payload.get("value")
-    if not isinstance(value, (int, float)):
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
         errors.append("payload.value must be numeric")
     elif value < 0:
         errors.append("Value must be >= 0")
 
     min_value = rules.get("min_value")
-    if min_value is not None and isinstance(value, (int, float)) and value < min_value:
+    if min_value is not None and isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value) and value < min_value:
         errors.append(f"Value must be >= {min_value}")
 
     allowed_actions = rules.get("allowed_actions")
