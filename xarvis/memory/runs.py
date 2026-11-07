@@ -162,8 +162,17 @@ def _filter_since(rows: list[dict[str, Any]], since: str | None) -> list[dict[st
     return filtered
 
 
+def _all_runs(path: Path) -> list[dict[str, Any]]:
+    if not path.exists():
+        return []
+    with sqlite3.connect(path) as conn:
+        conn.row_factory = sqlite3.Row
+        rows = conn.execute("SELECT id, created_at, command, status, decision, valid FROM runs ORDER BY id DESC").fetchall()
+    return [{**dict(row), "valid": bool(row["valid"])} for row in rows]
+
+
 def summarize_runs(path: Path, limit: int = 20, since: str | None = None) -> dict[str, Any]:
-    rows = export_runs(path, limit=10_000)
+    rows = _all_runs(path)
     rows = _filter_since(rows, since)
     total = len(rows)
 
