@@ -14,11 +14,12 @@ from xarvis.memory.store import load_json, save_output
 
 
 class XarvisEngine:
-    def __init__(self, input_path=INPUT_PATH, rules_path=RULES_PATH, output_path=OUTPUT_PATH, log_path=LOG_PATH):
+    def __init__(self, input_path=INPUT_PATH, rules_path=RULES_PATH, output_path=OUTPUT_PATH, log_path=LOG_PATH, runs_db_path=RUNS_DB_PATH):
         self.input_path = input_path
         self.rules_path = rules_path
         self.output_path = output_path
         self.log_path = log_path
+        self.runs_db_path = runs_db_path
 
     def run_demo(self) -> dict:
         input_data = load_json(self.input_path)
@@ -37,7 +38,7 @@ class XarvisEngine:
             payload = asdict(result)
             log_event("validation_failed", {"input": input_data, "errors": validation["errors"]}, self.log_path)
             record_run(
-                RUNS_DB_PATH,
+                self.runs_db_path,
                 command="run",
                 status=result.status,
                 decision=result.decision,
@@ -59,7 +60,7 @@ class XarvisEngine:
         persisted = save_output(asdict(result), self.output_path)
         log_event("execution_success", persisted, self.log_path)
         record_run(
-            RUNS_DB_PATH,
+            self.runs_db_path,
             command="run",
             status=persisted["status"],
             decision=persisted["decision"],
@@ -76,7 +77,7 @@ class XarvisEngine:
             "input_exists": self.input_path.exists(),
             "rules_exists": self.rules_path.exists(),
             "output_exists": self.output_path.exists(),
-            "runs_db_exists": RUNS_DB_PATH.exists(),
+            "runs_db_exists": self.runs_db_path.exists(),
         }
 
     def inspect(self) -> dict:
