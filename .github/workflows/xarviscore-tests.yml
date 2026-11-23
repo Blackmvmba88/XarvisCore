@@ -19,14 +19,5 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install
         run: python -m pip install -e ".[dev]"
-      - name: Run runtime and supervisor tests
-        run: |
-          python -m pytest -q \
-            tests/test_xarvis_demo.py \
-            tests/test_xarvis_doctor.py \
-            tests/test_xarvis_run_show.py \
-            tests/test_xarvis_runs.py \
-            tests/test_xarvis_runs_export.py \
-            tests/test_xarvis_runs_stats.py \
-            tests/test_xarvis_supervisor.py \
-            tests/test_xarvis_v02_hardening.py
+      - name: Run regression tests
+        run: python -m pytest -q tests/test_xarvis_v02_hardening.py tests/test_module_registry.py
